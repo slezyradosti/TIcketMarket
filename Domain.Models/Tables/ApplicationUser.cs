@@ -16,5 +16,6 @@ namespace Domain.Models.Tables
         public string Phone { get; set; }
 
         public ICollection<Order> Orders { get; set; }
+        public ICollection<UserEvent> UserEvents { get; set; }
     }
 }

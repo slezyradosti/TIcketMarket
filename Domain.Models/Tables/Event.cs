@@ -36,6 +36,7 @@ namespace Domain.Models.Tables
         public int TicketDiscountPercentage { get; set; }
 
         public ICollection<TableEvent> TableEvents { get; set; }
+        public ICollection<UserEvent> UserEvents { get; set; }
 
     }
 }
