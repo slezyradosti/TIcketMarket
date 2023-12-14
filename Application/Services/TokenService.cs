@@ -17,22 +17,6 @@ namespace Application.Services
             _config = config;
         }
 
-        public string CreateToken(ApplicationUser user)
-        {
-            CreateClaims(user, out var claims);
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Value.SymmetricSecurityKey));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-
-            CreateTokenDescriptor(claims, credentials, out var tokenDescriptor);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
-
         public void CreateClaims(ApplicationUser user, out List<Claim> claims)
         {
             claims = new List<Claim>
@@ -41,6 +25,36 @@ namespace Application.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
             };
+        }
+
+        public void AddClaims(ref List<Claim> claims, ApplicationUser user)
+        {
+            claims.AddRange(new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Email, user.Email),
+                }
+            );
+        }
+
+        public string CreateToken(ApplicationUser user, IList<Claim> claims)
+        {
+            //CreateClaims(user, out var claims);
+
+            var convClaims = claims.ToList();
+            AddClaims(ref convClaims, user); //add extra claims for jwt token
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Value.SymmetricSecurityKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            CreateTokenDescriptor(convClaims, credentials, out var tokenDescriptor);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
 
         public void CreateTokenDescriptor(List<Claim> claims, SigningCredentials credentials, out SecurityTokenDescriptor tokenDescriptor)

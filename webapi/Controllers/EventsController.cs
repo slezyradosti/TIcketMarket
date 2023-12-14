@@ -1,11 +1,10 @@
-﻿using Application.DTOs.Users.HTTP;
-using Application.Handlers.Tables.Event;
+﻿using Application.Handlers.Tables.Event;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace webapi.Controllers
 {
-    [Authorize(Policy = "SellerOnly")]
+    [Authorize(Policy = "SellersOnly")]
     public class EventsController : BaseApiController
     {
         private readonly IEventHandler _eventHandler;
@@ -19,7 +18,7 @@ namespace webapi.Controllers
         [Route("MyEvents")]
         public async Task<IActionResult> GetSellerEvents()//[FromQuery] RequestDto request)
         {
-            return HandleResult(await _eventHandler.GetListAsync());
+            return HandleResult(await _eventHandler.GetSellerListAsync());
         }
 
         //[HttpGet("{id}")]

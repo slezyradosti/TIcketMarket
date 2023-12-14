@@ -76,7 +76,7 @@ namespace Application.Handlers.Logic
                 Lastname = user.Lastname,
                 Phone = user.Phone,
                 DOB = user.DOB,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user, await _userManager.GetClaimsAsync(user))
             };
         }
     }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231213090344_ManyToManyRelationships")]
-    partial class ManyToManyRelationships
+    [Migration("20231214090034_newInitialize")]
+    partial class newInitialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,8 +65,8 @@ namespace Domain.Repositories.Migrations
                     b.Property<int>("PeopleQuantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .ValueGeneratedOnAddOrUpdate()
@@ -241,8 +241,8 @@ namespace Domain.Repositories.Migrations
                     b.Property<int>("TicketDiscountPercentage")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TicketPrice")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("TicketPrice")
+                        .HasColumnType("float");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -259,11 +259,16 @@ namespace Domain.Repositories.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("TypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Event");
                 });
@@ -383,35 +388,6 @@ namespace Domain.Repositories.Migrations
                     b.HasIndex("TicketId");
 
                     b.ToTable("TicketOrder");
-                });
-
-            modelBuilder.Entity("Domain.Models.Tables.UserEvent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserEvent");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -550,18 +526,26 @@ namespace Domain.Repositories.Migrations
                     b.HasOne("Domain.Models.Catalogues.EventCategory", "Category")
                         .WithMany("Events")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Catalogues.EventType", "Type")
                         .WithMany("Events")
                         .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.Tables.ApplicationUser", "User")
+                        .WithMany("Events")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Category");
 
                     b.Navigation("Type");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Models.Tables.Order", b =>
@@ -569,7 +553,7 @@ namespace Domain.Repositories.Migrations
                     b.HasOne("Domain.Models.Tables.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -580,13 +564,13 @@ namespace Domain.Repositories.Migrations
                     b.HasOne("Domain.Models.Tables.Event", "Event")
                         .WithMany("TableEvents")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Catalogues.EventTable", "Table")
                         .WithMany("TableEvents")
                         .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Event");
@@ -597,15 +581,15 @@ namespace Domain.Repositories.Migrations
             modelBuilder.Entity("Domain.Models.Tables.Ticket", b =>
                 {
                     b.HasOne("Domain.Models.Tables.Event", "Event")
-                        .WithMany()
+                        .WithMany("Tickets")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Catalogues.TicketType", "Type")
                         .WithMany("Tickets")
                         .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Event");
@@ -618,37 +602,18 @@ namespace Domain.Repositories.Migrations
                     b.HasOne("Domain.Models.Tables.Order", "Order")
                         .WithMany("TicketOrders")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Tables.Ticket", "Ticket")
                         .WithMany("TicketOrders")
                         .HasForeignKey("TicketId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");
 
                     b.Navigation("Ticket");
-                });
-
-            modelBuilder.Entity("Domain.Models.Tables.UserEvent", b =>
-                {
-                    b.HasOne("Domain.Models.Tables.Event", "Event")
-                        .WithMany("UserEvents")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.Tables.ApplicationUser", "User")
-                        .WithMany("UserEvents")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -724,16 +689,16 @@ namespace Domain.Repositories.Migrations
 
             modelBuilder.Entity("Domain.Models.Tables.ApplicationUser", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Events");
 
-                    b.Navigation("UserEvents");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Domain.Models.Tables.Event", b =>
                 {
                     b.Navigation("TableEvents");
 
-                    b.Navigation("UserEvents");
+                    b.Navigation("Tickets");
                 });
 
             modelBuilder.Entity("Domain.Models.Tables.Order", b =>

@@ -8,8 +8,8 @@ namespace Domain.Models.Catalogues
     {
         public string Number { get; set; }
 
-        [Range(0, (double)decimal.MaxValue)]
-        public decimal Price { get; set; }
+        [Range(0, double.MaxValue)]
+        public double Price { get; set; }
 
         [Range(0, int.MaxValue)]
         public int PeopleQuantity { get; set; }

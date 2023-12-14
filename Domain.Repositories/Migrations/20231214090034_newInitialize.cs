@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Domain.Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class Initialise : Migration
+    public partial class newInitialize : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,7 +74,7 @@ namespace Domain.Repositories.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TicketPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
                     PeopleQuantity = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -235,7 +235,7 @@ namespace Domain.Repositories.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -248,12 +248,12 @@ namespace Domain.Repositories.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Place = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TableId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Moderator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalPlaces = table.Column<int>(type: "int", nullable: false),
                     FreePlaces = table.Column<int>(type: "int", nullable: true),
-                    TicketPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TicketPrice = table.Column<double>(type: "float", nullable: false),
                     TicketDiscountPercentage = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -262,22 +262,23 @@ namespace Domain.Repositories.Migrations
                 {
                     table.PrimaryKey("PK_Event", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Event_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Event_EventCategory_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "EventCategory",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Event_EventTable_TableId",
-                        column: x => x.TableId,
-                        principalTable: "EventTable",
-                        principalColumn: "Id");
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Event_EventType_TypeId",
                         column: x => x.TypeId,
                         principalTable: "EventType",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -298,13 +299,13 @@ namespace Domain.Repositories.Migrations
                         column: x => x.TableId,
                         principalTable: "EventTable",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TableEvent_Event_EventId",
                         column: x => x.EventId,
                         principalTable: "Event",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -327,13 +328,13 @@ namespace Domain.Repositories.Migrations
                         column: x => x.EventId,
                         principalTable: "Event",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Ticket_TicketType_TypeId",
                         column: x => x.TypeId,
                         principalTable: "TicketType",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -354,13 +355,13 @@ namespace Domain.Repositories.Migrations
                         column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TicketOrder_Ticket_TicketId",
                         column: x => x.TicketId,
                         principalTable: "Ticket",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -408,14 +409,14 @@ namespace Domain.Repositories.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Event_TableId",
-                table: "Event",
-                column: "TableId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Event_TypeId",
                 table: "Event",
                 column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Event_UserId",
+                table: "Event",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_UserId",
@@ -481,13 +482,13 @@ namespace Domain.Repositories.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "EventTable");
+
+            migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
                 name: "Ticket");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Event");
@@ -496,10 +497,10 @@ namespace Domain.Repositories.Migrations
                 name: "TicketType");
 
             migrationBuilder.DropTable(
-                name: "EventCategory");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "EventTable");
+                name: "EventCategory");
 
             migrationBuilder.DropTable(
                 name: "EventType");

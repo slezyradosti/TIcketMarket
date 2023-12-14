@@ -1,6 +1,6 @@
 ﻿namespace Application.Handlers.Tables.TicketOrder
 {
-    public interface ITicketOrder
+    public class TicketOrderHandler : ITicketOrderHandler
     {
     }
 }

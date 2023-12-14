@@ -42,7 +42,7 @@ namespace Application.Handlers.Logic
                 await _userHandler.AddIdClaimAsync(user.Email);
 
                 // add claim Customer or Seller
-                if (!registerDto.isCustomer) await _userHandler.AddCustomerIdClaimAsync(user.Email);
+                if (registerDto.isCustomer) await _userHandler.AddCustomerIdClaimAsync(user.Email);
                 else await _userHandler.AddSellerIdClaimAsync(user.Email);
 
                 var userDto = await _userHandler.CreateUserDto(user);

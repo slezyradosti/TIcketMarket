@@ -5,6 +5,6 @@ namespace Application.Handlers.Tables.Event
 {
     public interface IEventHandler
     {
-        public Task<Result<List<EventDto>>> GetListAsync();
+        public Task<Result<List<EventDto>>> GetSellerListAsync();
     }
 }

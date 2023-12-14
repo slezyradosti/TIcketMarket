@@ -19,9 +19,11 @@ namespace Application.Handlers.Tables.Event
             _userAccessor = userAccessor;
         }
 
-        public async Task<Result<List<EventDto>>> GetListAsync()
+        public async Task<Result<List<EventDto>>> GetSellerListAsync()
         {
-            var events = await _eventRepository.GetAllAsync();
+            var userId = _userAccessor.GetUserId();
+
+            var events = await _eventRepository.GetSellerEventsSorted(userId);
 
             List<EventDto> eventDtos = new List<EventDto>();
 

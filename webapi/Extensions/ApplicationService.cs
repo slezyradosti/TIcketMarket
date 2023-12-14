@@ -5,6 +5,15 @@ using Microsoft.OpenApi.Models;
 using Domain.Repositories.Repos.Interfaces.Catalogues;
 using Domain.Repositories.Repos.Catalogues;
 using Domain.Repositories.Repos.Tables;
+using Application.Handlers.Tables.Event;
+using Application.Handlers.Tables.Order;
+using Application.Handlers.Tables.TableEvent;
+using Application.Handlers.Tables.Ticket;
+using Application.Handlers.Tables.TicketOrder;
+using Application.Handlers.Catalogues.EventCategory;
+using Application.Handlers.Catalogues.EventTable;
+using Application.Handlers.Catalogues.EventType;
+using Application.Handlers.Catalogues.TicketType;
 
 namespace webapi.Extensions
 {
@@ -37,6 +46,13 @@ namespace webapi.Extensions
             //services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(List.Handler).Assembly));
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
+            services.AddHttpContextAccessor();
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            //services.AddScoped<IPhotoAccessor, PhotoAccessor>();
+            //services.AddScoped<IPhotoRepository, PhotoRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            //services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
+
             services.AddScoped<IEventCategoryRepository, EventCategoryRepository>();
             services.AddScoped<IEventTableRepository, EventTableRepository>();
             services.AddScoped<IEventTypeRepository, EventTypeRepository>();
@@ -46,14 +62,18 @@ namespace webapi.Extensions
             services.AddScoped<ITableEventRepository, TableEventRepository>();
             services.AddScoped<ITicketOrderRepository, TicketOrderRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();     
 
-            services.AddHttpContextAccessor();
-            services.AddScoped<IUserAccessor, UserAccessor>();
-            //services.AddScoped<IPhotoAccessor, PhotoAccessor>();
-            //services.AddScoped<IPhotoRepository, PhotoRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            //services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
+            services.AddScoped<IEventCategoryHandler, EventCategoryHandler>();
+            services.AddScoped<IEventTableHandler, EventTableHandler>();
+            services.AddScoped<IEventTypeHandler, EventTypeHandler>();
+            services.AddScoped<ITicketTypeHandler, TicketTypeHandler>();
+
+            services.AddScoped<IEventHandler, Application.Handlers.Tables.Event.EventHandler>();
+            services.AddScoped<IOrderHandler, OrderHandler>();
+            services.AddScoped<ITableEventHandler, TableEventHandler>();
+            services.AddScoped<ITicketHandler, TicketHandler>();
+            services.AddScoped<ITicketOrderHandler, TicketOrderHandler>();
 
             return services;
         }

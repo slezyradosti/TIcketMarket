@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Handlers.Catalogues.TicketType
+﻿namespace Application.Handlers.Catalogues.TicketType
 {
-    internal interface ITicketTypeHandler
+    public interface ITicketTypeHandler
     {
     }
 }

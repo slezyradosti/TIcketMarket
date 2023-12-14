@@ -1,6 +1,6 @@
 ﻿namespace Application.Handlers.Tables.Ticket
 {
-    public class TicketHandler
+    public class TicketHandler : ITicketHandler
     {
     }
 }
