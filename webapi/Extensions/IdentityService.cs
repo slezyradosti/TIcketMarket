@@ -37,6 +37,7 @@ namespace webapi.Extensions
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("SellersOnly", policy => policy.RequireClaim("SellerId"));
+                options.AddPolicy("ModeratorsOnly", policy => policy.RequireClaim("ModeratorId"));
             });
 
             services.AddScoped<TokenService>();

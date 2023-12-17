@@ -1,8 +1,13 @@
 ﻿using Application.Core;
-using Application.DTOs;
+using Application.DTOs.Tables;
 using Application.DTOs.Users.HTTP;
 using AutoMapper;
+using Azure.Core;
+using Domain.Models.Tables;
 using Domain.Repositories.Repos.Interfaces.Tables;
+using MediatR;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Application.Handlers.Tables.Event
 {
@@ -19,7 +24,7 @@ namespace Application.Handlers.Tables.Event
             _userAccessor = userAccessor;
         }
 
-        public async Task<Result<List<EventDto>>> GetSellerListAsync()
+        public async Task<Result<List<EventDto>>> GetSellersEventListAsync()
         {
             var userId = _userAccessor.GetUserId();
 
@@ -30,6 +35,81 @@ namespace Application.Handlers.Tables.Event
             _mapper.Map(events, eventDtos);
 
             return Result<List<EventDto>>.Success(eventDtos);
+        }
+
+        public async Task<Result<EventDto>> GetSellersEventAsync(Guid eventId)
+        {
+
+            if (!await _eventRepository.HasUserAccessToTheEvent(eventId,
+                    _userAccessor.GetUserId()))
+            {
+                return Result<EventDto>.Failure("You have no access to this data");
+            }
+
+            var evnt = await _eventRepository.GetOneDetailedAsync(eventId);
+
+            EventDto eventDto = new EventDto();
+
+            _mapper.Map(evnt, eventDto);
+
+            return Result<EventDto>.Success(eventDto);
+        }
+
+        public async Task<Result<string>> CreateSellersOneAsync(EventDto eventDto)
+        {
+            eventDto.UserId = _userAccessor.GetUserId();
+
+            eventDto.FreePlaces = eventDto.FreePlaces == null ? eventDto.TotalPlaces : eventDto.FreePlaces; // free places = total spaces by default;
+
+            var evnt = new Domain.Models.Tables.Event();
+            _mapper.Map(eventDto, evnt);
+
+            var result = await _eventRepository.AddAsync(evnt) > 0;
+
+            if (!result) return Result<string>.Failure("Failed to create Event");
+
+            return Result<string>.Success("Successfully");
+        }
+
+        public async Task<Result<string>> EditSellersOneAsync(EventDto eventDto)
+        {
+            var evnt = await _eventRepository.GetOneAsync(eventDto.Id);
+
+            if (evnt == null) return null;
+
+            var userId = _userAccessor.GetUserId();
+
+            if (!await _eventRepository.HasUserAccessToTheEvent(eventDto.Id.Value, userId))
+            {
+                return Result<string>.Failure("You have no access to this data");
+            }
+
+            eventDto.UserId ??= userId;
+            _mapper.Map(eventDto, evnt);
+
+            var result = await _eventRepository.SaveAsync(evnt) > 0;
+
+            if (!result) return Result<string>.Failure("Failed to update Event");
+
+            return Result<string>.Success("Successfully");
+        }
+
+        public async Task<Result<string>> DeleteSellersOneAsync(Guid eventId)
+        {
+            var evnt = await _eventRepository.GetOneAsync(eventId);
+
+            if (evnt == null) return null;
+
+            if (!await _eventRepository.HasUserAccessToTheEvent(eventId, _userAccessor.GetUserId()))
+            {
+                return Result<string>.Failure("You have no access to this data");
+            }
+
+            var result = await _eventRepository.RemoveAsync(evnt) > 0;
+
+            if (!result) return Result<string>.Failure("Failed to delete Event");
+
+            return Result<string>.Success("Successfully");
         }
     }
 }
