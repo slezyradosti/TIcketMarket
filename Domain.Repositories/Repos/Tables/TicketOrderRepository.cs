@@ -23,5 +23,19 @@ namespace Domain.Repositories.Repos.Tables
 
             return ticketOrderUserId == userId;
         }
+
+        public async Task<TicketOrder> GetCustomersTicketOrderDetailedAsync1(Guid ticketId)
+            => await Context.TicketOrder
+            .Where(to => to.TicketId == ticketId)
+            .Include(to => to.Order)
+            .Include(to => to.Ticket)
+            .FirstOrDefaultAsync();
+
+        public async Task<TicketOrder> GetCustomersTicketOrderDetailedAsync2(Guid orderId)
+           => await Context.TicketOrder
+           .Where(to => to.OrderId == orderId)
+           .Include(to => to.Order)
+           .Include(to => to.Ticket)
+           .FirstOrDefaultAsync();
     }
 }

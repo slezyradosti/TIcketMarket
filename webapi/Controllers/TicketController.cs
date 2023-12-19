@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Tables;
 using Application.Handlers.Tables.Ticket;
+using Application.Handlers.Tables.TicketOrder;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace webapi.Controllers
     public class TicketController : BaseApiController
     {
         private readonly ITicketHandler _ticketHandler;
+        private readonly ITicketOrderHandler _ticketOrderHandler;
 
-        public TicketController(ITicketHandler ticketHandler)
+        public TicketController(ITicketHandler ticketHandler, ITicketOrderHandler ticketOrderHandler)
         {
             _ticketHandler = ticketHandler;
+            _ticketOrderHandler = ticketOrderHandler;
         }
 
         [HttpGet]
@@ -20,7 +23,7 @@ namespace webapi.Controllers
         [Authorize(Policy = "CustomersOnly")]
         public async Task<IActionResult> GetCustomersTicketList()//[FromQuery] RequestDto request)
         {
-            return HandleResult(await _ticketHandler.GetCustomersTicketListAsync());
+            return HandleResult(await _ticketOrderHandler.GetCustomersTicketListAsync());
         }
 
         [HttpGet("{id}")]
