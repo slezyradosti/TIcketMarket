@@ -28,7 +28,7 @@ namespace Application.Handlers.Tables.Event
         {
             var userId = _userAccessor.GetUserId();
 
-            var events = await _eventRepository.GetSellerEventsSorted(userId);
+            var events = await _eventRepository.GetSellersEventListSortedAsync(userId);
 
             List<EventDto> eventDtos = new List<EventDto>();
 
@@ -40,7 +40,7 @@ namespace Application.Handlers.Tables.Event
         public async Task<Result<EventDto>> GetSellersEventAsync(Guid eventId)
         {
 
-            if (!await _eventRepository.HasUserAccessToTheEvent(eventId,
+            if (!await _eventRepository.HasUserAccessToTheEventAsync(eventId,
                     _userAccessor.GetUserId()))
             {
                 return Result<EventDto>.Failure("You have no access to this data");
@@ -79,7 +79,7 @@ namespace Application.Handlers.Tables.Event
 
             var userId = _userAccessor.GetUserId();
 
-            if (!await _eventRepository.HasUserAccessToTheEvent(eventDto.Id.Value, userId))
+            if (!await _eventRepository.HasUserAccessToTheEventAsync(eventDto.Id.Value, userId))
             {
                 return Result<string>.Failure("You have no access to this data");
             }
@@ -100,7 +100,7 @@ namespace Application.Handlers.Tables.Event
 
             if (evnt == null) return null;
 
-            if (!await _eventRepository.HasUserAccessToTheEvent(eventId, _userAccessor.GetUserId()))
+            if (!await _eventRepository.HasUserAccessToTheEventAsync(eventId, _userAccessor.GetUserId()))
             {
                 return Result<string>.Failure("You have no access to this data");
             }

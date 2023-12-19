@@ -32,6 +32,32 @@ namespace Application.Core
                 .ForMember(x => x.Tickets, y => y.Ignore())
                 .ForMember(x => x.CreatedAt, y => y.Ignore())
                 .ForMember(x => x.UpdatedAt, y => y.Ignore());
+
+            CreateMap<EventTable, EventTableDto>();
+            CreateMap<EventTableDto, EventTable>()
+                .ForMember(x => x.TableEvents, y => y.Ignore())
+                .ForMember(x => x.CreatedAt, y => y.Ignore())
+                .ForMember(x => x.UpdatedAt, y => y.Ignore());
+
+            CreateMap<Order, OrderDto>();
+            CreateMap<OrderDto, Order>()
+                .ForMember(x => x.TicketOrders, y => y.Ignore())
+                .ForMember(x => x.CreatedAt, y => y.Ignore())
+                .ForMember(x => x.UpdatedAt, y => y.Ignore());
+
+            CreateMap<Ticket, TicketDto>();
+            CreateMap<TicketDto, Ticket>()
+                .ForMember(x => x.TicketOrders, y => y.Ignore())
+                .ForMember(x => x.Number, y => y.Ignore()) // ???
+                .ForMember(x => x.CreatedAt, y => y.Ignore())
+                .ForMember(x => x.UpdatedAt, y => y.Ignore());
+
+            CreateMap<TicketOrder, TicketOrderDto>();
+            CreateMap<TicketOrderDto, TicketOrder>()
+                .ForMember(x => x.Order, y => y.Ignore())
+                .ForMember(x => x.Ticket, y => y.Ignore())
+                .ForMember(x => x.CreatedAt, y => y.Ignore())
+                .ForMember(x => x.UpdatedAt, y => y.Ignore());
         }
     }
 }

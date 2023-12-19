@@ -6,7 +6,7 @@ namespace Domain.Repositories.Repos.Tables
 {
     public class EventRepository : BaseRepository<Event>, IEventRepository
     {
-        public async Task<List<Event>> GetSellerEventsSorted(Guid userId)
+        public async Task<List<Event>> GetSellersEventListSortedAsync(Guid userId)
             => await Context.Event
             .Where(e => e.UserId == userId)
             .Include(e => e.Type)
@@ -14,7 +14,7 @@ namespace Domain.Repositories.Repos.Tables
             .OrderByDescending(e => e.CreatedAt)
             .ToListAsync();
 
-        public async Task<bool> HasUserAccessToTheEvent(Guid eventId, Guid userId)
+        public async Task<bool> HasUserAccessToTheEventAsync(Guid eventId, Guid userId)
         {
             var eventUserId = await Context.Event
                 .Where(e => e.Id == eventId)

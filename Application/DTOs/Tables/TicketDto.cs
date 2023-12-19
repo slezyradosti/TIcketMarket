@@ -1,14 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Application.DTOs.Tables
+﻿namespace Application.DTOs.Tables
 {
     public class TicketDto
     {
         public Guid? Id { get; set; }
-
-        [Range(0, (double)decimal.MaxValue)]
-        public decimal? TicketPrice { get; set; } // will count from EventTicketPrice: price - discount
-
-        // ticket typeId
+        public int? Number { get; set; }
+        public Guid TypeId { get; set; }
+        public Guid EventId { get; set; }
     }
 }

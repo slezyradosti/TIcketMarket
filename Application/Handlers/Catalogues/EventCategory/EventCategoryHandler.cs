@@ -60,7 +60,7 @@ namespace Application.Handlers.Catalogues.EventCategory
 
             var result = await _eventCategoryRepository.SaveAsync(eventCategory) > 0;
 
-            if (!result) return Result<string>.Failure("Faild to edit unit");
+            if (!result) return Result<string>.Failure("Faild to edit Event Category");
 
             return Result<string>.Success("Successfully");
         }
@@ -73,7 +73,7 @@ namespace Application.Handlers.Catalogues.EventCategory
 
             var result = await _eventCategoryRepository.RemoveAsync(eventCategory) > 0;
 
-            if (!result) return Result<string>.Failure("Faild to edit unit");
+            if (!result) return Result<string>.Failure("Faild to edit Event Category");
 
             return Result<string>.Success("Successfully");
         }

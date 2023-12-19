@@ -5,5 +5,6 @@ namespace Domain.Repositories.Repos.Tables
 {
     public class TicketRepository : BaseRepository<Ticket>, ITicketRepository
     {
+        
     }
 }
