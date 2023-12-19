@@ -11,7 +11,7 @@ namespace Domain.Repositories.Repos.Tables
             .Where(e => e.UserId == userId)
             .Include(e => e.Type)
             .Include(e => e.Category)
-            .OrderByDescending(e => e.CreatedAt)
+            .OrderBy(e => e.CreatedAt)
             .ToListAsync();
 
         public async Task<bool> HasUserAccessToTheEventAsync(Guid eventId, Guid userId)

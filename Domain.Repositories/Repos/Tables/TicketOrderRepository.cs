@@ -11,7 +11,7 @@ namespace Domain.Repositories.Repos.Tables
             .Where(to => to.Order.UserId  == userId)
             .Include(to => to.Ticket)
             .Include(to => to.Order)
-            .OrderByDescending(to => to.CreatedAt)
+            .OrderBy(to => to.CreatedAt)
             .ToListAsync();
 
         public async Task<bool> HasUserAccessToTheTicketOrderAsync(Guid ticketId, Guid userId)

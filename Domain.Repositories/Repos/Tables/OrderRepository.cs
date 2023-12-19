@@ -9,7 +9,7 @@ namespace Domain.Repositories.Repos.Tables
         public async Task<List<Order>> GetCustomersListSortedAsync(Guid userId)
             => await Context.Order
             .Where(o => o.UserId == userId)
-            .OrderByDescending(x => x.CreatedAt)
+            .OrderBy(x => x.CreatedAt)
             .ToListAsync();
 
         public async Task<bool> HasUserAccessToTheOrderAsync(Guid orderId, Guid userId)
