@@ -1,5 +1,4 @@
 ﻿using Domain.Models.Base;
-using Domain.Models.Catalogues;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 

@@ -1,8 +1,6 @@
 ﻿using Application.Core;
 using Application.DTOs.Catalogues;
 using AutoMapper;
-using Domain.Models.Catalogues;
-using Domain.Repositories.Repos.Catalogues;
 using Domain.Repositories.Repos.Interfaces.Catalogues;
 
 namespace Application.Handlers.Catalogues.TicketType

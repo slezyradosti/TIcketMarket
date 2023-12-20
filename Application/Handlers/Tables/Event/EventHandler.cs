@@ -2,12 +2,7 @@
 using Application.DTOs.Tables;
 using Application.DTOs.Users.HTTP;
 using AutoMapper;
-using Azure.Core;
-using Domain.Models.Tables;
 using Domain.Repositories.Repos.Interfaces.Tables;
-using MediatR;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Application.Handlers.Tables.Event
 {
@@ -59,8 +54,10 @@ namespace Application.Handlers.Tables.Event
         {
             eventDto.UserId = _userAccessor.GetUserId();
 
-            eventDto.FreePlaces = eventDto.FreePlaces == null ? eventDto.TotalPlaces : eventDto.FreePlaces; // free places = total spaces by default;
-
+            //eventDto.FreePlaces = eventDto.FreePlaces == null ? eventDto.TotalPlaces : eventDto.FreePlaces; 
+            // free places = total spaces by default;
+            eventDto.FreePlaces ??= eventDto.TotalPlaces;
+            
             var evnt = new Domain.Models.Tables.Event();
             _mapper.Map(eventDto, evnt);
 

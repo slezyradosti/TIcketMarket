@@ -1,5 +1,4 @@
-﻿using Domain.Models.Tables;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Tables
 {

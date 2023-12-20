@@ -1,5 +1,4 @@
-﻿using Domain.Models.Catalogues;
-using Domain.Models.Tables;
+﻿using Domain.Models.Tables;
 
 namespace Domain.Repositories.Repos.Interfaces.Tables
 {
