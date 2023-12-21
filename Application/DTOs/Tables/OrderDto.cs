@@ -1,8 +1,7 @@
 ﻿namespace Application.DTOs.Tables
 {
-    public class OrderDto
+    public class OrderDto : BaseDto
     {
-        public Guid? Id { get; set; }
         public Guid UserId { get; set; }
     }
 }

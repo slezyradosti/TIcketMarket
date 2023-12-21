@@ -2,10 +2,8 @@
 
 namespace Application.DTOs.Tables
 {
-    public class EventDto
+    public class EventDto: BaseDto
     {
-        public Guid? Id { get; set; }
-
         [StringLength(75)]
         public string Title { get; set; }
         public Guid CategoryId { get; set; } // *
@@ -16,12 +14,5 @@ namespace Application.DTOs.Tables
         public Guid TypeId { get; set; } // * offline, online...
         public string Moderator { get; set; }
         public int TotalPlaces { get; set; }
-        public int? FreePlaces { get; set; } // when creating set this value equal to TotalPlaces (!! only if the value is null)
-
-        [Range(0, double.MaxValue)]
-        public double TicketPrice { get; set; }
-
-        [Range(0, 100)]
-        public int TicketDiscountPercentage { get; set; }
     }
 }

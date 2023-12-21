@@ -2,9 +2,8 @@
 
 namespace Application.DTOs.Tables
 {
-    public class TicketOrderDto
+    public class TicketOrderDto : BaseDto
     {
-        public Guid? Id { get; set; }
         public Order? Order { get; set; }
         public Guid? OrderId { get; set; }
 

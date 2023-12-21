@@ -1,8 +1,12 @@
-﻿namespace Application.DTOs.Catalogues
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Application.DTOs.Catalogues
 {
-    public class TicketTypeDto
+    public class TicketTypeDto : BaseDto
     {
-        public Guid? Id { get; set; }
         public string Type { get; set; }
+        
+        [Range(0, double.MaxValue)]
+        public double Price { get; set; }
     }
 }

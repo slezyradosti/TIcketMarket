@@ -53,10 +53,9 @@ namespace Application.Handlers.Tables.Event
         public async Task<Result<string>> CreateSellersOneAsync(EventDto eventDto)
         {
             eventDto.UserId = _userAccessor.GetUserId();
-
-            //eventDto.FreePlaces = eventDto.FreePlaces == null ? eventDto.TotalPlaces : eventDto.FreePlaces; 
+            
             // free places = total spaces by default;
-            eventDto.FreePlaces ??= eventDto.TotalPlaces;
+            //eventDto.FreePlaces ??= eventDto.TotalPlaces;
             
             var evnt = new Domain.Models.Tables.Event();
             _mapper.Map(eventDto, evnt);

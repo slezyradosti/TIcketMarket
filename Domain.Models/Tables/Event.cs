@@ -32,14 +32,6 @@ namespace Domain.Models.Tables
         //public Guid? ModeratorId { get; set; } // * 
         public string Moderator { get; set; }
         public int TotalPlaces { get; set; }
-        public int? FreePlaces { get; set; } // when creating set this value equal to TotalPlaces (!! only if the value is null)
-
-        [Range(0, double.MaxValue)]
-        public double TicketPrice { get; set; }
-
-        [Range(0, 100)]
-        public int TicketDiscountPercentage { get; set; }
-
         public ICollection<TableEvent> TableEvents { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
     }

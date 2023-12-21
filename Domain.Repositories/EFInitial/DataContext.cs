@@ -58,7 +58,12 @@ namespace Domain.Repositories.EFInitial
                 .WithOne(t => t.Type)
                 .HasForeignKey(t => t.TypeId)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            
+            modelBuilder.Entity<TicketDiscount>()
+                .HasMany(td => td.Tickets)
+                .WithOne(t => t.Discount)
+                .HasForeignKey(t => t.DiscountId).IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Event>()
                 .HasOne(e => e.User)

@@ -1,8 +1,7 @@
 ﻿namespace Application.DTOs.Catalogues
 {
-    public class EventTypeDto
+    public class EventTypeDto: BaseDto
     {
-        public Guid? Id { get; set; }
         public string Type { get; set; }
     }
 }
