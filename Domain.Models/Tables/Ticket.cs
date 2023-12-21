@@ -24,7 +24,7 @@ namespace Domain.Models.Tables
         [ForeignKey(nameof(DiscountId))]
         public TicketDiscount? Discount { get; set; }
         public Guid? DiscountId { get; set; }
-
+        
         public bool isPurchased { get; set; } = false;
 
         public ICollection<TicketOrder> TicketOrders { get; set; }

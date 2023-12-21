@@ -86,7 +86,7 @@ namespace Application.Handlers.Tables.Order
         //    return Result<string>.Success("Successfully");
         //}
 
-        public async Task<Result<string>> DeleteSellersOneAsync(Guid eventId)
+        public async Task<Result<string>> DeleteCustomersOneAsync(Guid eventId)
         {
             var order = await _orderRepository.GetOneAsync(eventId);
 

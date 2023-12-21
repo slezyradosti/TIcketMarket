@@ -8,6 +8,6 @@ namespace Application.Handlers.Tables.Order
         public Task<Result<List<OrderDto>>> GetCustomersOrderListAsync();
         public Task<Result<OrderDto>> GetCustomersOrderAsync(Guid eventId);
         public Task<Result<string>> CreateCustomersOneAsync(OrderDto OrderDto);
-        public Task<Result<string>> DeleteSellersOneAsync(Guid eventId);
+        public Task<Result<string>> DeleteCustomersOneAsync(Guid eventId);
     }
 }

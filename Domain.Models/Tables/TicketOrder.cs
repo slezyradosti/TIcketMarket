@@ -8,12 +8,12 @@ namespace Domain.Models.Tables
     {
         [JsonIgnore]
         [ForeignKey(nameof(OrderId))]
-        public Order Order { get; set; }
-        public Guid OrderId { get; set; }
+        public Order? Order { get; set; }
+        public Guid? OrderId { get; set; }
 
         [JsonIgnore]
         [ForeignKey(nameof(TicketId))]
-        public Ticket Ticket { get; set; }
-        public Guid TicketId { get; set; }
+        public Ticket? Ticket { get; set; }
+        public Guid? TicketId { get; set; }
     }
 }
