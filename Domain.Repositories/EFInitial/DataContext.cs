@@ -89,18 +89,6 @@ namespace Domain.Repositories.EFInitial
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            // modelBuilder.Entity<Order>()
-            //     .HasMany(o => o.TicketOrders)
-            //     .WithOne(t => t.Order)
-            //     .HasForeignKey(t => t.OrderId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-            //
-            // modelBuilder.Entity<Ticket>()
-            //     .HasMany(t => t.TicketOrders)
-            //     .WithOne(to => to.Ticket)
-            //     .HasForeignKey(to => to.TicketId)
-            //     .OnDelete(DeleteBehavior.Cascade);
             
             modelBuilder.Entity<TicketOrder>()
                 .HasOne(to => to.Ticket)

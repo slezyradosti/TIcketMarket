@@ -13,6 +13,7 @@ using Application.Handlers.Tables.TicketOrder;
 using Application.Handlers.Catalogues.EventCategory;
 using Application.Handlers.Catalogues.EventTable;
 using Application.Handlers.Catalogues.EventType;
+using Application.Handlers.Catalogues.TicketDiscount;
 using Application.Handlers.Catalogues.TicketType;
 
 namespace webapi.Extensions
@@ -57,17 +58,19 @@ namespace webapi.Extensions
             services.AddScoped<IEventTableRepository, EventTableRepository>();
             services.AddScoped<IEventTypeRepository, EventTypeRepository>();
             services.AddScoped<ITicketTypeRepository, TicketTypeRepository>();
+            services.AddScoped<ITicketDiscountRepository, TicketDiscountRepository>();
+            
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<ITableEventRepository, TableEventRepository>();
             services.AddScoped<ITicketOrderRepository, TicketOrderRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();     
 
             services.AddScoped<IEventCategoryHandler, EventCategoryHandler>();
             services.AddScoped<IEventTableHandler, EventTableHandler>();
             services.AddScoped<IEventTypeHandler, EventTypeHandler>();
             services.AddScoped<ITicketTypeHandler, TicketTypeHandler>();
+            services.AddScoped<ITicketDiscountHandler, TicketDiscountHandler>();
 
             services.AddScoped<IEventHandler, Application.Handlers.Tables.Event.EventHandler>();
             services.AddScoped<IOrderHandler, OrderHandler>();

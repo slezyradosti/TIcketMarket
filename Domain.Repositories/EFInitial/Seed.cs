@@ -59,6 +59,10 @@ public static class Seed
                     await userManager.AddClaimAsync(tempUser, new Claim("CustomerId", user.Id.ToString().ToUpper()));
             }
         }
+        else
+        {
+            applicationUsers = context.Users.ToList();
+        }
 
         if (!context.EventCategory.Any())
         {
@@ -122,6 +126,10 @@ public static class Seed
 
             await context.EventTable.AddRangeAsync(eventTables);
         }
+        else
+        {
+            eventTables = context.EventTable.ToList();
+        }
 
         if (!context.EventType.Any())
         {
@@ -143,6 +151,10 @@ public static class Seed
                 }
             ];
             await context.EventType.AddRangeAsync(eventTypes);
+        }
+        else
+        {
+            eventTypes = context.EventType.ToList();
         }
 
         if (!context.TicketDiscount.Any())
@@ -172,6 +184,10 @@ public static class Seed
 
             await context.TicketDiscount.AddRangeAsync(ticketDiscounts);
         }
+        else
+        {
+            ticketDiscounts = context.TicketDiscount.ToList();
+        }
 
         if (!context.TicketType.Any())
         {
@@ -196,6 +212,10 @@ public static class Seed
                 }
             ];
             await context.TicketType.AddRangeAsync(ticketTypes);
+        }
+        else
+        {
+            ticketTypes = context.TicketType.ToList();
         }
 
         if (!context.Event.Any())
@@ -256,6 +276,10 @@ public static class Seed
             ];
             await context.Event.AddRangeAsync(events);
         }
+        else
+        {
+            events = context.Event.ToList();
+        }
 
         if (!context.Order.Any())
         {
@@ -282,6 +306,10 @@ public static class Seed
                 }
             ];
             await context.Order.AddRangeAsync(orders);
+        }
+        else
+        {
+            orders = context.Order.ToList();
         }
 
         if (!context.Ticket.Any())
@@ -332,6 +360,10 @@ public static class Seed
             ];
             await context.Ticket.AddRangeAsync(tickets);
         }
+        else
+        {
+            tickets = context.Ticket.ToList();
+        }
 
 
         if (!context.TableEvent.Any())
@@ -358,6 +390,10 @@ public static class Seed
             ];
             await context.TableEvent.AddRangeAsync(tableEvents);
         }
+        else
+        {
+            tableEvents = context.TableEvent.ToList();
+        }
 
         if (!context.TicketOrder.Any())
         {
@@ -382,6 +418,10 @@ public static class Seed
                 }
             ];
             await context.TicketOrder.AddRangeAsync(ticketOrders);
+        }
+        else
+        {
+            ticketOrders = context.TicketOrder.ToList();
         }
 
         await context.SaveChangesAsync();
