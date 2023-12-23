@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using Domain.Models.Catalogues;
 
 namespace Domain.Models.Tables
 {
@@ -17,5 +18,6 @@ namespace Domain.Models.Tables
 
         public ICollection<Order> Orders { get; set; }
         public ICollection<Event> Events { get; set; }
+        public ICollection<TicketDiscount> TicketDiscounts { get; set; }
     }
 }

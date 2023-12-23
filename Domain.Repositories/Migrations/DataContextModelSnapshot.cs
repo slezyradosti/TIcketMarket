@@ -103,6 +103,10 @@ namespace Domain.Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
@@ -114,7 +118,15 @@ namespace Domain.Repositories.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool?>("isActivated")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("TicketDiscount");
                 });
@@ -542,6 +554,17 @@ namespace Domain.Repositories.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Models.Catalogues.TicketDiscount", b =>
+                {
+                    b.HasOne("Domain.Models.Tables.ApplicationUser", "User")
+                        .WithMany("TicketDiscounts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Models.Tables.Event", b =>
                 {
                     b.HasOne("Domain.Models.Catalogues.EventCategory", "Category")
@@ -722,6 +745,8 @@ namespace Domain.Repositories.Migrations
                     b.Navigation("Events");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("TicketDiscounts");
                 });
 
             modelBuilder.Entity("Domain.Models.Tables.Event", b =>

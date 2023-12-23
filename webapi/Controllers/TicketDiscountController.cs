@@ -23,12 +23,12 @@ public class TicketDiscountController : BaseApiController
         return HandleResult(await _ticketDiscountHandler.GetCustomersTicketDiscountListAsync());
     }
 
-    // [HttpGet("{id}")]
-    // [Authorize(Policy = "SellersOnly")]
-    // public async Task<IActionResult> GetCustomersOne(Guid id)
-    // {
-    //     return HandleResult(await _ticketHandler.GetCustomersTicketAsync(id));
-    // }
+    [HttpGet("{id}")]
+    [Authorize(Policy = "SellersOnly")]
+    public async Task<IActionResult> GetSellersOne(Guid id)
+    {
+        return HandleResult(await _ticketDiscountHandler.GetCustomersDiscountAsync(id));
+    }
 
     [HttpPost]
     [Authorize(Policy = "SellersOnly")]
@@ -37,17 +37,18 @@ public class TicketDiscountController : BaseApiController
         return HandleResult(await _ticketDiscountHandler.CreateSellersOneAsync(ticketDiscountDto));
     }
 
-    //[HttpPut("{id}")]
-    //public async Task<IActionResult> EditEvent(Guid id, TicketDto ticketDto)
-    //{
-    //    ticketDto.Id = id;
-    //    return HandleResult(await _eventHandler.EditSellersOneAsync(ticketDto));
-    //}
+    [HttpPut("{id}")]
+    [Authorize(Policy = "SellersOnly")]
+    public async Task<IActionResult> EditEvent(Guid id, TicketDiscountDto ticketDiscountDto)
+    {
+        ticketDiscountDto.Id = id;
+        return HandleResult(await _ticketDiscountHandler.EditCustomersOneAsync(ticketDiscountDto));
+    }
 
-    // [HttpDelete("{id}")]
-    // [Authorize(Policy = "ModeratorsOnly")]
-    // public async Task<IActionResult> DeleteEvent(Guid id)
-    // {
-    //     return HandleResult(await _ticketHandler.DeleteCustomersOneAsync(id));
-    // }
+    [HttpDelete("{id}")]
+    [Authorize(Policy = "SellersOnly")]
+    public async Task<IActionResult> DeleteEvent(Guid id)
+    {
+        return HandleResult(await _ticketDiscountHandler.DeleteCustomersOneAsync(id));
+    }
 }

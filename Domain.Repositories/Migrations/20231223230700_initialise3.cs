@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Domain.Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class SecondInitialization : Migration
+    public partial class initialise3 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -96,20 +96,6 @@ namespace Domain.Repositories.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EventType", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TicketDiscount",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DiscountPercentage = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TicketDiscount", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -247,6 +233,29 @@ namespace Domain.Repositories.Migrations
                     table.PrimaryKey("PK_Order", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Order_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TicketDiscount",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DiscountPercentage = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isActivated = table.Column<bool>(type: "bit", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TicketDiscount", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TicketDiscount_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -467,6 +476,11 @@ namespace Domain.Repositories.Migrations
                 column: "TypeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TicketDiscount_UserId",
+                table: "TicketDiscount",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TicketOrder_OrderId",
                 table: "TicketOrder",
                 column: "OrderId");
@@ -523,13 +537,13 @@ namespace Domain.Repositories.Migrations
                 name: "TicketType");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "EventCategory");
 
             migrationBuilder.DropTable(
                 name: "EventType");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

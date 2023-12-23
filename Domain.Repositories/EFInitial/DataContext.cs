@@ -101,6 +101,12 @@ namespace Domain.Repositories.EFInitial
                 .WithMany(o => o.TicketOrders)
                 .HasForeignKey(to => to.OrderId).IsRequired(false)
                 .OnDelete(DeleteBehavior.Cascade);
+            
+            modelBuilder.Entity<TicketDiscount>()
+                .HasOne(td => td.User)
+                .WithMany(u => u.TicketDiscounts)
+                .HasForeignKey(td => td.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }
