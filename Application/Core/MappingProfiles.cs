@@ -65,6 +65,12 @@ namespace Application.Core
                 .ForMember(x => x.Table, y => y.Ignore())
                 .ForMember(x => x.CreatedAt, y => y.Ignore())
                 .ForMember(x => x.UpdatedAt, y => y.Ignore());
+            
+            CreateMap<TicketDiscount, TicketDiscountDto>();
+            CreateMap<TicketDiscountDto, TicketDiscount>()
+                .ForMember(x => x.Tickets, y => y.Ignore())
+                .ForMember(x => x.CreatedAt, y => y.Ignore())
+                .ForMember(x => x.UpdatedAt, y => y.Ignore());
         }
     }
 }

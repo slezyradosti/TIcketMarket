@@ -1,10 +1,9 @@
 ﻿using Domain.Models.Tables;
 
-namespace Domain.Repositories.Repos.Interfaces.Tables
+namespace Domain.Repositories.Repos.Interfaces.Tables;
+
+public interface IUserRepository
 {
-    public interface IUserRepository
-    {
-        Task<int> SaveAsync(ApplicationUser user);
-        public Task<ApplicationUser> GetUser(Guid userId);
-    }
+    Task<int> SaveAsync(ApplicationUser user);
+    public Task<ApplicationUser> GetUser(Guid userId);
 }

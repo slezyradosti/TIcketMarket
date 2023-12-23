@@ -320,42 +320,48 @@ public static class Seed
                 {
                     Number = 0,
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)]
+                    Event = events[rnd.Next(0, events.Count - 1)],
+                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
                 },
 
                 new()
                 {
                     Number = 0,
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)]
+                    Event = events[rnd.Next(0, events.Count - 1)],
+                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
                 },
 
                 new()
                 {
                     Number = 0,
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)]
+                    Event = events[rnd.Next(0, events.Count - 1)],
+                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
                 },
 
                 new()
                 {
                     Number = 0,
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)]
+                    Event = events[rnd.Next(0, events.Count - 1)],
+                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
                 },
 
                 new()
                 {
                     Number = 0,
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)]
+                    Event = events[rnd.Next(0, events.Count - 1)],
+                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
                 },
 
                 new()
                 {
                     Number = 0,
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)]
+                    Event = events[rnd.Next(0, events.Count - 1)],
+                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
                 }
             ];
             await context.Ticket.AddRangeAsync(tickets);

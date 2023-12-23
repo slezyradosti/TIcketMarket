@@ -1,8 +1,7 @@
 ﻿using Domain.Models.Tables;
 
-namespace Domain.Repositories.Repos.Interfaces.Tables
+namespace Domain.Repositories.Repos.Interfaces.Tables;
+
+public interface ITicketRepository : IRepository<Ticket>
 {
-    public interface ITicketRepository : IRepository<Ticket>
-    {
-    }
 }
