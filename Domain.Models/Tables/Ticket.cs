@@ -8,7 +8,7 @@ namespace Domain.Models.Tables
     public class Ticket : BaseModel
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Number { get; set; }
+        public Guid Number { get; set; } = Guid.NewGuid();
 
         [JsonIgnore]
         [ForeignKey(nameof(TypeId))]

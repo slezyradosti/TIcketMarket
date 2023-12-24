@@ -330,7 +330,7 @@ public static class Seed
             [
                 new()
                 {
-                    Number = 0,
+                    Number = Guid.NewGuid(),
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
                     Event = events[rnd.Next(0, events.Count - 1)],
                     Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
@@ -338,7 +338,7 @@ public static class Seed
 
                 new()
                 {
-                    Number = 0,
+                    Number = Guid.NewGuid(),
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
                     Event = events[rnd.Next(0, events.Count - 1)],
                     Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
@@ -346,7 +346,7 @@ public static class Seed
 
                 new()
                 {
-                    Number = 0,
+                    Number = Guid.NewGuid(),
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
                     Event = events[rnd.Next(0, events.Count - 1)],
                     Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
@@ -354,7 +354,7 @@ public static class Seed
 
                 new()
                 {
-                    Number = 0,
+                    Number = Guid.NewGuid(),
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
                     Event = events[rnd.Next(0, events.Count - 1)],
                     Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
@@ -362,7 +362,7 @@ public static class Seed
 
                 new()
                 {
-                    Number = 0,
+                    Number = Guid.NewGuid(),
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
                     Event = events[rnd.Next(0, events.Count - 1)],
                     Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
@@ -370,7 +370,7 @@ public static class Seed
 
                 new()
                 {
-                    Number = 0,
+                    Number = Guid.NewGuid(),
                     Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
                     Event = events[rnd.Next(0, events.Count - 1)],
                     Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]

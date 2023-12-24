@@ -2,6 +2,7 @@
 using Application.DTOs.Tables;
 using Application.DTOs.Users.HTTP;
 using AutoMapper;
+using Domain.Repositories.DTOs;
 using Domain.Repositories.Repos.Interfaces.Tables;
 
 namespace Application.Handlers.Tables.Ticket
@@ -54,6 +55,12 @@ namespace Application.Handlers.Tables.Ticket
 
         public async Task<Result<string>> CreateCustomersOneAsync(TicketDto ticketDto)
         {
+            if (!await _ticketRepository.HasUserAccessToTheEventAsync(ticketDto.EventId,
+                    _userAccessor.GetUserId()))
+            {
+                return Result<string>.Failure("You have no access to this action");
+            }
+            
             var ticket = new Domain.Models.Tables.Ticket();
             _mapper.Map(ticketDto, ticket);
 
@@ -102,6 +109,38 @@ namespace Application.Handlers.Tables.Ticket
             if (!result) return Result<string>.Failure("Failed to delete Ticket");
 
             return Result<string>.Success("Successfully");
+        }
+
+        public async Task<Result<string>> GenerateEventsTicketList(TicketDto ticketDto, int ticketAmount)
+        {
+            if (!await _ticketRepository.HasUserAccessToTheEventAsync(ticketDto.EventId,
+                    _userAccessor.GetUserId()))
+            {
+                return Result<string>.Failure("You have no access to this action");
+            }
+            
+            var tickets = new List<Domain.Models.Tables.Ticket>();
+            var ticketDtos = new List<TicketDto>();
+
+            for (int i = 0; i < ticketAmount; i++)
+            {
+                ticketDtos.Add(ticketDto);
+            }
+            
+            _mapper.Map(ticketDtos, tickets);
+            
+            var result = await _ticketRepository.AddRangeAsync(tickets) > 0;
+
+            if (!result) return Result<string>.Failure("Failed to create Tickets");
+
+            return Result<string>.Success("Successfully");
+        }
+        
+        public async Task<Result<EventTicketsAmountDto>> GetEventTicketsAmountAsync(Guid eventId)
+        {
+            var eventTicketsAmount = await _ticketRepository.GetEventsTicketAmountAsync(eventId);
+
+            return Result<EventTicketsAmountDto>.Success(eventTicketsAmount);
         }
     }
 }

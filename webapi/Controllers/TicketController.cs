@@ -34,7 +34,7 @@ namespace webapi.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Policy = "SellersOnly")] ???
+        [Authorize(Policy = "SellersOnly")] // ???
         public async Task<IActionResult> CreateTicket(TicketDto ticketDto)
         {
             return HandleResult(await _ticketHandler.CreateCustomersOneAsync(ticketDto));
@@ -52,6 +52,21 @@ namespace webapi.Controllers
         public async Task<IActionResult> DeleteEvent(Guid id)
         {
             return HandleResult(await _ticketHandler.DeleteCustomersOneAsync(id));
+        }
+        
+        [HttpPost("[action]")] 
+        [Authorize(Policy = "SellersOnly")]
+        public async Task<IActionResult> GenerateTickets([FromBody] TicketDto ticketDto, 
+            [FromQuery(Name = "ticket-amount")] int ticketAmount)
+        {
+            return HandleResult(await _ticketHandler.GenerateEventsTicketList(ticketDto, ticketAmount));
+        }
+        
+        [HttpGet("[action]/{eventId}")]
+        //[Authorize(Policy = "CustomersOnly")] // ?? anonymous
+        public async Task<IActionResult> EventTicketsAmount(Guid eventId)
+        {
+            return HandleResult(await _ticketHandler.GetEventTicketsAmountAsync(eventId));
         }
     }
 }

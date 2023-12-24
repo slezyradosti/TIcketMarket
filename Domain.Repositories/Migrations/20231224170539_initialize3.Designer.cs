@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231223230700_initialise3")]
-    partial class initialise3
+    [Migration("20231224170539_initialize3")]
+    partial class initialize3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -370,11 +370,9 @@ namespace Domain.Repositories.Migrations
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Number")
+                    b.Property<Guid>("Number")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TypeId")
                         .HasColumnType("uniqueidentifier");

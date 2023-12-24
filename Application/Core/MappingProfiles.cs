@@ -51,6 +51,13 @@ namespace Application.Core
                 .ForMember(x => x.Number, y => y.Ignore()) // ???
                 .ForMember(x => x.CreatedAt, y => y.Ignore())
                 .ForMember(x => x.UpdatedAt, y => y.Ignore());
+            
+            // CreateMap<List<Ticket>, List<TicketDto>>();
+            // CreateMap<List<TicketDto>, List<Ticket>>()
+            //     .ForMember(x => x.TicketOrders, y => y.Ignore())
+            //     .ForMember(x => x.Number, y => y.Ignore()) // ???
+            //     .ForMember(x => x.CreatedAt, y => y.Ignore())
+            //     .ForMember(x => x.UpdatedAt, y => y.Ignore());
 
             CreateMap<TicketOrder, TicketOrderDto>();
             CreateMap<TicketOrderDto, TicketOrder>()

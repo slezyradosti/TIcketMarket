@@ -367,11 +367,9 @@ namespace Domain.Repositories.Migrations
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Number")
+                    b.Property<Guid>("Number")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Number"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("TypeId")
                         .HasColumnType("uniqueidentifier");
