@@ -326,56 +326,19 @@ public static class Seed
 
         if (!context.Ticket.Any())
         {
-            tickets =
-            [
-                new()
+            for (int i = 0; i < 5; i++)
+            {
+                var ticketType = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)];
+                
+                tickets.Add(new()
                 {
                     Number = Guid.NewGuid(),
-                    Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
+                    Type = ticketType,
                     Event = events[rnd.Next(0, events.Count - 1)],
-                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
-                },
-
-                new()
-                {
-                    Number = Guid.NewGuid(),
-                    Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)],
-                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
-                },
-
-                new()
-                {
-                    Number = Guid.NewGuid(),
-                    Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)],
-                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
-                },
-
-                new()
-                {
-                    Number = Guid.NewGuid(),
-                    Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)],
-                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
-                },
-
-                new()
-                {
-                    Number = Guid.NewGuid(),
-                    Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)],
-                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
-                },
-
-                new()
-                {
-                    Number = Guid.NewGuid(),
-                    Type = ticketTypes[rnd.Next(0, ticketTypes.Count - 1)],
-                    Event = events[rnd.Next(0, events.Count - 1)],
-                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)]
-                }
-            ];
+                    Discount = ticketDiscounts[rnd.Next(0, ticketTypes.Count - 1)],
+                    FinalPrice = ticketType.Price
+                });
+            }
             await context.Ticket.AddRangeAsync(tickets);
         }
         else

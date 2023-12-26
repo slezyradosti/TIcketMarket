@@ -1,4 +1,5 @@
 ﻿using Application.Core;
+using Application.DTOs.Requests;
 using Application.DTOs.Tables;
 using Domain.Repositories.DTOs;
 
@@ -13,5 +14,7 @@ namespace Application.Handlers.Tables.Ticket
         public Task<Result<string>> DeleteCustomersOneAsync(Guid ticketId);
         public Task<Result<string>> GenerateEventsTicketList(TicketDto ticketDto, int ticketAmount);
         public Task<Result<EventTicketsAmountDto>> GetEventTicketsAmountAsync(Guid eventId);
+        public Task<Result<string>> ApplyDiscountAsync(ApplyDiscountDto applyDiscountDto);
+        public Task<Result<string>> RemoveDiscountAsync(Guid ticketId);
     }
 }

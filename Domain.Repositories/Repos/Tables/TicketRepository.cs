@@ -29,18 +29,6 @@ public class TicketRepository : BaseRepository<Ticket>, ITicketRepository
 
     public async Task<EventTicketsAmountDto> GetEventsTicketAmountAsync(Guid eventId)
     {
-        // return await (from t in Context.Ticket
-        //         where t.EventId == eventId
-        //         group t by t.Id
-        //         into groupedData
-        //         select new EventTicketsAmountDto
-        //         {
-        //             Total = groupedData.Count(),
-        //             Purchased = groupedData.Where(t => !t.isPurchased).Count(),
-        //             Available = groupedData.Where(t => t.isPurchased).Count()
-        //         })
-        //     .ToListAsync();
-        
         return await (from t in Context.Ticket
                 where t.EventId == eventId
                 group t by t.EventId into groupedData
@@ -54,4 +42,10 @@ public class TicketRepository : BaseRepository<Ticket>, ITicketRepository
             
             .FirstOrDefaultAsync();
     }
+    
+    public async Task<Ticket> GetOneDetailedAsync(Guid ticketId)
+        => await Context.Ticket
+            .Where(t => t.Id == ticketId)
+            .Include(t => t.Type)
+            .FirstOrDefaultAsync();
 }

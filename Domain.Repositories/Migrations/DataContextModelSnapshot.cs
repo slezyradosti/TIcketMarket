@@ -367,6 +367,9 @@ namespace Domain.Repositories.Migrations
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<double>("FinalPrice")
+                        .HasColumnType("float");
+
                     b.Property<Guid>("Number")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");

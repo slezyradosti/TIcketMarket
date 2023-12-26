@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domain.Repositories.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231224170539_initialize3")]
-    partial class initialize3
+    [Migration("20231224222828_initialize4")]
+    partial class initialize4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -369,6 +369,9 @@ namespace Domain.Repositories.Migrations
 
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("FinalPrice")
+                        .HasColumnType("float");
 
                     b.Property<Guid>("Number")
                         .ValueGeneratedOnAdd()

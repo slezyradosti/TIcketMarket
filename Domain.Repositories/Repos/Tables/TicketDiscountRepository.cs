@@ -2,7 +2,7 @@ using Domain.Models.Catalogues;
 using Domain.Repositories.Repos.Interfaces.Catalogues;
 using Microsoft.EntityFrameworkCore;
 
-namespace Domain.Repositories.Repos.Catalogues;
+namespace Domain.Repositories.Repos.Tables;
 
 public class TicketDiscountRepository : BaseRepository<TicketDiscount>, ITicketDiscountRepository
 {
@@ -39,4 +39,14 @@ public class TicketDiscountRepository : BaseRepository<TicketDiscount>, ITicketD
 
         return ticketDiscountUserId == userId;
     }
+    
+    public async Task<TicketDiscount> GetDiscountByCodeAsync(string code)
+        => await Context.TicketDiscount
+            .FirstOrDefaultAsync();
+    
+    public async Task<int> GetDiscountPercentageAsync(Guid discountId)
+        => await Context.TicketDiscount
+            .Where(td => td.Id == discountId)
+            .Select(td => td.DiscountPercentage)
+            .FirstOrDefaultAsync();
 }

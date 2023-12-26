@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Domain.Repositories.Migrations
 {
     /// <inheritdoc />
-    public partial class initialize3 : Migration
+    public partial class initialize4 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -339,6 +339,7 @@ namespace Domain.Repositories.Migrations
                     EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DiscountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     isPurchased = table.Column<bool>(type: "bit", nullable: false),
+                    FinalPrice = table.Column<double>(type: "float", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },

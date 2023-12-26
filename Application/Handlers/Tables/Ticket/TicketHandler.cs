@@ -1,8 +1,12 @@
 ﻿using Application.Core;
+using Application.DTOs.Requests;
 using Application.DTOs.Tables;
 using Application.DTOs.Users.HTTP;
 using AutoMapper;
 using Domain.Repositories.DTOs;
+using Domain.Repositories.Repos.Catalogues;
+using Domain.Repositories.Repos.Interfaces.Catalogues;
+using Domain.Repositories.Repos.Tables;
 using Domain.Repositories.Repos.Interfaces.Tables;
 
 namespace Application.Handlers.Tables.Ticket
@@ -13,14 +17,19 @@ namespace Application.Handlers.Tables.Ticket
         private readonly IMapper _mapper;
         private readonly IUserAccessor _userAccessor;
         private readonly ITicketOrderRepository _ticketOrderRepository;
+        private readonly ITicketDiscountRepository _ticketDiscountRepository;
+        private readonly ITicketTypeRepository _ticketTypeRepository;
 
         public TicketHandler(ITicketRepository ticketRepository, IMapper mapper, IUserAccessor userAccessor,
-            ITicketOrderRepository ticketOrderRepository)
+            ITicketOrderRepository ticketOrderRepository, ITicketDiscountRepository ticketDiscountRepository, 
+            ITicketTypeRepository ticketTypeRepository)
         {
             _ticketRepository = ticketRepository;
             _mapper = mapper;
             _userAccessor = userAccessor;
             _ticketOrderRepository = ticketOrderRepository;
+            _ticketDiscountRepository = ticketDiscountRepository;
+            _ticketTypeRepository = ticketTypeRepository;
         }
 
         //public async Task<Result<List<TicketOrderDto>>> GetCustomersTicketListAsync()
@@ -62,6 +71,8 @@ namespace Application.Handlers.Tables.Ticket
             }
             
             var ticket = new Domain.Models.Tables.Ticket();
+
+            ticketDto.FinalPrice = await _ticketTypeRepository.GetPriceAsync(ticketDto.TypeId);
             _mapper.Map(ticketDto, ticket);
 
             var result = await _ticketRepository.AddAsync(ticket) > 0;
@@ -141,6 +152,60 @@ namespace Application.Handlers.Tables.Ticket
             var eventTicketsAmount = await _ticketRepository.GetEventsTicketAmountAsync(eventId);
 
             return Result<EventTicketsAmountDto>.Success(eventTicketsAmount);
+        }
+        
+        public async Task<Result<string>> ApplyDiscountAsync(ApplyDiscountDto applyDiscountDto)
+        {
+            var ticketDisount = await _ticketDiscountRepository.GetDiscountByCodeAsync(applyDiscountDto.DiscountCode);
+            
+            if (ticketDisount == null) return Result<string>.Failure("Invalid code");
+            
+            var ticket = await _ticketRepository.GetOneDetailedAsync(applyDiscountDto.TicketId);
+
+            if (ticket == null) return Result<string>.Failure("Invalid ticket");
+
+            ticket.DiscountId = ticketDisount.Id;
+            await CalculateTicketPrice(ticket);
+            
+            var result = await _ticketRepository.SaveAsync(ticket) > 0;
+
+            if (!result) return Result<string>.Failure("Failed to apply discount");
+
+            return Result<string>.Success("Successfully");
+        }
+        
+        public async Task<Result<string>> RemoveDiscountAsync(Guid ticketId)
+        {
+            var ticket = await _ticketRepository.GetOneDetailedAsync(ticketId);
+
+            if (ticket == null) return Result<string>.Failure("Invalid ticket");
+
+            ticket.DiscountId = null;
+            await CalculateTicketPrice(ticket);
+
+            var result = await _ticketRepository.SaveAsync(ticket) > 0;
+
+            if (!result) return Result<string>.Failure("Failed to remove discount");
+
+            return Result<string>.Success("Successfully");
+        }
+        
+        private async Task CalculateTicketPrice(Domain.Models.Tables.Ticket ticket)
+        {
+            double defaultPrice = ticket.Type.Price;
+            
+            if (ticket.DiscountId == null)
+            {
+                ticket.FinalPrice = defaultPrice;
+                return;
+            }
+            
+            int discount = await _ticketDiscountRepository.GetDiscountPercentageAsync(ticket.DiscountId.Value);
+                
+            double disocuntValue = (100 - discount) / 100.0;
+            double finalPrice = defaultPrice * disocuntValue;
+
+            ticket.FinalPrice = finalPrice;
         }
     }
 }

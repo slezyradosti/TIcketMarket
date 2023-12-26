@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Tables;
+﻿using Application.DTOs.Requests;
+using Application.DTOs.Tables;
 using Application.Handlers.Tables.Ticket;
 using Application.Handlers.Tables.TicketOrder;
 using Microsoft.AspNetCore.Authorization;
@@ -67,6 +68,20 @@ namespace webapi.Controllers
         public async Task<IActionResult> EventTicketsAmount(Guid eventId)
         {
             return HandleResult(await _ticketHandler.GetEventTicketsAmountAsync(eventId));
+        }
+        
+        [HttpPut("[action]")]
+        [Authorize(Policy = "CustomersOnly")]
+        public async Task<IActionResult> ApplyDiscount(ApplyDiscountDto applyDiscountDto)
+        {
+            return HandleResult(await _ticketHandler.ApplyDiscountAsync(applyDiscountDto));
+        }
+        
+        [HttpPut("[action]/{ticketId}")]
+        [Authorize(Policy = "CustomersOnly")] // ?? 
+        public async Task<IActionResult> RemoveDiscount(Guid ticketId)
+        {
+            return HandleResult(await _ticketHandler.RemoveDiscountAsync(ticketId));
         }
     }
 }

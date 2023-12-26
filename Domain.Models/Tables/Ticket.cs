@@ -1,4 +1,5 @@
-﻿using Domain.Models.Base;
+﻿using System.ComponentModel.DataAnnotations;
+using Domain.Models.Base;
 using Domain.Models.Catalogues;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -26,6 +27,9 @@ namespace Domain.Models.Tables
         public Guid? DiscountId { get; set; }
         
         public bool isPurchased { get; set; } = false;
+        
+        [Range(0, double.MaxValue)]
+        public double FinalPrice { get; set; }
 
         public ICollection<TicketOrder> TicketOrders { get; set; }
     }
