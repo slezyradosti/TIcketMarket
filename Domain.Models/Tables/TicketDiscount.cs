@@ -10,6 +10,8 @@ public class TicketDiscount : BaseModel
 {
     [Range(0, 100)]
     public int DiscountPercentage { get; set; }
+    
+    [Index(IsUnique=true)]
     public string Code { get; set; }
     public bool? isActivated { get; set; } = false;
     

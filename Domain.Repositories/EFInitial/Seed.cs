@@ -164,7 +164,7 @@ public static class Seed
                 new()
                 {
                     DiscountPercentage = 20,
-                    Code = "string",
+                    Code = "discount20",
                     isActivated = false,
                     User = applicationUsers.First(x => x.UserName.Contains("seller"))
                 },
@@ -172,7 +172,7 @@ public static class Seed
                 new()
                 {
                     DiscountPercentage = 30,
-                    Code = "string",
+                    Code = "discount30",
                     isActivated = false,
                     User = applicationUsers.Last(x => x.UserName.Contains("seller"))
                 },
@@ -180,7 +180,7 @@ public static class Seed
                 new()
                 {
                     DiscountPercentage = 15,
-                    Code = "string",
+                    Code = "discount15",
                     isActivated = false,
                     User = applicationUsers.First(x => x.UserName.Contains("seller"))
                 },
@@ -188,7 +188,7 @@ public static class Seed
                 new()
                 {
                     DiscountPercentage = 10,
-                    Code = "string",
+                    Code = "discount10",
                     isActivated = false,
                     User = applicationUsers.Last(x => x.UserName.Contains("seller"))
                 }
