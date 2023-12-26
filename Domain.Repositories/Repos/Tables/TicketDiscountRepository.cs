@@ -42,6 +42,12 @@ public class TicketDiscountRepository : BaseRepository<TicketDiscount>, ITicketD
     
     public async Task<TicketDiscount> GetDiscountByCodeAsync(string code)
         => await Context.TicketDiscount
+            .Where(td => td.Code == code)
+            .FirstOrDefaultAsync();
+    
+    public async Task<TicketDiscount> GetDiscountByIdAsync(Guid discountId)
+        => await Context.TicketDiscount
+            .Where(td => td.Id == discountId)
             .FirstOrDefaultAsync();
     
     public async Task<int> GetDiscountPercentageAsync(Guid discountId)

@@ -43,9 +43,16 @@ public class TicketRepository : BaseRepository<Ticket>, ITicketRepository
             .FirstOrDefaultAsync();
     }
     
+    public async Task<Ticket> GetOneTypeIncludedAsync(Guid ticketId)
+        => await Context.Ticket
+            .Where(t => t.Id == ticketId)
+            .Include(t => t.Type)
+            .FirstOrDefaultAsync();
+    
     public async Task<Ticket> GetOneDetailedAsync(Guid ticketId)
         => await Context.Ticket
             .Where(t => t.Id == ticketId)
             .Include(t => t.Type)
+            .Include(t => t.Event)
             .FirstOrDefaultAsync();
 }

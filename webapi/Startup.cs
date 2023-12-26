@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Repositories.EFInitial;
 using webapi.Extensions;
 using Application.DTOs.Users.DTOS;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using webapi.Middleware;
 
 namespace webapi

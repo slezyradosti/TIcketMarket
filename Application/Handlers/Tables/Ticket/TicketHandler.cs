@@ -1,13 +1,16 @@
-﻿using Application.Core;
+﻿using System.Transactions;
+using Application.Core;
 using Application.DTOs.Requests;
 using Application.DTOs.Tables;
 using Application.DTOs.Users.HTTP;
 using AutoMapper;
+using Domain.Models.Catalogues;
 using Domain.Repositories.DTOs;
 using Domain.Repositories.Repos.Catalogues;
 using Domain.Repositories.Repos.Interfaces.Catalogues;
 using Domain.Repositories.Repos.Tables;
 using Domain.Repositories.Repos.Interfaces.Tables;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Application.Handlers.Tables.Ticket
 {
@@ -32,34 +35,21 @@ namespace Application.Handlers.Tables.Ticket
             _ticketTypeRepository = ticketTypeRepository;
         }
 
-        //public async Task<Result<List<TicketOrderDto>>> GetCustomersTicketListAsync()
-        //{
-        //    var userId = _userAccessor.GetUserId();
-
-        //    var ticketOrders = await _ticketOrderRepository.GetCustomersTicketListSortedAsync(userId);
-
-        //    List<TicketOrderDto> ticketOrdersDtos = new List<TicketOrderDto>();
-
-        //    _mapper.Map(ticketOrders, ticketOrdersDtos);
-
-        //    return Result<List<TicketOrderDto>>.Success(ticketOrdersDtos);
-        //}
-
-        public async Task<Result<TicketDto>> GetCustomersTicketAsync(Guid ticketId)
+        public async Task<Result<Domain.Models.Tables.Ticket>> GetCustomersTicketAsync(Guid ticketId)
         {
             if (!await _ticketOrderRepository.HasUserAccessToTheTicketOrderAsync(ticketId,
                     _userAccessor.GetUserId()))
             {
-                return Result<TicketDto>.Failure("You have no access to this data");
+                return Result<Domain.Models.Tables.Ticket>.Failure("You have no access to this data");
             }
 
-            var ticket = await _ticketRepository.GetOneAsync(ticketId);
+            var ticket = await _ticketRepository.GetOneDetailedAsync(ticketId);
 
-            TicketDto ticketDto = new TicketDto();
+            // TicketDto ticketDto = new TicketDto();
+            //
+            // _mapper.Map(ticket, ticketDto);
 
-            _mapper.Map(ticket, ticketDto);
-
-            return Result<TicketDto>.Success(ticketDto);
+            return Result<Domain.Models.Tables.Ticket>.Success(ticket);
         }
 
         public async Task<Result<string>> CreateCustomersOneAsync(TicketDto ticketDto)
@@ -84,7 +74,7 @@ namespace Application.Handlers.Tables.Ticket
 
         public async Task<Result<string>> EditCustomersOneAsync(TicketDto ticketDto)
         {
-            var ticket = await _ticketRepository.GetOneAsync(ticketDto.Id);
+            var ticket = await _ticketRepository.GetOneTypeIncludedAsync(ticketDto.Id.Value);
 
             if (ticket == null) return null;
 
@@ -96,6 +86,8 @@ namespace Application.Handlers.Tables.Ticket
             }
 
             _mapper.Map(ticketDto, ticket);
+
+            await CalculateTicketPrice(ticket);
 
             var result = await _ticketRepository.SaveAsync(ticket) > 0;
 
@@ -153,40 +145,92 @@ namespace Application.Handlers.Tables.Ticket
 
             return Result<EventTicketsAmountDto>.Success(eventTicketsAmount);
         }
-        
-        public async Task<Result<string>> ApplyDiscountAsync(ApplyDiscountDto applyDiscountDto)
+
+        public async Task<Result<string>> ApplyDiscountTransactionAsync(ApplyDiscountDto applyDiscountDto)
         {
-            var ticketDisount = await _ticketDiscountRepository.GetDiscountByCodeAsync(applyDiscountDto.DiscountCode);
-            
-            if (ticketDisount == null) return Result<string>.Failure("Invalid code");
-            
-            var ticket = await _ticketRepository.GetOneDetailedAsync(applyDiscountDto.TicketId);
+            var result = new Result<string>();
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                // Do context work here
+                result = await ApplyDiscountAsync(applyDiscountDto);
 
+                // complete the transaction
+                scope.Complete();
+            }
+            return result;
+            
+            //---------------------------------------------------------------
+            // another way
+            
+            // start transactions
+            // var ticketTransaction = await _ticketRepository.BeginTransaction();
+            //
+            // var result = await ApplyDiscountAsync(applyDiscountDto, ticketTransaction);
+            //
+            // // Commit transactions
+            // //await _ticketRepository.CommitTransaction(ticketTransaction);
+            // await ticketTransaction.CommitAsync();
+            //
+            // return result;
+        }
+        
+        public async Task<Result<string>> RemoveDiscountTransactionAsync(Guid ticketId)
+        {
+            var result = new Result<string>();
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                // Do context work here
+                result = await RemoveDiscountAsync(ticketId);
+
+                // complete the transaction
+                scope.Complete();
+            }
+            return result;
+        }
+        
+        private async Task<Result<string>> ApplyDiscountAsync(ApplyDiscountDto applyDiscountDto) 
+            //IDbContextTransaction? ticketTransaction)
+        {
+            // another way continuance
+            //await _ticketDiscountRepository.UseTransactionAsync(ticketTransaction);
+            
+            // check if the ticket exists
+            var ticket = await _ticketRepository.GetOneTypeIncludedAsync(applyDiscountDto.TicketId);
             if (ticket == null) return Result<string>.Failure("Invalid ticket");
+            
+            // activate discount
+            var result = await ActiveDiscount(applyDiscountDto.DiscountCode);
+            if (!result.IsSuccess) return Result<string>.Failure(result.Error);
 
+            var ticketDisount = result.Value;
+            
+            // add discount to a ticket
             ticket.DiscountId = ticketDisount.Id;
             await CalculateTicketPrice(ticket);
             
-            var result = await _ticketRepository.SaveAsync(ticket) > 0;
-
-            if (!result) return Result<string>.Failure("Failed to apply discount");
-
+            var result2 = await _ticketRepository.SaveAsync(ticket) > 0;
+            if (!result2) return Result<string>.Failure("Failed to apply discount");
+            
             return Result<string>.Success("Successfully");
         }
         
-        public async Task<Result<string>> RemoveDiscountAsync(Guid ticketId)
+        private async Task<Result<string>> RemoveDiscountAsync(Guid ticketId)
         {
-            var ticket = await _ticketRepository.GetOneDetailedAsync(ticketId);
-
+            var ticket = await _ticketRepository.GetOneTypeIncludedAsync(ticketId);
             if (ticket == null) return Result<string>.Failure("Invalid ticket");
+            
+            // deactivate discount
+            if (ticket.DiscountId == null) return Result<string>.Failure("The ticket has no activated discounts");
+            
+            var result = await DeactivateDiscount(ticket.DiscountId.Value);
+            if (!result.IsSuccess) return Result<string>.Failure(result.Error);
 
             ticket.DiscountId = null;
             await CalculateTicketPrice(ticket);
 
-            var result = await _ticketRepository.SaveAsync(ticket) > 0;
-
-            if (!result) return Result<string>.Failure("Failed to remove discount");
-
+            var result2 = await _ticketRepository.SaveAsync(ticket) > 0;
+            if (!result2) return Result<string>.Failure("Failed to remove discount");
+            
             return Result<string>.Success("Successfully");
         }
         
@@ -206,6 +250,42 @@ namespace Application.Handlers.Tables.Ticket
             double finalPrice = defaultPrice * disocuntValue;
 
             ticket.FinalPrice = finalPrice;
+        }
+        
+        private async Task<Result<TicketDiscount>> ActiveDiscount(string discountCode)
+        {
+            var ticketDisount = await _ticketDiscountRepository.GetDiscountByCodeAsync(discountCode);
+            
+            if (ticketDisount == null) return Result<TicketDiscount>.Failure("Invalid code");
+            // TODO
+            if (ticketDisount.isActivated) 
+                return Result<TicketDiscount>.Failure("The code is already activated");
+            
+            // mark discount as activated
+            ticketDisount.isActivated = true;
+            
+            var result = await _ticketDiscountRepository.SaveAsync(ticketDisount) > 0;
+            if (!result) return Result<TicketDiscount>.Failure("Failed to activate the code");
+
+            return Result<TicketDiscount>.Success(ticketDisount);
+        }
+        
+        private async Task<Result<TicketDiscount>> DeactivateDiscount(Guid discountId)
+        {
+            var ticketDisount = await _ticketDiscountRepository.GetDiscountByIdAsync(discountId);
+            
+            if (ticketDisount == null) return Result<TicketDiscount>.Failure("Invalid code");
+            // TODO
+            if (!ticketDisount.isActivated) 
+                Result<TicketDiscount>.Success(ticketDisount);
+            
+            // mark discount as deactivate
+            ticketDisount.isActivated = false;
+            
+            var result = await _ticketDiscountRepository.SaveAsync(ticketDisount) > 0;
+            if (!result) return Result<TicketDiscount>.Failure("Failed to (de)activate discount");
+
+            return Result<TicketDiscount>.Success(ticketDisount);
         }
     }
 }

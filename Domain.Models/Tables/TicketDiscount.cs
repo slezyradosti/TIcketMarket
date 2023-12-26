@@ -13,7 +13,7 @@ public class TicketDiscount : BaseModel
     
     [Index(IsUnique=true)]
     public string Code { get; set; }
-    public bool? isActivated { get; set; } = false;
+    public bool isActivated { get; set; } = false;
     
     [JsonIgnore]
     [ForeignKey(nameof(UserId))]

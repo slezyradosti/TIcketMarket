@@ -1,4 +1,6 @@
-﻿namespace Domain.Repositories.Repos.Interfaces;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace Domain.Repositories.Repos.Interfaces;
 
 public interface IRepository<T>
 {
@@ -14,4 +16,7 @@ public interface IRepository<T>
     Task<List<T>> GetAllAsync();
     Task<List<T>> ExecuteQueryAsync(string sqlQuery);
     Task<List<T>> ExecuteQueryAsync(string sqlQuery, object[] sqlParametersObjects);
+    public Task<IDbContextTransaction> BeginTransaction();
+    public Task CommitTransaction(IDbContextTransaction dbContextTransaction);
+    public Task UseTransactionAsync(IDbContextTransaction dbContextTransaction);
 }

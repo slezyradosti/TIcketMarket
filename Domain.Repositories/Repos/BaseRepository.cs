@@ -1,16 +1,20 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using Domain.Models.Base;
 using Domain.Repositories.EFInitial;
 using Domain.Repositories.Repos.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using DbUpdateConcurrencyException = Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException;
 using DbUpdateException = Microsoft.EntityFrameworkCore.DbUpdateException;
+using EntityState = Microsoft.EntityFrameworkCore.EntityState;
 
 namespace Domain.Repositories.Repos;
 
 public class BaseRepository<T> : IDisposable, IRepository<T> where T : BaseModel, new()
 {
-    private readonly DbSet<T> _table;
+    private readonly Microsoft.EntityFrameworkCore.DbSet<T> _table;
+    protected DataContext Context { get; }
 
     public BaseRepository() : this(new DataContext())
     {
@@ -22,12 +26,19 @@ public class BaseRepository<T> : IDisposable, IRepository<T> where T : BaseModel
         _table = Context.Set<T>();
     }
 
-    protected DataContext Context { get; }
-
     public void Dispose()
     {
         Context?.Dispose();
     }
+    
+    public async Task<IDbContextTransaction> BeginTransaction()
+        => await Context.Database.BeginTransactionAsync();
+    
+    public async Task CommitTransaction(IDbContextTransaction dbContextTransaction)
+        => await dbContextTransaction.CommitAsync();
+    
+    public async Task UseTransactionAsync(IDbContextTransaction dbContextTransaction)
+        => await Context.Database.UseTransactionAsync(dbContextTransaction.GetDbTransaction());
 
     public async Task<int> AddAsync(T entity)
     {
@@ -55,22 +66,22 @@ public class BaseRepository<T> : IDisposable, IRepository<T> where T : BaseModel
 
     public async Task<List<T>> ExecuteQueryAsync(string sqlQuery)
     {
-        return await _table.FromSqlRaw(sqlQuery).ToListAsync();
+        return await EntityFrameworkQueryableExtensions.ToListAsync(_table.FromSqlRaw(sqlQuery));
     }
 
     public async Task<List<T>> ExecuteQueryAsync(string sqlQuery, object[] sqlParametersObjects)
     {
-        return await _table.FromSqlRaw(sqlQuery, sqlParametersObjects).ToListAsync();
+        return await EntityFrameworkQueryableExtensions.ToListAsync(_table.FromSqlRaw(sqlQuery, sqlParametersObjects));
     }
 
     public async Task<List<T>> GetAllAsync()
     {
-        return await _table.ToListAsync();
+        return await EntityFrameworkQueryableExtensions.ToListAsync(_table);
     }
 
     public async Task<int> GetCountAsync()
     {
-        return await _table.CountAsync();
+        return await EntityFrameworkQueryableExtensions.CountAsync(_table);
     }
 
     public async Task<T> GetOneAsync(Guid? id)

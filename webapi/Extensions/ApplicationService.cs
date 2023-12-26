@@ -15,6 +15,7 @@ using Application.Handlers.Catalogues.EventTable;
 using Application.Handlers.Catalogues.EventType;
 using Application.Handlers.Catalogues.TicketDiscount;
 using Application.Handlers.Catalogues.TicketType;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace webapi.Extensions
 {
@@ -43,7 +44,7 @@ namespace webapi.Extensions
                     cfg.AllowAnyMethod();
                 });
             });
-
+            
             //services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(List.Handler).Assembly));
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
