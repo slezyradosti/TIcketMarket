@@ -10,4 +10,6 @@ public interface ITicketDiscountHandler
     public Task<Result<string>> CreateSellersOneAsync(TicketDiscountDto ticketDiscountDto);
     public Task<Result<string>> EditCustomersOneAsync(TicketDiscountDto ticketDiscountDto);
     public Task<Result<string>> DeleteCustomersOneAsync(Guid ticketDiscountId);
+    public Task<Result<Domain.Models.Catalogues.TicketDiscount>> ActiveDiscount(string discountCode);
+    public Task<Result<Domain.Models.Catalogues.TicketDiscount>> DeactivateDiscount(Guid discountId);
 }

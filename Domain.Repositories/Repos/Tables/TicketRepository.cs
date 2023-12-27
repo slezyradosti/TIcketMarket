@@ -55,4 +55,10 @@ public class TicketRepository : BaseRepository<Ticket>, ITicketRepository
             .Include(t => t.Type)
             .Include(t => t.Event)
             .FirstOrDefaultAsync();
+    
+    public async Task<List<Ticket>> GetAvailableTicketListAsync(Guid eventId)
+        => await Context.Ticket
+            .Where(t => t.EventId == eventId).Where(t => !t.isPurchased)
+            .Include(t => t.Type)
+            .ToListAsync();
 }

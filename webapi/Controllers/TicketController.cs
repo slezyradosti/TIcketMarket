@@ -19,12 +19,18 @@ namespace webapi.Controllers
             _ticketOrderHandler = ticketOrderHandler;
         }
 
-        [HttpGet]
-        [Route("MyTickets")]
+        [HttpGet("MyTickets")]
         [Authorize(Policy = "CustomersOnly")]
         public async Task<IActionResult> GetCustomersTicketList()//[FromQuery] RequestDto request)
         {
             return HandleResult(await _ticketOrderHandler.GetCustomersTicketListAsync());
+        }
+        
+        [HttpGet("AvailableTickets/{eventId}")]
+        [Authorize(Policy = "SellersOnly ")]
+        public async Task<IActionResult> GetAvailableTicketList(Guid eventId)
+        {
+            return HandleResult(await _ticketHandler.GetAvailableTicketListAsync(eventId));
         }
 
         [HttpGet("{id}")]

@@ -10,4 +10,5 @@ public interface ITicketRepository : IRepository<Ticket>
     public Task<EventTicketsAmountDto> GetEventsTicketAmountAsync(Guid eventId);
     public Task<Ticket> GetOneTypeIncludedAsync(Guid ticketId);
     public Task<Ticket> GetOneDetailedAsync(Guid ticketId);
+    public Task<List<Ticket>> GetAvailableTicketListAsync(Guid eventId);
 }

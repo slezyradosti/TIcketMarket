@@ -104,4 +104,38 @@ public class TicketDiscountHandler : ITicketDiscountHandler
     
         return Result<string>.Success("Successfully");
     }
+    
+    public async Task<Result<Domain.Models.Catalogues.TicketDiscount>> ActiveDiscount(string discountCode)
+    {
+        var ticketDisount = await _ticketDiscountRepository.GetDiscountByCodeAsync(discountCode);
+            
+        if (ticketDisount == null) return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("Invalid code");
+        if (ticketDisount.isActivated) 
+            return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("The code is already activated");
+            
+        // mark discount as activated
+        ticketDisount.isActivated = true;
+            
+        var result = await _ticketDiscountRepository.SaveAsync(ticketDisount) > 0;
+        if (!result) return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("Failed to activate the code");
+
+        return Result<Domain.Models.Catalogues.TicketDiscount>.Success(ticketDisount);
+    }
+    
+    public async Task<Result<Domain.Models.Catalogues.TicketDiscount>> DeactivateDiscount(Guid discountId)
+    {
+        var ticketDisount = await _ticketDiscountRepository.GetDiscountByIdAsync(discountId);
+            
+        if (ticketDisount == null) return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("Invalid code");
+        if (!ticketDisount.isActivated) 
+            Result<Domain.Models.Catalogues.TicketDiscount>.Success(ticketDisount);
+            
+        // mark discount as deactivate
+        ticketDisount.isActivated = false;
+            
+        var result = await _ticketDiscountRepository.SaveAsync(ticketDisount) > 0;
+        if (!result) return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("Failed to (de)activate discount");
+
+        return Result<Domain.Models.Catalogues.TicketDiscount>.Success(ticketDisount);
+    }
 }

@@ -3,6 +3,7 @@ using Application.Core;
 using Application.DTOs.Requests;
 using Application.DTOs.Tables;
 using Application.DTOs.Users.HTTP;
+using Application.Handlers.Catalogues.TicketDiscount;
 using AutoMapper;
 using Domain.Models.Catalogues;
 using Domain.Repositories.DTOs;
@@ -22,10 +23,11 @@ namespace Application.Handlers.Tables.Ticket
         private readonly ITicketOrderRepository _ticketOrderRepository;
         private readonly ITicketDiscountRepository _ticketDiscountRepository;
         private readonly ITicketTypeRepository _ticketTypeRepository;
+        private readonly ITicketDiscountHandler _ticketDiscountHandler;
 
         public TicketHandler(ITicketRepository ticketRepository, IMapper mapper, IUserAccessor userAccessor,
             ITicketOrderRepository ticketOrderRepository, ITicketDiscountRepository ticketDiscountRepository, 
-            ITicketTypeRepository ticketTypeRepository)
+            ITicketTypeRepository ticketTypeRepository, ITicketDiscountHandler ticketDiscountHandler)
         {
             _ticketRepository = ticketRepository;
             _mapper = mapper;
@@ -33,6 +35,7 @@ namespace Application.Handlers.Tables.Ticket
             _ticketOrderRepository = ticketOrderRepository;
             _ticketDiscountRepository = ticketDiscountRepository;
             _ticketTypeRepository = ticketTypeRepository;
+            _ticketDiscountHandler = ticketDiscountHandler;
         }
 
         public async Task<Result<Domain.Models.Tables.Ticket>> GetCustomersTicketAsync(Guid ticketId)
@@ -50,6 +53,13 @@ namespace Application.Handlers.Tables.Ticket
             // _mapper.Map(ticket, ticketDto);
 
             return Result<Domain.Models.Tables.Ticket>.Success(ticket);
+        }
+        
+        public async Task<Result<List<Domain.Models.Tables.Ticket>>> GetAvailableTicketListAsync(Guid eventId)
+        {
+            var tickets = await _ticketRepository.GetAvailableTicketListAsync(eventId);
+
+            return Result<List<Domain.Models.Tables.Ticket>>.Success(tickets);
         }
 
         public async Task<Result<string>> CreateCustomersOneAsync(TicketDto ticketDto)
@@ -199,7 +209,9 @@ namespace Application.Handlers.Tables.Ticket
             if (ticket == null) return Result<string>.Failure("Invalid ticket");
             
             // activate discount
-            var result = await ActiveDiscount(applyDiscountDto.DiscountCode);
+            //TODO
+            //var result = await ActiveDiscount(applyDiscountDto.DiscountCode);
+            var result = await _ticketDiscountHandler.ActiveDiscount(applyDiscountDto.DiscountCode);
             if (!result.IsSuccess) return Result<string>.Failure(result.Error);
 
             var ticketDisount = result.Value;
@@ -222,7 +234,9 @@ namespace Application.Handlers.Tables.Ticket
             // deactivate discount
             if (ticket.DiscountId == null) return Result<string>.Failure("The ticket has no activated discounts");
             
-            var result = await DeactivateDiscount(ticket.DiscountId.Value);
+            //TODO
+            //var result = await DeactivateDiscount(ticket.DiscountId.Value);
+            var result = await _ticketDiscountHandler.DeactivateDiscount(ticket.DiscountId.Value);
             if (!result.IsSuccess) return Result<string>.Failure(result.Error);
 
             ticket.DiscountId = null;
@@ -250,42 +264,6 @@ namespace Application.Handlers.Tables.Ticket
             double finalPrice = defaultPrice * disocuntValue;
 
             ticket.FinalPrice = finalPrice;
-        }
-        
-        private async Task<Result<TicketDiscount>> ActiveDiscount(string discountCode)
-        {
-            var ticketDisount = await _ticketDiscountRepository.GetDiscountByCodeAsync(discountCode);
-            
-            if (ticketDisount == null) return Result<TicketDiscount>.Failure("Invalid code");
-            // TODO
-            if (ticketDisount.isActivated) 
-                return Result<TicketDiscount>.Failure("The code is already activated");
-            
-            // mark discount as activated
-            ticketDisount.isActivated = true;
-            
-            var result = await _ticketDiscountRepository.SaveAsync(ticketDisount) > 0;
-            if (!result) return Result<TicketDiscount>.Failure("Failed to activate the code");
-
-            return Result<TicketDiscount>.Success(ticketDisount);
-        }
-        
-        private async Task<Result<TicketDiscount>> DeactivateDiscount(Guid discountId)
-        {
-            var ticketDisount = await _ticketDiscountRepository.GetDiscountByIdAsync(discountId);
-            
-            if (ticketDisount == null) return Result<TicketDiscount>.Failure("Invalid code");
-            // TODO
-            if (!ticketDisount.isActivated) 
-                Result<TicketDiscount>.Success(ticketDisount);
-            
-            // mark discount as deactivate
-            ticketDisount.isActivated = false;
-            
-            var result = await _ticketDiscountRepository.SaveAsync(ticketDisount) > 0;
-            if (!result) return Result<TicketDiscount>.Failure("Failed to (de)activate discount");
-
-            return Result<TicketDiscount>.Success(ticketDisount);
         }
     }
 }
