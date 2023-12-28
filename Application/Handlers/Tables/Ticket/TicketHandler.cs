@@ -209,7 +209,6 @@ namespace Application.Handlers.Tables.Ticket
             if (ticket == null) return Result<string>.Failure("Invalid ticket");
             
             // activate discount
-            //TODO
             //var result = await ActiveDiscount(applyDiscountDto.DiscountCode);
             var result = await _ticketDiscountHandler.ActiveDiscount(applyDiscountDto.DiscountCode);
             if (!result.IsSuccess) return Result<string>.Failure(result.Error);
@@ -234,7 +233,6 @@ namespace Application.Handlers.Tables.Ticket
             // deactivate discount
             if (ticket.DiscountId == null) return Result<string>.Failure("The ticket has no activated discounts");
             
-            //TODO
             //var result = await DeactivateDiscount(ticket.DiscountId.Value);
             var result = await _ticketDiscountHandler.DeactivateDiscount(ticket.DiscountId.Value);
             if (!result.IsSuccess) return Result<string>.Failure(result.Error);
@@ -264,6 +262,15 @@ namespace Application.Handlers.Tables.Ticket
             double finalPrice = defaultPrice * disocuntValue;
 
             ticket.FinalPrice = finalPrice;
+        }
+        
+        public async Task<Result<Domain.Models.Tables.Ticket>> GetTicketToBuyAsync(Guid eventId, Guid typeId)
+        {
+            var ticket = await _ticketRepository.GetOneToBuyDetailedAsync(eventId, typeId);
+
+            if (ticket == null) Result<Domain.Models.Tables.Ticket>.Failure("There are no available tickets.");
+
+            return Result<Domain.Models.Tables.Ticket>.Success(ticket);
         }
     }
 }

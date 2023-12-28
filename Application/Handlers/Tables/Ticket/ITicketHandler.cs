@@ -17,5 +17,6 @@ namespace Application.Handlers.Tables.Ticket
         public Task<Result<EventTicketsAmountDto>> GetEventTicketsAmountAsync(Guid eventId);
         public Task<Result<string>> ApplyDiscountTransactionAsync(ApplyDiscountDto applyDiscountDto);
         public Task<Result<string>> RemoveDiscountTransactionAsync(Guid ticketId);
+        public Task<Result<Domain.Models.Tables.Ticket>> GetTicketToBuyAsync(Guid eventId, Guid typeId);
     }
 }

@@ -89,5 +89,13 @@ namespace webapi.Controllers
         {
             return HandleResult(await _ticketHandler.RemoveDiscountTransactionAsync(ticketId));
         }
+        
+        [HttpGet("[action]")]
+        [Authorize(Policy = "CustomersOnly")]
+        public async Task<IActionResult> GetTicketToBuy([FromQuery(Name = "event-id")] Guid eventId, 
+            [FromQuery(Name = "ticket-type-id")]  Guid ticketTypeId)
+        {
+            return HandleResult(await _ticketHandler.GetTicketToBuyAsync(eventId, ticketTypeId));
+        }
     }
 }
