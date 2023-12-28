@@ -121,7 +121,7 @@ namespace Application.Handlers.Tables.Ticket
 
             if (ticket == null) return null;
 
-            if (!await _ticketOrderRepository.HasUserAccessToTheTicketOrderAsync(ticketId, _userAccessor.GetUserId()))
+            if (!await _ticketRepository.HasUserAccessToTheTicketAsync(ticketId, _userAccessor.GetUserId()))
             {
                 return Result<string>.Failure("You have no access to this data");
             }
