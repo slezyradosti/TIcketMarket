@@ -7,14 +7,12 @@ namespace Domain.Repositories.Repos.Tables;
 public class EventRepository : BaseRepository<Event>, IEventRepository
 {
     public async Task<List<Event>> GetSellersEventListSortedAsync(Guid userId)
-    {
-        return await Context.Event
+        => await Context.Event
             .Where(e => e.UserId == userId)
             .Include(e => e.Type)
             .Include(e => e.Category)
             .OrderBy(e => e.CreatedAt)
             .ToListAsync();
-    }
 
     public async Task<bool> HasUserAccessToTheEventAsync(Guid eventId, Guid userId)
     {
@@ -27,16 +25,18 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
     }
 
     public async Task<int> GetOwnedCountAsync(Guid userId)
-    {
-        return await Context.Event
+        => await Context.Event
             .Where(e => e.UserId == userId)
             .CountAsync();
-    }
 
     public async Task<Event> GetOneDetailedAsync(Guid eventId)
-    {
-        return await Context.Event
+        => await Context.Event
             .Where(e => e.Id == eventId)
             .FirstOrDefaultAsync();
-    }
+    
+    public async Task<int> GetEventsTotalPlacesAsync(Guid eventId)
+        => await Context.Event
+            .Where(e => e.Id == eventId)
+            .Select(e => e.TotalPlaces)
+            .FirstOrDefaultAsync();
 }

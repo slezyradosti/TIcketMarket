@@ -24,10 +24,12 @@ namespace Application.Handlers.Tables.Ticket
         private readonly ITicketDiscountRepository _ticketDiscountRepository;
         private readonly ITicketTypeRepository _ticketTypeRepository;
         private readonly ITicketDiscountHandler _ticketDiscountHandler;
+        private readonly IEventRepository _eventRepository;
 
         public TicketHandler(ITicketRepository ticketRepository, IMapper mapper, IUserAccessor userAccessor,
             ITicketOrderRepository ticketOrderRepository, ITicketDiscountRepository ticketDiscountRepository, 
-            ITicketTypeRepository ticketTypeRepository, ITicketDiscountHandler ticketDiscountHandler)
+            ITicketTypeRepository ticketTypeRepository, ITicketDiscountHandler ticketDiscountHandler, 
+            IEventRepository eventRepository)
         {
             _ticketRepository = ticketRepository;
             _mapper = mapper;
@@ -36,6 +38,7 @@ namespace Application.Handlers.Tables.Ticket
             _ticketDiscountRepository = ticketDiscountRepository;
             _ticketTypeRepository = ticketTypeRepository;
             _ticketDiscountHandler = ticketDiscountHandler;
+            _eventRepository = eventRepository;
         }
 
         public async Task<Result<Domain.Models.Tables.Ticket>> GetCustomersTicketAsync(Guid ticketId)
@@ -69,6 +72,12 @@ namespace Application.Handlers.Tables.Ticket
             {
                 return Result<string>.Failure("You have no access to this action");
             }
+            
+            var totalPlaces = await _eventRepository.GetEventsTotalPlacesAsync(ticketDto.EventId);
+            
+            var createdTicketAmount = await _ticketRepository.GetCreatedEventsTicketAmount(ticketDto.EventId);
+            if (totalPlaces - createdTicketAmount > createdTicketAmount + 1) return Result<string>
+                .Failure("Failed to create Ticket. Not enough available places");
             
             var ticket = new Domain.Models.Tables.Ticket();
 
@@ -116,6 +125,8 @@ namespace Application.Handlers.Tables.Ticket
             {
                 return Result<string>.Failure("You have no access to this data");
             }
+            
+            if (ticket.isPurchased) return Result<string>.Failure("Unable to delete purchased ticket");
 
             var result = await _ticketRepository.RemoveAsync(ticket) > 0;
 
@@ -131,6 +142,14 @@ namespace Application.Handlers.Tables.Ticket
             {
                 return Result<string>.Failure("You have no access to this action");
             }
+
+            var totalPlaces = await _eventRepository.GetEventsTotalPlacesAsync(ticketDto.EventId);
+            if (totalPlaces > ticketAmount) return Result<string>
+                .Failure("Failed to create Tickets. Cannot create more tickets than event capacity");
+            
+            var createdTicketAmount = await _ticketRepository.GetCreatedEventsTicketAmount(ticketDto.EventId);
+            if (totalPlaces - createdTicketAmount > ticketAmount) return Result<string>
+                .Failure("Failed to create Tickets. Not enough available places");
             
             var tickets = new List<Domain.Models.Tables.Ticket>();
             var ticketDtos = new List<TicketDto>();

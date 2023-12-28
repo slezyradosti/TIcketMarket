@@ -55,8 +55,8 @@ namespace webapi.Controllers
         //}
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "ModeratorsOnly")]
-        public async Task<IActionResult> DeleteEvent(Guid id)
+        [Authorize(Policy = "SellersOnly")]
+        public async Task<IActionResult> DeleteTicket(Guid id)
         {
             return HandleResult(await _ticketHandler.DeleteCustomersOneAsync(id));
         }

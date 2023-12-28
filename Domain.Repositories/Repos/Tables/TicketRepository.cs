@@ -68,4 +68,9 @@ public class TicketRepository : BaseRepository<Ticket>, ITicketRepository
             .Include(t => t.Type)
             .Include(t => t.Event)
             .FirstOrDefaultAsync();
+    
+    public async Task<int> GetCreatedEventsTicketAmount(Guid eventId)
+        => await Context.Ticket
+            .Where(t => t.EventId == eventId)
+            .CountAsync();
 }

@@ -8,4 +8,5 @@ public interface IEventRepository : IRepository<Event>
     public Task<bool> HasUserAccessToTheEventAsync(Guid eventId, Guid userId);
     public Task<int> GetOwnedCountAsync(Guid userId);
     public Task<Event> GetOneDetailedAsync(Guid eventId);
+    public Task<int> GetEventsTotalPlacesAsync(Guid eventId);
 }
