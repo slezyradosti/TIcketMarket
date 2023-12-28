@@ -67,7 +67,7 @@ namespace Application.Handlers.Tables.Ticket
 
         public async Task<Result<string>> CreateCustomersOneAsync(TicketDto ticketDto)
         {
-            if (!await _ticketRepository.HasUserAccessToTheEventAsync(ticketDto.EventId,
+            if (!await _eventRepository.HasUserAccessToTheEventAsync(ticketDto.EventId,
                     _userAccessor.GetUserId()))
             {
                 return Result<string>.Failure("You have no access to this action");
@@ -76,7 +76,7 @@ namespace Application.Handlers.Tables.Ticket
             var totalPlaces = await _eventRepository.GetEventsTotalPlacesAsync(ticketDto.EventId);
             
             var createdTicketAmount = await _ticketRepository.GetCreatedEventsTicketAmount(ticketDto.EventId);
-            if (totalPlaces - createdTicketAmount > createdTicketAmount + 1) return Result<string>
+            if (totalPlaces - createdTicketAmount < createdTicketAmount + 1) return Result<string>
                 .Failure("Failed to create Ticket. Not enough available places");
             
             var ticket = new Domain.Models.Tables.Ticket();
@@ -137,18 +137,18 @@ namespace Application.Handlers.Tables.Ticket
 
         public async Task<Result<string>> GenerateEventsTicketList(TicketDto ticketDto, int ticketAmount)
         {
-            if (!await _ticketRepository.HasUserAccessToTheEventAsync(ticketDto.EventId,
+            if (!await _eventRepository.HasUserAccessToTheEventAsync(ticketDto.EventId,
                     _userAccessor.GetUserId()))
             {
                 return Result<string>.Failure("You have no access to this action");
             }
 
             var totalPlaces = await _eventRepository.GetEventsTotalPlacesAsync(ticketDto.EventId);
-            if (totalPlaces > ticketAmount) return Result<string>
+            if (totalPlaces < ticketAmount) return Result<string>
                 .Failure("Failed to create Tickets. Cannot create more tickets than event capacity");
             
             var createdTicketAmount = await _ticketRepository.GetCreatedEventsTicketAmount(ticketDto.EventId);
-            if (totalPlaces - createdTicketAmount > ticketAmount) return Result<string>
+            if (totalPlaces - createdTicketAmount < ticketAmount) return Result<string>
                 .Failure("Failed to create Tickets. Not enough available places");
             
             var tickets = new List<Domain.Models.Tables.Ticket>();

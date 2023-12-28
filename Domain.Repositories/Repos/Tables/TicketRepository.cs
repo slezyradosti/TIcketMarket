@@ -7,16 +7,6 @@ namespace Domain.Repositories.Repos.Tables;
 
 public class TicketRepository : BaseRepository<Ticket>, ITicketRepository
 {
-    public async Task<bool> HasUserAccessToTheEventAsync(Guid eventId, Guid userId)
-    {
-        var eventUserId = await Context.Ticket
-            .Where(t => t.EventId == eventId)
-            .Select(t => t.Event.UserId)
-            .FirstOrDefaultAsync();
-
-        return eventUserId == userId;
-    }
-
     public async Task<bool> HasUserAccessToTheTicketAsync(Guid ticketId, Guid userId)
     {
         var ticketUserId = await Context.Ticket
