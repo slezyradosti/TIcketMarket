@@ -1,7 +1,6 @@
-﻿using System.Data.Entity;
-using Domain.Models.Catalogues;
-using Domain.Models.Tables;
+﻿using Domain.Models.Catalogues;
 using Domain.Repositories.Repos.Interfaces.Catalogues;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Repositories.Repos.Catalogues;
 

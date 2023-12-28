@@ -151,9 +151,12 @@ namespace Application.Handlers.Tables.Ticket
             if (totalPlaces - createdTicketAmount < ticketAmount) return Result<string>
                 .Failure("Failed to create Tickets. Not enough available places");
             
+            
             var tickets = new List<Domain.Models.Tables.Ticket>();
             var ticketDtos = new List<TicketDto>();
 
+            ticketDto.FinalPrice = await _ticketTypeRepository.GetPriceAsync(ticketDto.TypeId);
+            
             for (int i = 0; i < ticketAmount; i++)
             {
                 ticketDtos.Add(ticketDto);
