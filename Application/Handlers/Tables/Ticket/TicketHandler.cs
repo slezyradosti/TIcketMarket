@@ -367,7 +367,7 @@ namespace Application.Handlers.Tables.Ticket
 
                     result = await _ticketOrderHandler.CreateCustomersOneAsync(ticketorder);
                 }
-                else if (!orderResult.IsSuccess)
+                else if (result.IsSuccess && !orderResult.IsSuccess)
                 {
                     result.Error = orderResult.Error;
                 }

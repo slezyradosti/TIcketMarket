@@ -10,13 +10,11 @@ namespace Domain.Models.Tables
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Number { get; set; } = Guid.NewGuid();
-
-        [JsonIgnore]
+        
         [ForeignKey(nameof(TypeId))]
         public TicketType Type { get; set; }
         public Guid TypeId { get; set; }
-
-        [JsonIgnore]
+        
         [ForeignKey(nameof(EventId))]
         public Event Event { get; set; }
         public Guid EventId { get; set; }
