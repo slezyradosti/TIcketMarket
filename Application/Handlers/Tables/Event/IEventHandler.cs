@@ -10,5 +10,6 @@ namespace Application.Handlers.Tables.Event
         public Task<Result<string>> CreateSellersOneAsync(EventDto eventDto);
         public Task<Result<string>> EditSellersOneAsync(EventDto eventDto);
         public Task<Result<string>> DeleteSellersOneAsync(Guid id);
+        public Task<Result<List<EventDto>>> GetAllEventsOrderedAsync();
     }
 }

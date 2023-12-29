@@ -107,5 +107,16 @@ namespace Application.Handlers.Tables.Event
 
             return Result<string>.Success("Successfully");
         }
+        
+        public async Task<Result<List<EventDto>>> GetAllEventsOrderedAsync()
+        {
+            var events = await _eventRepository.GetAllEventsOrderedAsync();
+
+            List<EventDto> eventDtos = new List<EventDto>();
+
+            _mapper.Map(events, eventDtos);
+
+            return Result<List<EventDto>>.Success(eventDtos);
+        }
     }
 }

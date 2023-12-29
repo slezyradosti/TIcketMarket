@@ -9,4 +9,5 @@ public interface IEventRepository : IRepository<Event>
     public Task<int> GetOwnedCountAsync(Guid userId);
     public Task<Event> GetOneDetailedAsync(Guid eventId);
     public Task<int> GetEventsTotalPlacesAsync(Guid eventId);
+    public Task<List<Event>> GetAllEventsOrderedAsync();
 }

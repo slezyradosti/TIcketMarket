@@ -39,4 +39,11 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
             .Where(e => e.Id == eventId)
             .Select(e => e.TotalPlaces)
             .FirstOrDefaultAsync();
+    
+    public async Task<List<Event>> GetAllEventsOrderedAsync()
+        => await Context.Event
+            .Include(e => e.Type)
+            .Include(e => e.Category)
+            .OrderBy(e => e.CreatedAt)
+            .ToListAsync();
 }
