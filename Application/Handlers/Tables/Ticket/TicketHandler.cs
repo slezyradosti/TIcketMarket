@@ -4,6 +4,8 @@ using Application.DTOs.Requests;
 using Application.DTOs.Tables;
 using Application.DTOs.Users.HTTP;
 using Application.Handlers.Catalogues.TicketDiscount;
+using Application.Handlers.Tables.Order;
+using Application.Handlers.Tables.TicketOrder;
 using AutoMapper;
 using Domain.Models.Catalogues;
 using Domain.Repositories.DTOs;
@@ -25,11 +27,13 @@ namespace Application.Handlers.Tables.Ticket
         private readonly ITicketTypeRepository _ticketTypeRepository;
         private readonly ITicketDiscountHandler _ticketDiscountHandler;
         private readonly IEventRepository _eventRepository;
+        private readonly IOrderHandler _orderHandler;
+        private readonly ITicketOrderHandler _ticketOrderHandler;
 
         public TicketHandler(ITicketRepository ticketRepository, IMapper mapper, IUserAccessor userAccessor,
             ITicketOrderRepository ticketOrderRepository, ITicketDiscountRepository ticketDiscountRepository, 
             ITicketTypeRepository ticketTypeRepository, ITicketDiscountHandler ticketDiscountHandler, 
-            IEventRepository eventRepository)
+            IEventRepository eventRepository, IOrderHandler orderHandler, ITicketOrderHandler ticketOrderHandler)
         {
             _ticketRepository = ticketRepository;
             _mapper = mapper;
@@ -39,6 +43,8 @@ namespace Application.Handlers.Tables.Ticket
             _ticketTypeRepository = ticketTypeRepository;
             _ticketDiscountHandler = ticketDiscountHandler;
             _eventRepository = eventRepository;
+            _orderHandler = orderHandler;
+            _ticketOrderHandler = ticketOrderHandler;
         }
 
         public async Task<Result<Domain.Models.Tables.Ticket>> GetCustomersTicketAsync(Guid ticketId)
@@ -209,6 +215,8 @@ namespace Application.Handlers.Tables.Ticket
         public async Task<Result<string>> RemoveDiscountTransactionAsync(Guid ticketId)
         {
             var result = new Result<string>();
+            
+            // start transaction
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 // Do context work here
@@ -293,6 +301,81 @@ namespace Application.Handlers.Tables.Ticket
             if (ticket == null) Result<Domain.Models.Tables.Ticket>.Failure("There are no available tickets.");
 
             return Result<Domain.Models.Tables.Ticket>.Success(ticket);
+        }
+        
+        public async Task<Result<string>> MarkTicketAsPurchased(Guid ticketId)
+        {
+            var ticket = await _ticketRepository.GetOneAsync(ticketId);
+
+            if (ticket == null) return Result<string>.Failure("Failed to purchase the ticket. The ticket was not found");
+            if (ticket.isPurchased) return Result<string>.Failure("Failed to purchase the ticket. The ticket is already purchased");
+
+            ticket.isPurchased = true;
+            
+            var result = await _ticketRepository.SaveAsync(ticket) > 0;
+            if (!result) return Result<string>.Failure("Failed to purchase the ticket");
+            
+            return Result<string>.Success("Successfully");
+        }
+        
+        public async Task<Result<string>> MarkTicketAsNotPurchased(Guid ticketId)
+        {
+            var ticket = await _ticketRepository.GetOneAsync(ticketId);
+
+            if (ticket == null) return Result<string>.Failure("Failed to make the ticket available. The ticket was not found");
+            if (!ticket.isPurchased) return Result<string>.Failure("Failed to make the ticket available. The ticket is already available");
+
+            ticket.isPurchased = false;
+            
+            var result = await _ticketRepository.SaveAsync(ticket) > 0;
+            if (!result) return Result<string>.Failure("Failed to make the ticket available");
+            
+            return Result<string>.Success("Successfully");
+        }
+        
+        public async Task<Result<string>> PruchaseTicket(Guid ticketId)
+        {
+            var result = new Result<string>();
+            var orderResult = new Result<Guid>();
+            
+            // start transaction
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                // mark ticket as purchased
+                result = await MarkTicketAsPurchased(ticketId);
+
+                if (result.IsSuccess)
+                {
+                    // create customer's order 
+                    var orderDto = new OrderDto
+                    {
+                        UserId = _userAccessor.GetUserId()
+                    };
+
+                    orderResult = await _orderHandler.CreateCustomersOneAsync(orderDto);
+                }
+                
+                if (result.IsSuccess && orderResult.IsSuccess)
+                {
+                    // create ticketOrder
+
+                    var ticketorder = new TicketOrderDto()
+                    {
+                        TicketId = ticketId,
+                        OrderId = orderResult.Value
+                    };
+
+                    result = await _ticketOrderHandler.CreateCustomersOneAsync(ticketorder);
+                }
+                else if (!orderResult.IsSuccess)
+                {
+                    result.Error = orderResult.Error;
+                }
+
+                // complete the transaction
+                scope.Complete();
+            }
+            return result;
         }
     }
 }

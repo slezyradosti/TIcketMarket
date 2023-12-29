@@ -97,5 +97,12 @@ namespace webapi.Controllers
         {
             return HandleResult(await _ticketHandler.GetTicketToBuyAsync(eventId, ticketTypeId));
         }
+        
+        [HttpPost("[action]/{ticketId}")]
+        [Authorize(Policy = "CustomersOnly")]
+        public async Task<IActionResult> PruchaseTicket(Guid ticketId)
+        {
+            return HandleResult(await _ticketHandler.PruchaseTicket(ticketId));
+        }
     }
 }

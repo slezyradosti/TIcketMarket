@@ -49,7 +49,7 @@ namespace Application.Handlers.Tables.Order
             return Result<OrderDto>.Success(OrderDto);
         }
 
-        public async Task<Result<string>> CreateCustomersOneAsync(OrderDto OrderDto)
+        public async Task<Result<Guid>> CreateCustomersOneAsync(OrderDto OrderDto)
         {
             OrderDto.UserId = _userAccessor.GetUserId();
 
@@ -58,9 +58,9 @@ namespace Application.Handlers.Tables.Order
 
             var result = await _orderRepository.AddAsync(order) > 0;
 
-            if (!result) return Result<string>.Failure("Failed to create Order");
+            if (!result) return Result<Guid>.Failure("Failed to create Order");
 
-            return Result<string>.Success("Successfully");
+            return Result<Guid>.Success(order.Id);
         }
 
         //public async Task<Result<string>> EditSellersOneAsync(OrderDto OrderDto)
