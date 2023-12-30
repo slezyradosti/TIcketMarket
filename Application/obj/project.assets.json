@@ -1286,6 +1286,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "EntityFramework": "6.4.4",
           "Microsoft.Extensions.Identity.Stores": "8.0.0"
         },
         "compile": {

@@ -1087,6 +1087,7 @@
       },
       "Domain.Models/1.0.0": {
         "dependencies": {
+          "EntityFramework": "6.4.4",
           "Microsoft.Extensions.Identity.Stores": "8.0.0"
         },
         "runtime": {

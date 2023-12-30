@@ -10,3 +10,5 @@ C:\Users\Олег\source\repos\TicketMarket\Domain.Models\obj\Debug\net8.0\refin
 C:\Users\Олег\source\repos\TicketMarket\Domain.Models\obj\Debug\net8.0\Domain.Models.pdb
 C:\Users\Олег\source\repos\TicketMarket\Domain.Models\obj\Debug\net8.0\ref\Domain.Models.dll
 C:\Users\Олег\source\repos\TicketMarket\Domain.Models\obj\Debug\net8.0\Domain.Models.csproj.AssemblyReference.cache
+C:\Users\Олег\source\repos\TicketMarket\Domain.Models\bin\Debug\net8.0\Domain.Models.runtimeconfig.json
+C:\Users\Олег\source\repos\TicketMarket\Domain.Models\obj\Debug\net8.0\Domain.Models.genruntimeconfig.cache
