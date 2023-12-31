@@ -77,21 +77,23 @@ namespace webapi.Controllers
         }
         
         [HttpPut("[action]")]
-        [Authorize(Policy = "CustomersOnly")]
+        //[Authorize(Policy = "CustomersOnly")]
+        [AllowAnonymous]
         public async Task<IActionResult> ApplyDiscount(ApplyDiscountDto applyDiscountDto)
         {
             return HandleResult(await _ticketHandler.ApplyDiscountTransactionAsync(applyDiscountDto));
         }
         
         [HttpPut("[action]/{ticketId}")]
-        [Authorize(Policy = "CustomersOnly")] // ?? 
+        //[Authorize(Policy = "CustomersOnly")] // ?? 
+        [AllowAnonymous]
         public async Task<IActionResult> RemoveDiscount(Guid ticketId)
         {
             return HandleResult(await _ticketHandler.RemoveDiscountTransactionAsync(ticketId));
         }
         
         [HttpGet("[action]")]
-        [Authorize(Policy = "CustomersOnly")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetTicketToBuy([FromQuery(Name = "event-id")] Guid eventId, 
             [FromQuery(Name = "ticket-type-id")]  Guid ticketTypeId)
         {

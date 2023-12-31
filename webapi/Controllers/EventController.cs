@@ -16,14 +16,13 @@ namespace webapi.Controllers
         }
 
         [HttpGet("MyEvents")]
-        [Authorize(Policy = "SellersOnly")]
         public async Task<IActionResult> GetSellersEventList()//[FromQuery] RequestDto request)
         {
             return HandleResult(await _eventHandler.GetSellersEventListAsync());
         }
         
         [HttpGet("List")]
-        [Authorize(Policy = "CustomersOnly")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetEventList()
         {
             return HandleResult(await _eventHandler.GetAllEventsOrderedAsync());
