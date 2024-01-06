@@ -1,10 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { EventCategory } from "../../models/catalogues/eventCategory";
 import agent from "../../api/agent";
+import { TicketType } from "../../models/catalogues/ticketType";
 
-class EventCategoryStore {
-    eventCategoryRegistry = new Map<string, EventCategory>();
-    selectedElement: EventCategory | undefined = undefined;
+class TicketTypesStore {
+    ticketTypeRegistry = new Map<string, TicketType>();
+    selectedElement: TicketType | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -14,7 +14,7 @@ class EventCategoryStore {
     }
 
     clearData = () => {
-        this.eventCategoryRegistry.clear();
+        this.ticketTypeRegistry.clear();
         this.loadingInitial = true;
     }
 
@@ -24,11 +24,9 @@ class EventCategoryStore {
 
     loadList = async () => {
         try {
-            const result = await agent.EventCategories.list();
-            result.forEach(eventCategory => {
-                // eventCategory.createdAt = eventCategory.createdAt?.split('T')[0];
-                // eventCategory.updatedAt = eventCategory.updatedAt?.split('T')[0];
-                this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
+            const result = await agent.TicketTypes.getSellersList();
+            result.forEach(ticketType => {
+                this.ticketTypeRegistry.set(ticketType.id!, ticketType);
             })
         } catch (error) {
             console.log(error);
@@ -38,7 +36,7 @@ class EventCategoryStore {
     }
 
     selectOne = (id: string) => {
-        this.selectedElement = this.eventCategoryRegistry.get(id);
+        this.selectedElement = this.ticketTypeRegistry.get(id);
     }
 
     cancelSelectedElement = () => {
@@ -46,22 +44,22 @@ class EventCategoryStore {
     }
 
     getOne = (id: string) => {
-        return this.eventCategoryRegistry.get(id)!;
+        return this.ticketTypeRegistry.get(id)!;
     }
 
     details = async (id: string) => {
-        return await agent.EventCategories.getSellersOne(id);
+        return await agent.TicketTypes.getSellersOne(id);
     }
 
-    createOne = async (eventCategory: EventCategory) => {
+    createOne = async (ticketType: TicketType) => {
         this.loading = true;
 
         try {
-            await agent.EventCategories.createOne(eventCategory);
+            await agent.TicketTypes.createSellersOne(ticketType);
 
             runInAction(() => {
-                this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
-                this.selectedElement = eventCategory;
+                this.ticketTypeRegistry.set(ticketType.id!, ticketType);
+                this.selectedElement = ticketType;
             });
         } catch (error) {
             console.log(error);
@@ -73,14 +71,14 @@ class EventCategoryStore {
         }
     }
 
-    editOne = async (eventCategory: EventCategory) => {
+    editOne = async (ticketType: TicketType) => {
         this.loading = true;
 
         try {
-            await agent.EventCategories.editOne(eventCategory);
+            await agent.TicketTypes.editOne(ticketType);
             runInAction(() => {
-                this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
-                this.selectedElement = eventCategory;
+                this.ticketTypeRegistry.set(ticketType.id!, ticketType);
+                this.selectedElement = ticketType;
                 this.editMode = false;
             })
         } catch (error) {
@@ -96,9 +94,9 @@ class EventCategoryStore {
         this.loading = true;
 
         try {
-            await agent.EventCategories.deleteOne(id);
+            await agent.TicketTypes.deleteSellersOne(id);
             runInAction(() => {
-                this.eventCategoryRegistry.delete(id);
+                this.ticketTypeRegistry.delete(id);
                 if (this.selectedElement?.id === id) this.cancelSelectedElement();
             })
         } catch (error) {
@@ -111,4 +109,4 @@ class EventCategoryStore {
     }
 }
 
-export default EventCategoryStore
+export default TicketTypesStore

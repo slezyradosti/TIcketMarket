@@ -1,10 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { EventCategory } from "../../models/catalogues/eventCategory";
+import { EventTable } from "../../models/catalogues/eventTable";
 import agent from "../../api/agent";
 
-class EventCategoryStore {
-    eventCategoryRegistry = new Map<string, EventCategory>();
-    selectedElement: EventCategory | undefined = undefined;
+class EventTableStore {
+    eventTableRegistry = new Map<string, EventTable>();
+    selectedElement: EventTable | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -14,7 +14,7 @@ class EventCategoryStore {
     }
 
     clearData = () => {
-        this.eventCategoryRegistry.clear();
+        this.eventTableRegistry.clear();
         this.loadingInitial = true;
     }
 
@@ -24,11 +24,9 @@ class EventCategoryStore {
 
     loadList = async () => {
         try {
-            const result = await agent.EventCategories.list();
-            result.forEach(eventCategory => {
-                // eventCategory.createdAt = eventCategory.createdAt?.split('T')[0];
-                // eventCategory.updatedAt = eventCategory.updatedAt?.split('T')[0];
-                this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
+            const result = await agent.EventTables.list();
+            result.forEach(eventTable => {
+                this.eventTableRegistry.set(eventTable.id!, eventTable);
             })
         } catch (error) {
             console.log(error);
@@ -38,7 +36,7 @@ class EventCategoryStore {
     }
 
     selectOne = (id: string) => {
-        this.selectedElement = this.eventCategoryRegistry.get(id);
+        this.selectedElement = this.eventTableRegistry.get(id);
     }
 
     cancelSelectedElement = () => {
@@ -46,22 +44,22 @@ class EventCategoryStore {
     }
 
     getOne = (id: string) => {
-        return this.eventCategoryRegistry.get(id)!;
+        return this.eventTableRegistry.get(id)!;
     }
 
     details = async (id: string) => {
-        return await agent.EventCategories.getSellersOne(id);
+        return await agent.EventTables.getOne(id);
     }
 
-    createOne = async (eventCategory: EventCategory) => {
+    createOne = async (eventTable: EventTable) => {
         this.loading = true;
 
         try {
-            await agent.EventCategories.createOne(eventCategory);
+            await agent.EventTables.createOne(eventTable);
 
             runInAction(() => {
-                this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
-                this.selectedElement = eventCategory;
+                this.eventTableRegistry.set(eventTable.id!, eventTable);
+                this.selectedElement = eventTable;
             });
         } catch (error) {
             console.log(error);
@@ -73,14 +71,14 @@ class EventCategoryStore {
         }
     }
 
-    editOne = async (eventCategory: EventCategory) => {
+    editOne = async (eventTable: EventTable) => {
         this.loading = true;
 
         try {
-            await agent.EventCategories.editOne(eventCategory);
+            await agent.EventTables.editOne(eventTable);
             runInAction(() => {
-                this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
-                this.selectedElement = eventCategory;
+                this.eventTableRegistry.set(eventTable.id!, eventTable);
+                this.selectedElement = eventTable;
                 this.editMode = false;
             })
         } catch (error) {
@@ -96,9 +94,9 @@ class EventCategoryStore {
         this.loading = true;
 
         try {
-            await agent.EventCategories.deleteOne(id);
+            await agent.EventTables.deleteOne(id);
             runInAction(() => {
-                this.eventCategoryRegistry.delete(id);
+                this.eventTableRegistry.delete(id);
                 if (this.selectedElement?.id === id) this.cancelSelectedElement();
             })
         } catch (error) {
@@ -111,4 +109,4 @@ class EventCategoryStore {
     }
 }
 
-export default EventCategoryStore
+export default EventTableStore
