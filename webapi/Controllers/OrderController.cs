@@ -15,10 +15,9 @@ namespace webapi.Controllers
             _orderHandler = orderHandler;
         }
 
-        [HttpGet]
-        [Route("MyOrders")]
+        [HttpGet("my-orders")]
         [Authorize(Policy = "CustomersOnly")]
-        public async Task<IActionResult> GetSellersEventList()//[FromQuery] RequestDto request)
+        public async Task<IActionResult> GetCustomersOrderList()//[FromQuery] RequestDto request)
         {
             return HandleResult(await _orderHandler.GetCustomersOrderListAsync());
         }

@@ -117,7 +117,7 @@ const EventTypes = {
 }
 
 const Orders = {
-    customersOrderlist: () => requests.get<Order[]>('/Order/list'),
+    customersOrderlist: () => requests.get<Order[]>('/Order/my-orders'),
     getCustomersOne: (id: string) => requests.get<Order>(`/Order/${id}`),
     createOne: (order: Order) => requests.post<void>('/Order', order),
     //editOne: (order: Order) => requests.put<void>(`/Order/${order.id}`, order),
