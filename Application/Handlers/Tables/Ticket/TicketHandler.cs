@@ -31,8 +31,8 @@ namespace Application.Handlers.Tables.Ticket
         private readonly ITicketOrderHandler _ticketOrderHandler;
 
         public TicketHandler(ITicketRepository ticketRepository, IMapper mapper, IUserAccessor userAccessor,
-            ITicketOrderRepository ticketOrderRepository, ITicketDiscountRepository ticketDiscountRepository, 
-            ITicketTypeRepository ticketTypeRepository, ITicketDiscountHandler ticketDiscountHandler, 
+            ITicketOrderRepository ticketOrderRepository, ITicketDiscountRepository ticketDiscountRepository,
+            ITicketTypeRepository ticketTypeRepository, ITicketDiscountHandler ticketDiscountHandler,
             IEventRepository eventRepository, IOrderHandler orderHandler, ITicketOrderHandler ticketOrderHandler)
         {
             _ticketRepository = ticketRepository;
@@ -63,7 +63,7 @@ namespace Application.Handlers.Tables.Ticket
 
             return Result<Domain.Models.Tables.Ticket>.Success(ticket);
         }
-        
+
         public async Task<Result<List<Domain.Models.Tables.Ticket>>> GetAvailableTicketListAsync(Guid eventId)
         {
             var tickets = await _ticketRepository.GetAvailableTicketListAsync(eventId);
@@ -78,13 +78,13 @@ namespace Application.Handlers.Tables.Ticket
             {
                 return Result<string>.Failure("You have no access to this action");
             }
-            
+
             var totalPlaces = await _eventRepository.GetEventsTotalPlacesAsync(ticketDto.EventId);
-            
+
             var createdTicketAmount = await _ticketRepository.GetCreatedEventsTicketAmount(ticketDto.EventId);
             if (totalPlaces - createdTicketAmount < createdTicketAmount + 1) return Result<string>
                 .Failure("Failed to create Ticket. Not enough available places");
-            
+
             var ticket = new Domain.Models.Tables.Ticket();
 
             ticketDto.FinalPrice = await _ticketTypeRepository.GetPriceAsync(ticketDto.TypeId);
@@ -131,7 +131,7 @@ namespace Application.Handlers.Tables.Ticket
             {
                 return Result<string>.Failure("You have no access to this data");
             }
-            
+
             if (ticket.isPurchased) return Result<string>.Failure("Unable to delete purchased ticket");
 
             var result = await _ticketRepository.RemoveAsync(ticket) > 0;
@@ -152,31 +152,31 @@ namespace Application.Handlers.Tables.Ticket
             var totalPlaces = await _eventRepository.GetEventsTotalPlacesAsync(ticketDto.EventId);
             if (totalPlaces < ticketAmount) return Result<string>
                 .Failure("Failed to create Tickets. Cannot create more tickets than event capacity");
-            
+
             var createdTicketAmount = await _ticketRepository.GetCreatedEventsTicketAmount(ticketDto.EventId);
             if (totalPlaces - createdTicketAmount < ticketAmount) return Result<string>
                 .Failure("Failed to create Tickets. Not enough available places");
-            
-            
+
+
             var tickets = new List<Domain.Models.Tables.Ticket>();
             var ticketDtos = new List<TicketDto>();
 
             ticketDto.FinalPrice = await _ticketTypeRepository.GetPriceAsync(ticketDto.TypeId);
-            
+
             for (int i = 0; i < ticketAmount; i++)
             {
                 ticketDtos.Add(ticketDto);
             }
-            
+
             _mapper.Map(ticketDtos, tickets);
-            
+
             var result = await _ticketRepository.AddRangeAsync(tickets) > 0;
 
             if (!result) return Result<string>.Failure("Failed to create Tickets");
 
             return Result<string>.Success("Successfully");
         }
-        
+
         public async Task<Result<EventTicketsAmountDto>> GetEventTicketsAmountAsync(Guid eventId)
         {
             var eventTicketsAmount = await _ticketRepository.GetEventsTicketAmountAsync(eventId);
@@ -196,10 +196,10 @@ namespace Application.Handlers.Tables.Ticket
                 scope.Complete();
             }
             return result;
-            
+
             //---------------------------------------------------------------
             // another way
-            
+
             // start transactions
             // var ticketTransaction = await _ticketRepository.BeginTransaction();
             //
@@ -211,11 +211,11 @@ namespace Application.Handlers.Tables.Ticket
             //
             // return result;
         }
-        
+
         public async Task<Result<string>> RemoveDiscountTransactionAsync(Guid ticketId)
         {
             var result = new Result<string>();
-            
+
             // start transaction
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -227,42 +227,42 @@ namespace Application.Handlers.Tables.Ticket
             }
             return result;
         }
-        
-        private async Task<Result<string>> ApplyDiscountAsync(ApplyDiscountDto applyDiscountDto) 
-            //IDbContextTransaction? ticketTransaction)
+
+        private async Task<Result<string>> ApplyDiscountAsync(ApplyDiscountDto applyDiscountDto)
+        //IDbContextTransaction? ticketTransaction)
         {
             // another way continuance
             //await _ticketDiscountRepository.UseTransactionAsync(ticketTransaction);
-            
+
             // check if the ticket exists
             var ticket = await _ticketRepository.GetOneTypeIncludedAsync(applyDiscountDto.TicketId);
             if (ticket == null) return Result<string>.Failure("Invalid ticket");
-            
+
             // activate discount
             //var result = await ActiveDiscount(applyDiscountDto.DiscountCode);
             var result = await _ticketDiscountHandler.ActiveDiscount(applyDiscountDto.DiscountCode);
             if (!result.IsSuccess) return Result<string>.Failure(result.Error);
 
             var ticketDisount = result.Value;
-            
+
             // add discount to a ticket
             ticket.DiscountId = ticketDisount.Id;
             await CalculateTicketPrice(ticket);
-            
+
             var result2 = await _ticketRepository.SaveAsync(ticket) > 0;
             if (!result2) return Result<string>.Failure("Failed to apply discount");
-            
+
             return Result<string>.Success("Successfully");
         }
-        
+
         private async Task<Result<string>> RemoveDiscountAsync(Guid ticketId)
         {
             var ticket = await _ticketRepository.GetOneTypeIncludedAsync(ticketId);
             if (ticket == null) return Result<string>.Failure("Invalid ticket");
-            
+
             // deactivate discount
             if (ticket.DiscountId == null) return Result<string>.Failure("The ticket has no activated discounts");
-            
+
             //var result = await DeactivateDiscount(ticket.DiscountId.Value);
             var result = await _ticketDiscountHandler.DeactivateDiscount(ticket.DiscountId.Value);
             if (!result.IsSuccess) return Result<string>.Failure(result.Error);
@@ -272,28 +272,28 @@ namespace Application.Handlers.Tables.Ticket
 
             var result2 = await _ticketRepository.SaveAsync(ticket) > 0;
             if (!result2) return Result<string>.Failure("Failed to remove discount");
-            
+
             return Result<string>.Success("Successfully");
         }
-        
+
         private async Task CalculateTicketPrice(Domain.Models.Tables.Ticket ticket)
         {
             double defaultPrice = ticket.Type.Price;
-            
+
             if (ticket.DiscountId == null)
             {
                 ticket.FinalPrice = defaultPrice;
                 return;
             }
-            
+
             int discount = await _ticketDiscountRepository.GetDiscountPercentageAsync(ticket.DiscountId.Value);
-                
+
             double disocuntValue = (100 - discount) / 100.0;
             double finalPrice = defaultPrice * disocuntValue;
 
             ticket.FinalPrice = finalPrice;
         }
-        
+
         public async Task<Result<Domain.Models.Tables.Ticket>> GetTicketToBuyAsync(Guid eventId, Guid typeId)
         {
             var ticket = await _ticketRepository.GetOneToBuyDetailedAsync(eventId, typeId);
@@ -302,7 +302,7 @@ namespace Application.Handlers.Tables.Ticket
 
             return Result<Domain.Models.Tables.Ticket>.Success(ticket);
         }
-        
+
         public async Task<Result<string>> MarkTicketAsPurchased(Guid ticketId)
         {
             var ticket = await _ticketRepository.GetOneAsync(ticketId);
@@ -311,13 +311,13 @@ namespace Application.Handlers.Tables.Ticket
             if (ticket.isPurchased) return Result<string>.Failure("Failed to purchase the ticket. The ticket is already purchased");
 
             ticket.isPurchased = true;
-            
+
             var result = await _ticketRepository.SaveAsync(ticket) > 0;
             if (!result) return Result<string>.Failure("Failed to purchase the ticket");
-            
+
             return Result<string>.Success("Successfully");
         }
-        
+
         public async Task<Result<string>> MarkTicketAsNotPurchased(Guid ticketId)
         {
             var ticket = await _ticketRepository.GetOneAsync(ticketId);
@@ -326,18 +326,18 @@ namespace Application.Handlers.Tables.Ticket
             if (!ticket.isPurchased) return Result<string>.Failure("Failed to make the ticket available. The ticket is already available");
 
             ticket.isPurchased = false;
-            
+
             var result = await _ticketRepository.SaveAsync(ticket) > 0;
             if (!result) return Result<string>.Failure("Failed to make the ticket available");
-            
+
             return Result<string>.Success("Successfully");
         }
-        
-        public async Task<Result<string>> PruchaseTicket(Guid ticketId)
+
+        public async Task<Result<string>> PurchaseTicket(Guid ticketId)
         {
             var result = new Result<string>();
             var orderResult = new Result<Guid>();
-            
+
             // start transaction
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -354,7 +354,7 @@ namespace Application.Handlers.Tables.Ticket
 
                     orderResult = await _orderHandler.CreateCustomersOneAsync(orderDto);
                 }
-                
+
                 if (result.IsSuccess && orderResult.IsSuccess)
                 {
                     // create ticketOrder

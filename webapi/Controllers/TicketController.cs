@@ -19,14 +19,14 @@ namespace webapi.Controllers
             _ticketOrderHandler = ticketOrderHandler;
         }
 
-        [HttpGet("MyTickets")]
+        [HttpGet("my-tickets")]
         [Authorize(Policy = "CustomersOnly")]
         public async Task<IActionResult> GetCustomersTicketList()//[FromQuery] RequestDto request)
         {
             return HandleResult(await _ticketOrderHandler.GetCustomersTicketListAsync());
         }
-        
-        [HttpGet("AvailableTickets/{eventId}")]
+
+        [HttpGet("available-tickets/{eventId}")]
         [Authorize(Policy = "SellersOnly ")]
         public async Task<IActionResult> GetAvailableTicketList(Guid eventId)
         {
@@ -60,51 +60,51 @@ namespace webapi.Controllers
         {
             return HandleResult(await _ticketHandler.DeleteCustomersOneAsync(id));
         }
-        
-        [HttpPost("[action]")] 
+
+        [HttpPost("generate-tickets")]
         [Authorize(Policy = "SellersOnly")]
-        public async Task<IActionResult> GenerateTickets([FromBody] TicketDto ticketDto, 
+        public async Task<IActionResult> GenerateTickets([FromBody] TicketDto ticketDto,
             [FromQuery(Name = "ticket-amount")] int ticketAmount)
         {
             return HandleResult(await _ticketHandler.GenerateEventsTicketList(ticketDto, ticketAmount));
         }
-        
-        [HttpGet("[action]/{eventId}")]
+
+        [HttpGet("event-ticket-amount/{eventId}")]
         //[Authorize(Policy = "CustomersOnly")] // ?? anonymous
-        public async Task<IActionResult> EventTicketsAmount(Guid eventId)
+        public async Task<IActionResult> GetEventTicketAmount(Guid eventId)
         {
             return HandleResult(await _ticketHandler.GetEventTicketsAmountAsync(eventId));
         }
-        
-        [HttpPut("[action]")]
+
+        [HttpPut("apply-discount")]
         //[Authorize(Policy = "CustomersOnly")]
         [AllowAnonymous]
         public async Task<IActionResult> ApplyDiscount(ApplyDiscountDto applyDiscountDto)
         {
             return HandleResult(await _ticketHandler.ApplyDiscountTransactionAsync(applyDiscountDto));
         }
-        
-        [HttpPut("[action]/{ticketId}")]
+
+        [HttpPut("remove-discount/{ticketId}")]
         //[Authorize(Policy = "CustomersOnly")] // ?? 
         [AllowAnonymous]
         public async Task<IActionResult> RemoveDiscount(Guid ticketId)
         {
             return HandleResult(await _ticketHandler.RemoveDiscountTransactionAsync(ticketId));
         }
-        
-        [HttpGet("[action]")]
+
+        [HttpGet("ticket-to-buy")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetTicketToBuy([FromQuery(Name = "event-id")] Guid eventId, 
-            [FromQuery(Name = "ticket-type-id")]  Guid ticketTypeId)
+        public async Task<IActionResult> GetTicketToBuy([FromQuery(Name = "event-id")] Guid eventId,
+            [FromQuery(Name = "ticket-type-id")] Guid ticketTypeId)
         {
             return HandleResult(await _ticketHandler.GetTicketToBuyAsync(eventId, ticketTypeId));
         }
-        
-        [HttpPost("[action]/{ticketId}")]
+
+        [HttpPost("purchase-ticket/{ticketId}")]
         [Authorize(Policy = "CustomersOnly")]
-        public async Task<IActionResult> PruchaseTicket(Guid ticketId)
+        public async Task<IActionResult> PurchaseTicket(Guid ticketId)
         {
-            return HandleResult(await _ticketHandler.PruchaseTicket(ticketId));
+            return HandleResult(await _ticketHandler.PurchaseTicket(ticketId));
         }
     }
 }

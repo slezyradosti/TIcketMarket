@@ -20,7 +20,7 @@ public class TicketDiscountHandler : ITicketDiscountHandler
         _userAccessor = userAccessor;
     }
 
-    public async Task<Result<List<TicketDiscountDto>>> GetCustomersTicketDiscountListAsync()
+    public async Task<Result<List<TicketDiscountDto>>> GetSellersTicketDiscountListAsync()
     {
         var userId = _userAccessor.GetUserId();
 
@@ -33,20 +33,20 @@ public class TicketDiscountHandler : ITicketDiscountHandler
         return Result<List<TicketDiscountDto>>.Success(ticketDiscountDtos);
     }
 
-    public async Task<Result<TicketDiscountDto>> GetCustomersDiscountAsync(Guid ticketDiscountId)
+    public async Task<Result<TicketDiscountDto>> GetSellersDiscountAsync(Guid ticketDiscountId)
     {
         if (!await _ticketDiscountRepository.HasUserAccessToTheTicketDiscountAsync(ticketDiscountId,
                 _userAccessor.GetUserId()))
         {
             return Result<TicketDiscountDto>.Failure("You have no access to this data");
         }
-    
+
         var ticketDiscount = await _ticketDiscountRepository.GetOneAsync(ticketDiscountId);
-    
+
         TicketDiscountDto ticketDiscountDto = new TicketDiscountDto();
-    
+
         _mapper.Map(ticketDiscount, ticketDiscountDto);
-    
+
         return Result<TicketDiscountDto>.Success(ticketDiscountDto);
     }
 
@@ -64,75 +64,75 @@ public class TicketDiscountHandler : ITicketDiscountHandler
         return Result<string>.Success("Successfully");
     }
 
-    public async Task<Result<string>> EditCustomersOneAsync(TicketDiscountDto ticketDiscountDto)
+    public async Task<Result<string>> EditSellersOneAsync(TicketDiscountDto ticketDiscountDto)
     {
         var ticketDiscount = await _ticketDiscountRepository.GetOneAsync(ticketDiscountDto.Id);
-    
+
         if (ticketDiscount == null) return null;
-    
+
         var userId = _userAccessor.GetUserId();
-    
+
         if (!await _ticketDiscountRepository.HasUserAccessToTheTicketDiscountAsync(ticketDiscountDto.Id.Value, userId))
         {
             return Result<string>.Failure("You have no access to this data");
         }
-    
+
         ticketDiscountDto.UserId ??= userId;
         _mapper.Map(ticketDiscountDto, ticketDiscount);
-    
+
         var result = await _ticketDiscountRepository.SaveAsync(ticketDiscount) > 0;
-    
+
         if (!result) return Result<string>.Failure("Failed to update TicketDiscount");
-    
+
         return Result<string>.Success("Successfully");
     }
-    
-    public async Task<Result<string>> DeleteCustomersOneAsync(Guid ticketDiscountId)
+
+    public async Task<Result<string>> DeleteSellersOneAsync(Guid ticketDiscountId)
     {
         var ticketDiscount = await _ticketDiscountRepository.GetOneAsync(ticketDiscountId);
-    
+
         if (ticketDiscount == null) return null;
-    
+
         if (!await _ticketDiscountRepository.HasUserAccessToTheTicketDiscountAsync(ticketDiscountId, _userAccessor.GetUserId()))
         {
             return Result<string>.Failure("You have no access to this data");
         }
-    
+
         var result = await _ticketDiscountRepository.RemoveAsync(ticketDiscount) > 0;
-    
+
         if (!result) return Result<string>.Failure("Failed to delete TicketDiscount");
-    
+
         return Result<string>.Success("Successfully");
     }
-    
+
     public async Task<Result<Domain.Models.Catalogues.TicketDiscount>> ActiveDiscount(string discountCode)
     {
         var ticketDisount = await _ticketDiscountRepository.GetDiscountByCodeAsync(discountCode);
-            
+
         if (ticketDisount == null) return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("Invalid code");
-        if (ticketDisount.isActivated) 
+        if (ticketDisount.isActivated)
             return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("The code is already activated");
-            
+
         // mark discount as activated
         ticketDisount.isActivated = true;
-            
+
         var result = await _ticketDiscountRepository.SaveAsync(ticketDisount) > 0;
         if (!result) return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("Failed to activate the code");
 
         return Result<Domain.Models.Catalogues.TicketDiscount>.Success(ticketDisount);
     }
-    
+
     public async Task<Result<Domain.Models.Catalogues.TicketDiscount>> DeactivateDiscount(Guid discountId)
     {
         var ticketDisount = await _ticketDiscountRepository.GetDiscountByIdAsync(discountId);
-            
+
         if (ticketDisount == null) return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("Invalid code");
-        if (!ticketDisount.isActivated) 
+        if (!ticketDisount.isActivated)
             Result<Domain.Models.Catalogues.TicketDiscount>.Success(ticketDisount);
-            
+
         // mark discount as deactivate
         ticketDisount.isActivated = false;
-            
+
         var result = await _ticketDiscountRepository.SaveAsync(ticketDisount) > 0;
         if (!result) return Result<Domain.Models.Catalogues.TicketDiscount>.Failure("Failed to (de)activate discount");
 

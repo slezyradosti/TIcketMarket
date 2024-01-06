@@ -14,7 +14,7 @@ namespace webapi.Controllers
             _ticketTypeHandler = ticketTypeHandler;
         }
 
-        [HttpGet]
+        [HttpGet("list")]
         [Authorize(Policy = "SellersOnly")]
         public async Task<IActionResult> GetList()
         {
@@ -44,7 +44,8 @@ namespace webapi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Policy = "ModeratorsOnly")]
+        // TODO if sellets can delete TicketType?
+        [Authorize(Policy = "SellersOnly")]
         public async Task<IActionResult> DeleteOne(Guid id)
         {
             return HandleResult(await _ticketTypeHandler.DeleteOneAsync(id));

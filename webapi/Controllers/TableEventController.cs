@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Tables;
+﻿
+using Application.DTOs.Tables;
 using Application.Handlers.Tables.TableEvent;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

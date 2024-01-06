@@ -25,7 +25,7 @@ namespace webapi.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Policy = "CustomersOnly")]
-        public async Task<IActionResult> GetSellersOne(Guid id)
+        public async Task<IActionResult> GetCustomersOne(Guid id)
         {
             return HandleResult(await _orderHandler.GetCustomersOrderAsync(id));
         }
@@ -46,7 +46,7 @@ namespace webapi.Controllers
 
         [HttpDelete("{id}")]
         //TODO
-        //[Authorize(Policy = "ModeratorsOnly")]
+        [Authorize(Policy = "ModeratorsOnly")]
         public async Task<IActionResult> DeleteEvent(Guid id)
         {
             return HandleResult(await _orderHandler.DeleteCustomersOneAsync(id));

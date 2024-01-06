@@ -15,7 +15,7 @@ namespace webapi.Controllers
             _eventTypeHandler = eventTypeHandler;
         }
 
-        [HttpGet]
+        [HttpGet("list")]
         [Authorize(Policy = "SellersOnly")]
         public async Task<IActionResult> GetList()
         {

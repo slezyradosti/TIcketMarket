@@ -7,12 +7,10 @@ namespace Domain.Repositories.Repos.Tables;
 public class OrderRepository : BaseRepository<Order>, IOrderRepository
 {
     public async Task<List<Order>> GetCustomersListSortedAsync(Guid userId)
-    {
-        return await Context.Order
+        =>  await Context.Order
             .Where(o => o.UserId == userId)
             .OrderBy(x => x.CreatedAt)
             .ToListAsync();
-    }
 
     public async Task<bool> HasUserAccessToTheOrderAsync(Guid orderId, Guid userId)
     {

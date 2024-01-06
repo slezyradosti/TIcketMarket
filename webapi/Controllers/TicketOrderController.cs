@@ -16,15 +16,15 @@ namespace webapi.Controllers
         }
 
         [HttpGet]
-        [Route("MyTicketOrders")]
-        //[Authorize(Policy = "CustomersOnly")]
+        [Route("my-ticket-orders")]
+        [Authorize(Policy = "CustomersOnly")]
         public async Task<IActionResult> GetCustomersTicketList()//[FromQuery] RequestDto request)
         {
             return HandleResult(await _ticketOrderHandler.GetCustomersTicketListAsync());
         }
 
         [HttpGet("{id}")]
-        //[Authorize(Policy = "CustomersOnly")]
+        [Authorize(Policy = "CustomersOnly")]
         public async Task<IActionResult> GetCustomersOneDetailed(Guid id)
         {
             return HandleResult(await _ticketOrderHandler.GetCustomersTicketOrderDetailedAsync(id));
@@ -32,6 +32,8 @@ namespace webapi.Controllers
 
         [HttpPost]
         //[Authorize(Policy = "SellersOnly")] ???
+        // TODO
+        [Authorize(Policy = "ModeratorsOnly")] // for now for protection
         public async Task<IActionResult> CreateTicketOrder(TicketOrderDto ticketOrderDto)
         {
             return HandleResult(await _ticketOrderHandler.CreateCustomersOneAsync(ticketOrderDto));

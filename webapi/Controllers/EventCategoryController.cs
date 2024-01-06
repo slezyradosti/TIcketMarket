@@ -15,7 +15,7 @@ namespace webapi.Controllers
             _eventCategoryHandler = eventCategoryHandler;
         }
 
-        [HttpGet]
+        [HttpGet("List")]
         [Authorize(Policy = "SellersOnly")]
         public async Task<IActionResult> GetList()
         {

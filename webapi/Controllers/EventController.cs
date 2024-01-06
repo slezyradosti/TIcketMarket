@@ -15,12 +15,12 @@ namespace webapi.Controllers
             _eventHandler = eventHandler;
         }
 
-        [HttpGet("MyEvents")]
+        [HttpGet("my-events")]
         public async Task<IActionResult> GetSellersEventList()//[FromQuery] RequestDto request)
         {
             return HandleResult(await _eventHandler.GetSellersEventListAsync());
         }
-        
+
         [HttpGet("List")]
         [AllowAnonymous]
         public async Task<IActionResult> GetEventList()
