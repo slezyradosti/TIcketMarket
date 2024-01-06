@@ -14,6 +14,9 @@ import { ApplyDiscountDto } from '../models/DTOs/applyDiscountDto';
 import { TicketDiscount } from '../models/tables/ticketDiscount';
 import { TicketOrder } from '../models/tables/ticketOrder';
 import { TicketType } from '../models/catalogues/ticketType';
+import { User } from '../models/tables/user';
+import { LoginDto } from '../models/DTOs/loginDto';
+import { RegisterDto } from '../models/DTOs/registerDto';
 
 axios.defaults.baseURL = 'https://localhost:7177';
 
@@ -172,6 +175,12 @@ const TicketTypes = {
     deleteSellersOne: (id: string) => requests.delete<void>(`/TicketType/${id}`)
 }
 
+const Account = {
+    current: () => requests.get<User>('/account'),
+    login: (user: LoginDto) => requests.post<User>('/account/login', user),
+    register: (user: RegisterDto) => requests.post<User>('/account/register', user)
+}
+
 const agent = {
     Events,
     EventCategories,
@@ -183,6 +192,7 @@ const agent = {
     TicketDiscounts,
     TicketOrders,
     TicketTypes,
+    Account,
 }
 
 export default agent;
