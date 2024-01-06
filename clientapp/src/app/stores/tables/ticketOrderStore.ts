@@ -1,10 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../../api/agent";
-import { TicketType } from "../../models/catalogues/ticketType";
+import { TicketOrder } from "../../models/tables/ticketOrder";
 
-class TicketTypesStore {
-    ticketTypeRegistry = new Map<string, TicketType>();
-    selectedElement: TicketType | undefined = undefined;
+class TicketOrderStore {
+    ticketOrderRegistry = new Map<string, TicketOrder>();
+    selectedElement: TicketOrder | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -14,7 +14,7 @@ class TicketTypesStore {
     }
 
     clearData = () => {
-        this.ticketTypeRegistry.clear();
+        this.ticketOrderRegistry.clear();
         this.loadingInitial = true;
     }
 
@@ -22,11 +22,11 @@ class TicketTypesStore {
         this.loadingInitial = state;
     }
 
-    loadList = async () => {
+    loadCustomersList = async () => {
         try {
-            const result = await agent.TicketTypes.getSellersList();
-            result.forEach(ticketType => {
-                this.ticketTypeRegistry.set(ticketType.id!, ticketType);
+            const result = await agent.TicketOrders.getCustomersList();
+            result.forEach(ticketOrder => {
+                this.ticketOrderRegistry.set(ticketOrder.id!, ticketOrder);
             })
         } catch (error) {
             console.log(error);
@@ -36,7 +36,7 @@ class TicketTypesStore {
     }
 
     selectOne = (id: string) => {
-        this.selectedElement = this.ticketTypeRegistry.get(id);
+        this.selectedElement = this.ticketOrderRegistry.get(id);
     }
 
     cancelSelectedElement = () => {
@@ -44,22 +44,22 @@ class TicketTypesStore {
     }
 
     getOne = (id: string) => {
-        return this.ticketTypeRegistry.get(id)!;
+        return this.ticketOrderRegistry.get(id)!;
     }
 
     details = async (id: string) => {
-        return await agent.TicketTypes.getSellersOne(id);
+        return await agent.TicketOrders.getCustomersOne(id);
     }
 
-    createOne = async (ticketType: TicketType) => {
+    createOne = async (ticketOrder: TicketOrder) => {
         this.loading = true;
 
         try {
-            await agent.TicketTypes.createSellersOne(ticketType);
+            await agent.TicketOrders.createOne(ticketOrder);
 
             runInAction(() => {
-                this.ticketTypeRegistry.set(ticketType.id!, ticketType);
-                this.selectedElement = ticketType;
+                this.ticketOrderRegistry.set(ticketOrder.id!, ticketOrder);
+                this.selectedElement = ticketOrder;
             });
         } catch (error) {
             console.log(error);
@@ -71,14 +71,14 @@ class TicketTypesStore {
         }
     }
 
-    editOne = async (ticketType: TicketType) => {
+    editOne = async (ticketOrder: TicketOrder) => {
         this.loading = true;
 
         try {
-            await agent.TicketTypes.editOne(ticketType);
+            await agent.TicketOrders.editOne(ticketOrder);
             runInAction(() => {
-                this.ticketTypeRegistry.set(ticketType.id!, ticketType);
-                this.selectedElement = ticketType;
+                this.ticketOrderRegistry.set(ticketOrder.id!, ticketOrder);
+                this.selectedElement = ticketOrder;
                 this.editMode = false;
             })
         } catch (error) {
@@ -94,9 +94,9 @@ class TicketTypesStore {
         this.loading = true;
 
         try {
-            await agent.TicketTypes.deleteSellersOne(id);
+            await agent.TicketOrders.deleteOne(id);
             runInAction(() => {
-                this.ticketTypeRegistry.delete(id);
+                this.ticketOrderRegistry.delete(id);
                 if (this.selectedElement?.id === id) this.cancelSelectedElement();
             })
         } catch (error) {
@@ -109,4 +109,4 @@ class TicketTypesStore {
     }
 }
 
-export default TicketTypesStore
+export default TicketOrderStore

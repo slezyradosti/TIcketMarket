@@ -9,7 +9,7 @@ import { EventType } from '../models/catalogues/eventType';
 import { Order } from '../models/tables/order';
 import { TableEvent } from '../models/tables/tableEvent';
 import { Ticket } from '../models/tables/ticket';
-import { EventTicketsAmountDto } from '../models/DTOs/EventTicketsAmountDto';
+import { EventTicketsAmountDto } from '../models/DTOs/eventTicketsAmountDto';
 import { ApplyDiscountDto } from '../models/DTOs/applyDiscountDto';
 import { TicketDiscount } from '../models/tables/ticketDiscount';
 import { TicketOrder } from '../models/tables/ticketOrder';
