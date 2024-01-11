@@ -5,6 +5,12 @@ import EventCategoryStore from "./catalogues/eventCategoryStore";
 import EventTableStore from "./catalogues/eventTableStore";
 import EventTypeStore from "./catalogues/eventTypeStore";
 import TicketTypeStore from "./catalogues/ticketTypeStore";
+import EventStore from "./tables/eventStore";
+import OrderStore from "./tables/orderStore";
+import TicketOrderStore from "./tables/ticketOrderStore";
+import TicketStore from "./tables/ticketStore";
+import TicketDiscountStore from "./tables/ticketDiscountStore";
+import TableEventStore from "./tables/tableEventStore";
 
 interface Store {
     commonStore: CommonStore;
@@ -13,6 +19,12 @@ interface Store {
     eventTableStore: EventTableStore,
     eventTypeStore: EventTypeStore,
     ticketTypeStore: TicketTypeStore,
+    eventStore: EventStore,
+    orderStore: OrderStore,
+    ticketOrderStore: TicketOrderStore,
+    ticketStore: TicketStore,
+    ticketDiscountStore: TicketDiscountStore,
+    tableEventStore: TableEventStore
 }
 
 export const store: Store = {
@@ -22,6 +34,12 @@ export const store: Store = {
     eventTableStore: new EventTableStore(),
     eventTypeStore: new EventTypeStore(),
     ticketTypeStore: new TicketTypeStore(),
+    eventStore: new EventStore(),
+    orderStore: new OrderStore(),
+    ticketOrderStore: new TicketOrderStore(),
+    ticketStore: new TicketStore(),
+    ticketDiscountStore: new TicketDiscountStore(),
+    tableEventStore: new TableEventStore()
 
 }
 

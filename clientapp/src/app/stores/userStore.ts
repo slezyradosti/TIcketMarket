@@ -5,9 +5,11 @@ import agent from "../api/agent";
 import { store } from "./store";
 import { router } from "../router/routes";
 import { RegisterDto } from "../models/DTOs/registerDto";
+import { Roles } from "../models/roles";
 
 class UserStore {
     user: User | null = null;
+    userRights: Roles | undefined = undefined;
 
     constructor() {
         makeAutoObservable(this)
@@ -43,6 +45,15 @@ class UserStore {
         try {
             const user = await agent.Account.current();
             runInAction(() => this.user = user);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    getUserRights = async () => {
+        try {
+            const userRights = await agent.Account.getUserRights();
+            runInAction(() => this.userRights = userRights.toLocaleLowerCase() as Roles);
         } catch (error) {
             console.log(error);
         }

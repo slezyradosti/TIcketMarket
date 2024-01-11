@@ -178,7 +178,8 @@ const TicketTypes = {
 const Account = {
     current: () => requests.get<User>('/account'),
     login: (user: LoginDto) => requests.post<User>('/account/login', user),
-    register: (user: RegisterDto) => requests.post<User>('/account/register', user)
+    register: (user: RegisterDto) => requests.post<User>('/account/register', user),
+    getUserRights: () => requests.get<string>('/account/get-user-rights')
 }
 
 const agent = {

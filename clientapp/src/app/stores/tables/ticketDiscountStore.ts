@@ -109,4 +109,4 @@ class TicketDiscountStore {
     }
 }
 
-export default TableEventStore
+export default TicketDiscountStore
