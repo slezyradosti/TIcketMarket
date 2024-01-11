@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Users.DTOS;
+﻿using System.Security.Claims;
+using Application.DTOs.Users.DTOS;
 using Application.Handlers.Logic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +47,18 @@ namespace webapi.Controllers
         private void LogInfo(string info)
         {
             _logger?.LogInformation($"{DateTime.UtcNow}: {info}");
+        }
+        
+        [AllowAnonymous]
+        [HttpGet("get-user-rights")]
+        public IActionResult GetUserSellerCustomerRights(LoginDto loginDto)
+        {
+            LogInfo($"User {loginDto.Email} is getting User's Seller/Customer rights");
+            
+            var claim = User.Claims.Where(c => c.Type == "SellerId").FirstOrDefault();
+            claim ??= User.Claims.Where(c => c.Type == "CustomerId").FirstOrDefault();
+
+            return Ok(claim.Type);
         }
     }
 }
