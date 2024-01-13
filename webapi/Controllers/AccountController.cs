@@ -48,17 +48,17 @@ namespace webapi.Controllers
         {
             _logger?.LogInformation($"{DateTime.UtcNow}: {info}");
         }
-        
+
         [AllowAnonymous]
         [HttpGet("get-user-rights")]
-        public IActionResult GetUserSellerCustomerRights(LoginDto loginDto)
+        public IActionResult GetUserSellerCustomerRights()
         {
-            LogInfo($"User {loginDto.Email} is getting User's Seller/Customer rights");
-            
+            LogInfo($"User is getting User's Seller/Customer rights");
+
             var claim = User.Claims.Where(c => c.Type == "SellerId").FirstOrDefault();
             claim ??= User.Claims.Where(c => c.Type == "CustomerId").FirstOrDefault();
 
-            return Ok(claim.Type);
+            return Ok(claim?.Type);
         }
     }
 }
