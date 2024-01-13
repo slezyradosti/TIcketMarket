@@ -1,11 +1,15 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
 import { Dropdown, DropdownItem, DropdownMenu, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
+import { useStore } from "../../stores/store";
+import LoginForm from "../../../features/user/LoginForm";
+import RegisterForm from "../../../features/user/RegisterForm";
 
 function AnonymNavBar() {
     const [activeItem, setActiveItem] = useState<string>();
-
     const handleItemClick = (name: string) => setActiveItem(name);
+    const { modalStore } = useStore();
+
 
     return (
         <>
@@ -34,9 +38,11 @@ function AnonymNavBar() {
                         <DropdownMenu>
                             <DropdownItem
                                 text='Log in'
+                                onClick={() => modalStore.openModal(<LoginForm />)}
                             />
                             <DropdownItem
                                 text='Register'
+                                onClick={() => modalStore.openModal(<RegisterForm />)}
                             />
                         </DropdownMenu>
                     </Dropdown>
