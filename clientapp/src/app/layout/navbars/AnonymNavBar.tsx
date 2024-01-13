@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import { useState } from "react";
 import { Dropdown, DropdownItem, DropdownMenu, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 
-function SellerNavBar() {
+function AnonymNavBar() {
     const [activeItem, setActiveItem] = useState<string>();
 
     const handleItemClick = (name: string) => setActiveItem(name);
@@ -11,14 +11,14 @@ function SellerNavBar() {
         <>
             <Menu color='blue' inverted style={{ borderRadius: '0' }}>
                 <MenuItem
-                    name='My Events'
-                    active={activeItem === 'my_events'}
-                    onClick={() => handleItemClick('my_events')}
+                    name='Home'
+                    active={activeItem === 'home'}
+                    onClick={() => handleItemClick('home')}
                 />
                 <MenuItem
-                    name='My Discounts'
-                    active={activeItem === 'my_discounts'}
-                    onClick={() => handleItemClick('my_discounts')}
+                    name='Events'
+                    active={activeItem === 'events'}
+                    onClick={() => handleItemClick('events')}
                 />
 
                 <MenuMenu position='right'>
@@ -33,7 +33,10 @@ function SellerNavBar() {
                     >
                         <DropdownMenu>
                             <DropdownItem
-                                text='Log out'
+                                text='Log in'
+                            />
+                            <DropdownItem
+                                text='Register'
                             />
                         </DropdownMenu>
                     </Dropdown>
@@ -43,4 +46,4 @@ function SellerNavBar() {
     );
 }
 
-export default observer(SellerNavBar);
+export default observer(AnonymNavBar);

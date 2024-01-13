@@ -2,6 +2,7 @@ import { observer } from 'mobx-react';
 import { Outlet } from 'react-router';
 import { ToastContainer } from 'react-toastify';
 import { Container } from 'semantic-ui-react';
+import NavBar from './NavBar';
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
                 //     : 
                 (
                     <>
-                        {/* <NavBar openNav={openNav} closeNav={closeNav} /> */}
+                        <NavBar />
                         <Container fluid>
                             <Outlet />
                         </Container>

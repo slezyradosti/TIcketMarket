@@ -1,42 +1,49 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
-import { Dropdown, Header, Menu, MenuItem } from "semantic-ui-react";
+import { Dropdown, DropdownItem, DropdownMenu, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 
 function CustomerNavBar() {
     const [activeItem, setActiveItem] = useState<string>();
 
     const handleItemClick = (name: string) => setActiveItem(name);
-
-    const dropdownOptions = [
-        { key: 'my_orders', text: 'My Orders', value: 'my_orders' },
-        { key: 'my_tickets', text: 'My tickets', value: 'my_tikets' },
-        { key: 'logout', text: 'Logout', value: 'logout' },
-    ]
-
     return (
         <>
-            <Header>
-                Ticket Market
-            </Header>
-            <Menu>
+            <Menu color='blue' inverted style={{ borderRadius: '0' }}>
                 <MenuItem
-                    name='events'
+                    name='Home'
+                    active={activeItem === 'home'}
+                    onClick={() => handleItemClick('home')}
+                />
+                <MenuItem
+                    name='Events'
                     active={activeItem === 'events'}
                     onClick={() => handleItemClick('events')}
-                >
-                    Events
-                </MenuItem>
-            </Menu>
+                />
 
-            <Dropdown
-                button
-                className='icon'
-                floating
-                labeled
-                icon='user outline'
-                options={dropdownOptions}
-                text='Select Language'
-            />
+                <MenuMenu position='right'>
+                    <Dropdown
+                        item
+                        text='Account'
+                        icon='user outline'
+                        floating
+                        labeled
+                        button
+                        className='icon'
+                    >
+                        <DropdownMenu>
+                            <DropdownItem
+                                text='My orders'
+                            />
+                            <DropdownItem
+                                text='My Tickets'
+                            />
+                            <DropdownItem
+                                text='Log out'
+                            />
+                        </DropdownMenu>
+                    </Dropdown>
+                </MenuMenu>
+            </Menu >
         </>
     );
 }

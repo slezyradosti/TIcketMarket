@@ -17,3 +17,4 @@ C:\Users\Олег\source\repos\TicketMarket\Application\obj\Debug\net8.0\Applica
 C:\Users\Олег\source\repos\TicketMarket\Application\obj\Debug\net8.0\ref\Application.dll
 C:\Users\Олег\source\repos\TicketMarket\Application\bin\Debug\net8.0\Application.runtimeconfig.json
 C:\Users\Олег\source\repos\TicketMarket\Application\obj\Debug\net8.0\Application.genruntimeconfig.cache
+C:\Users\Олег\source\repos\TicketMarket\Application\obj\Debug\net8.0\Application.sourcelink.json

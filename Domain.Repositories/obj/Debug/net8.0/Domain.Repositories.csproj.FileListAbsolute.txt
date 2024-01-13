@@ -15,3 +15,4 @@ C:\Users\Олег\source\repos\TicketMarket\Domain.Repositories\obj\Debug\net8.0
 C:\Users\Олег\source\repos\TicketMarket\Domain.Repositories\obj\Debug\net8.0\Domain.Repositories.pdb
 C:\Users\Олег\source\repos\TicketMarket\Domain.Repositories\obj\Debug\net8.0\Domain.Repositories.genruntimeconfig.cache
 C:\Users\Олег\source\repos\TicketMarket\Domain.Repositories\obj\Debug\net8.0\ref\Domain.Repositories.dll
+C:\Users\Олег\source\repos\TicketMarket\Domain.Repositories\obj\Debug\net8.0\Domain.Repositories.sourcelink.json
