@@ -13,6 +13,10 @@ class EventCategoryStore {
         makeAutoObservable(this);
     }
 
+    get getArray() {
+        return Array.from(this.eventCategoryRegistry.values());
+    }
+
     clearData = () => {
         this.eventCategoryRegistry.clear();
         this.loadingInitial = true;
@@ -23,6 +27,8 @@ class EventCategoryStore {
     }
 
     loadList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.EventCategories.list();
             result.forEach(eventCategory => {

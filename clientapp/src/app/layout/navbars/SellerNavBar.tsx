@@ -15,12 +15,14 @@ function SellerNavBar() {
     return (
         <>
             <Menu color='blue' inverted style={{ borderRadius: '0' }}>
-                <MenuItem as={Link} to='event/my-events'
+                <MenuItem
+                    as={Link} to='event/my-events'
                     name='My Events'
                     active={activeItem === 'my_events'}
                     onClick={() => handleItemClick('my_events')}
                 />
                 <MenuItem
+                    as={Link} to='TicketDiscount/my-discounts'
                     name='My Discounts'
                     active={activeItem === 'my_discounts'}
                     onClick={() => handleItemClick('my_discounts')}
@@ -29,7 +31,7 @@ function SellerNavBar() {
                 <MenuMenu position='right'>
                     <Dropdown
                         item
-                        text='Account'
+                        text={userStore.user?.firstname}
                         icon='user outline'
                         floating
                         labeled

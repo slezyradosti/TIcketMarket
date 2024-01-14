@@ -28,7 +28,7 @@ function CustomerNavBar() {
                 <MenuMenu position='right'>
                     <Dropdown
                         item
-                        text='Account'
+                        text={userStore.user?.firstname}
                         icon='user outline'
                         floating
                         labeled

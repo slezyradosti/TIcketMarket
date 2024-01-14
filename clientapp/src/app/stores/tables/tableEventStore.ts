@@ -13,6 +13,10 @@ class TableEventStore {
         makeAutoObservable(this);
     }
 
+    get getArray() {
+        return Array.from(this.tableEventRegistry.values());
+    }
+
     clearData = () => {
         this.tableEventRegistry.clear();
         this.loadingInitial = true;
@@ -23,6 +27,8 @@ class TableEventStore {
     }
 
     loadList = async (eventId: string) => {
+        this.clearData();
+
         try {
             const result = await agent.TableEvents.list(eventId);
             result.forEach(tableEvent => {

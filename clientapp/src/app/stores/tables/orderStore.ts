@@ -13,6 +13,10 @@ class OrderStore {
         makeAutoObservable(this);
     }
 
+    get getArray() {
+        return Array.from(this.orderRegistry.values());
+    }
+
     clearData = () => {
         this.orderRegistry.clear();
         this.loadingInitial = true;
@@ -23,6 +27,8 @@ class OrderStore {
     }
 
     loadCustomersList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.Orders.customersOrderlist();
             result.forEach(order => {

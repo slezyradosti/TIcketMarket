@@ -47,7 +47,8 @@ class UserStore {
     logout = () => {
         store.commonStore.setToken(null);
         this.user = null;
-        router.navigate('/');
+        this.userRights = undefined;
+        router.navigate('/home');
     }
 
     getUser = async () => {

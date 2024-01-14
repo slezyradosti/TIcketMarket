@@ -13,6 +13,10 @@ class EventTypeStore {
         makeAutoObservable(this);
     }
 
+    get getArray() {
+        return Array.from(this.eventTypeRegistry.values());
+    }
+
     clearData = () => {
         this.eventTypeRegistry.clear();
         this.loadingInitial = true;
@@ -23,6 +27,8 @@ class EventTypeStore {
     }
 
     loadList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.EventTypes.list();
             result.forEach(eventType => {

@@ -22,7 +22,13 @@ class EventTableStore {
         this.loadingInitial = state;
     }
 
+    get getArray() {
+        return Array.from(this.eventTableRegistry.values());
+    }
+
     loadList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.EventTables.list();
             result.forEach(eventTable => {

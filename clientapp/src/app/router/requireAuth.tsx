@@ -6,7 +6,7 @@ function RequireAuth() {
     const location = useLocation();
 
     if (!isLoggedIn) {
-        return <Navigate to='/' state={location} />
+        return <Navigate to='/home' state={location} />
     }
 
     return <Outlet />

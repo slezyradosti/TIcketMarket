@@ -10,7 +10,7 @@ function OwnedEventList() {
 
     useEffect(() => {
         eventStore.loadSellersList();
-    }, []);
+    }, [eventStore]);
 
     return (
         <>

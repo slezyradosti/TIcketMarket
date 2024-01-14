@@ -16,6 +16,10 @@ class TicketStore {
         makeAutoObservable(this);
     }
 
+    get getArray() {
+        return Array.from(this.ticketRegistry.values());
+    }
+
     clearData = () => {
         this.ticketRegistry.clear();
         this.loadingInitial = true;
@@ -26,6 +30,8 @@ class TicketStore {
     }
 
     loadCustomersList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.Tickets.customersList();
             result.forEach(ticket => {
@@ -39,6 +45,8 @@ class TicketStore {
     }
 
     loadAvailableList = async (eventId: string) => {
+        this.clearData();
+
         try {
             const result = await agent.Tickets.availableTicketList(eventId);
             result.forEach(ticket => {

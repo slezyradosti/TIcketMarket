@@ -13,6 +13,10 @@ class TicketTypeStore {
         makeAutoObservable(this);
     }
 
+    get getArray() {
+        return Array.from(this.ticketTypeRegistry.values());
+    }
+
     clearData = () => {
         this.ticketTypeRegistry.clear();
         this.loadingInitial = true;
@@ -23,6 +27,8 @@ class TicketTypeStore {
     }
 
     loadList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.TicketTypes.getSellersList();
             result.forEach(ticketType => {

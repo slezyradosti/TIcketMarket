@@ -27,6 +27,8 @@ class EventStore {
     }
 
     loadList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.Events.list();
             result.forEach(event => {
@@ -40,6 +42,8 @@ class EventStore {
     }
 
     loadSellersList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.Events.sellersList();
             result.forEach(event => {

@@ -4,13 +4,17 @@ import { TicketDiscount } from "../../models/tables/ticketDiscount";
 
 class TicketDiscountStore {
     ticketDiscountRegistry = new Map<string, TicketDiscount>();
-    selectedElement: TabTicketDiscountleEvent | undefined = undefined;
+    selectedElement: TicketDiscount | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    get getArray() {
+        return Array.from(this.ticketDiscountRegistry.values());
     }
 
     clearData = () => {
@@ -23,9 +27,13 @@ class TicketDiscountStore {
     }
 
     loadSellersList = async () => {
+        this.clearData();
+
         try {
             const result = await agent.TicketDiscounts.getSellersList();
             result.forEach(ticketDiscount => {
+                ticketDiscount.createdAt = new Date(ticketDiscount.createdAt);
+                ticketDiscount.updatedAt = new Date(ticketDiscount.updatedAt);
                 this.ticketDiscountRegistry.set(ticketDiscount.id!, ticketDiscount);
             })
         } catch (error) {
