@@ -1,4 +1,4 @@
-import { Button, Container, Header, Label } from "semantic-ui-react";
+import { Button, Container, Header, Input, Label } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
@@ -13,19 +13,16 @@ function LoginForm() {
         error: null
     }
 
-    const validationSchema = Yup.object({
-        email: Yup.string().email()
-    });
-
     return (
         <Container >
             <Formik
-                validationSchema={validationSchema}
                 initialValues={initialValues}
                 onSubmit={(values, { setErrors }) => userStore.login(values).catch(() =>
-                    setErrors({ error: 'Invalid email or password' }))}
+                    setErrors({ error: 'Invalid email or password' })
+                )
+                }
             >
-                {({ handleSubmit, isSubmitting, errors }) => (
+                {({ handleSubmit, handleChange, isSubmitting, errors }) => (
                     <Form
                         className='ui form'
                         onSubmit={handleSubmit}
@@ -37,6 +34,8 @@ function LoginForm() {
                                 required={true}
                                 placeholder='Email'
                                 name='email'
+                                type='email'
+                                onChange={handleChange}
                             />
                         </div>
                         <div className="ui form field">
@@ -45,6 +44,7 @@ function LoginForm() {
                                 placeholder='Password'
                                 name='password'
                                 type='password'
+                                onChange={handleChange}
                             />
                         </div>
                         <ErrorMessage name='error' render={() =>

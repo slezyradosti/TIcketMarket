@@ -13,6 +13,10 @@ class EventStore {
         makeAutoObservable(this);
     }
 
+    get getArray() {
+        return Array.from(this.eventRegistry.values());
+    }
+
     clearData = () => {
         this.eventRegistry.clear();
         this.loadingInitial = true;

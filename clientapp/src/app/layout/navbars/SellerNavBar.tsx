@@ -1,16 +1,21 @@
 import { observer } from "mobx-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Dropdown, DropdownItem, DropdownMenu, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
+import { useStore } from "../../stores/store";
 
 function SellerNavBar() {
+    const { userStore } = useStore();
     const [activeItem, setActiveItem] = useState<string>();
 
     const handleItemClick = (name: string) => setActiveItem(name);
 
+    const handleLogout = () => userStore.logout();
+
     return (
         <>
             <Menu color='blue' inverted style={{ borderRadius: '0' }}>
-                <MenuItem
+                <MenuItem as={Link} to='event/my-events'
                     name='My Events'
                     active={activeItem === 'my_events'}
                     onClick={() => handleItemClick('my_events')}
@@ -33,7 +38,8 @@ function SellerNavBar() {
                     >
                         <DropdownMenu>
                             <DropdownItem
-                                text='Log out'
+                                text='Logout'
+                                onClick={() => handleLogout()}
                             />
                         </DropdownMenu>
                     </Dropdown>

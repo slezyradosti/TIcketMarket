@@ -21,16 +21,25 @@ class UserStore {
 
     login = async (creds: LoginDto) => {
         const user = await agent.Account.login(creds);
+
         store.commonStore.setToken(user.token!);
         runInAction(() => this.user = user);
-        router.navigate('/home');
+
+        await this.getUserRights();
+
+        //router.navigate('/home');
         store.modalStore.closeModal();
     }
 
     register = async (creds: RegisterDto) => {
         const user = await agent.Account.register(creds);
         store.commonStore.setToken(user.token!);
-        runInAction(() => this.user = user);
+
+        runInAction(() => {
+            this.user = user;
+            this.userRights = creds.isCustomer ? Roles.Customer : Roles.Seller;
+        });
+
         router.navigate('/home');
         store.modalStore.closeModal();
     }
