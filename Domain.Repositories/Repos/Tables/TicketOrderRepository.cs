@@ -6,7 +6,7 @@ namespace Domain.Repositories.Repos.Tables;
 
 public class TicketOrderRepository : BaseRepository<TicketOrder>, ITicketOrderRepository
 {
-    public async Task<List<TicketOrder>> GetCustomersTicketListSortedAsync(Guid userId)
+    public async Task<List<TicketOrder>> GetCustomersTicketOrderListSortedAsync(Guid userId)
     {
         return await Context.TicketOrder
             .Where(to => to.Order.UserId == userId)
@@ -42,5 +42,29 @@ public class TicketOrderRepository : BaseRepository<TicketOrder>, ITicketOrderRe
             .Include(to => to.Order)
             .Include(to => to.Ticket)
             .FirstOrDefaultAsync();
+    }
+    
+    public async Task<List<Ticket>> GetCustomersTicketListSortedAsync(Guid userId)
+    {
+        return await Context.TicketOrder
+            .Where(to => to.Order.UserId == userId)
+            .Include(to => to.Ticket)
+            .Include(to => to.Order)
+            .Select(t => new Ticket
+            {
+                Id = t.Ticket.Id,
+                CreatedAt = t.Ticket.CreatedAt,
+                UpdatedAt = t.Ticket.UpdatedAt,
+                Number = t.Ticket.Number,
+                Type = t.Ticket.Type,
+                TypeId = t.Ticket.TypeId,
+                Event = t.Ticket.Event,
+                EventId = t.Ticket.EventId,
+                Discount = t.Ticket.Discount,
+                DiscountId = t.Ticket.DiscountId,
+                FinalPrice = t.Ticket.FinalPrice
+            })
+            .OrderBy(t => t.CreatedAt)
+            .ToListAsync();
     }
 }

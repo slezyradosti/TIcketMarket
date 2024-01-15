@@ -19,17 +19,17 @@ namespace Application.Handlers.Tables.TicketOrder
             _userAccessor = userAccessor;
         }
 
-        public async Task<Result<List<TicketOrderDto>>> GetCustomersTicketListAsync()
+        public async Task<Result<List<TicketDto>>> GetCustomersTicketListAsync()
         {
             var userId = _userAccessor.GetUserId();
 
             var ticketOrders = await _ticketOrderRepository.GetCustomersTicketListSortedAsync(userId);
 
-            List<TicketOrderDto> ticketOrdersDtos = new List<TicketOrderDto>();
+            List<TicketDto> ticketOrdersDtos = new List<TicketDto>();
 
             _mapper.Map(ticketOrders, ticketOrdersDtos);
 
-            return Result<List<TicketOrderDto>>.Success(ticketOrdersDtos);
+            return Result<List<TicketDto>>.Success(ticketOrdersDtos);
         }
 
         public async Task<Result<TicketOrderDto>> GetCustomersTicketOrderDetailedAsync(Guid ticketId)
