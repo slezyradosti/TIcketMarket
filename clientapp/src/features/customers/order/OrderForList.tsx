@@ -11,7 +11,7 @@ function OrderForList({ order }: Props) {
         <>
             <GridRow key={order.id}>
                 <GridColumn width={12}>
-                    <ItemHeader>Name:  {order.user?.firstname}  {order.user?.lastname}</ItemHeader>
+                    {/* <ItemHeader>Name:  {order.}  {order.user?.lastname}</ItemHeader> */}
                     <ItemDescription>Created at: {order.createdAt.toLocaleDateString()}</ItemDescription>
                 </GridColumn>
             </GridRow>
