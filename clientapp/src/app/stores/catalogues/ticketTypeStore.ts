@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../../api/agent";
 import { TicketType } from "../../models/catalogues/ticketType";
+import ModuleStore from "../moduleStore";
 
 class TicketTypeStore {
     ticketTypeRegistry = new Map<string, TicketType>();
@@ -32,6 +33,8 @@ class TicketTypeStore {
         try {
             const result = await agent.TicketTypes.getSellersList();
             result.forEach(ticketType => {
+                ModuleStore.convertDateFromApi(ticketType);
+
                 this.ticketTypeRegistry.set(ticketType.id!, ticketType);
             })
         } catch (error) {

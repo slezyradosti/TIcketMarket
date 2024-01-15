@@ -11,10 +11,10 @@ function EventForList({ event }: Props) {
         <>
             <GridRow key={event.id}>
                 <GridColumn width={4}>
-                    <ItemHeader> {event.title}</ItemHeader>
+                    <ItemHeader>Title: {event.title}</ItemHeader>
                 </GridColumn>
                 <GridColumn width={9}>
-                    <ItemDescription>{event.description}</ItemDescription>
+                    <ItemDescription>Description: {event.description}</ItemDescription>
                 </GridColumn>
             </GridRow>
         </>

@@ -1,5 +1,6 @@
 import { BaseModel } from "../BaseModel";
 import { TicketType } from "../catalogues/ticketType";
+import { Event } from "./event";
 import { TicketDiscount } from "./ticketDiscount";
 
 export interface Ticket extends BaseModel {
@@ -11,4 +12,5 @@ export interface Ticket extends BaseModel {
     discount: TicketDiscount | null;
     discountId: string;
     isPurchased: boolean;
+    finalPrice: number;
 }

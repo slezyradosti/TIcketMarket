@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { EventCategory } from "../../models/catalogues/eventCategory";
 import agent from "../../api/agent";
+import ModuleStore from "../moduleStore";
 
 class EventCategoryStore {
     eventCategoryRegistry = new Map<string, EventCategory>();
@@ -32,8 +33,8 @@ class EventCategoryStore {
         try {
             const result = await agent.EventCategories.list();
             result.forEach(eventCategory => {
-                // eventCategory.createdAt = eventCategory.createdAt?.split('T')[0];
-                // eventCategory.updatedAt = eventCategory.updatedAt?.split('T')[0];
+                ModuleStore.convertDateFromApi(eventCategory);
+
                 this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
             })
         } catch (error) {

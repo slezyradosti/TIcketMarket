@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../../api/agent";
 import { Event } from "../../models/tables/event";
+import ModuleStore from "../moduleStore";
 
 class EventStore {
     eventRegistry = new Map<string, Event>();
@@ -47,8 +48,8 @@ class EventStore {
         try {
             const result = await agent.Events.sellersList();
             result.forEach(event => {
-                // event.createdAt = event.createdAt?.split('T')[0];
-                // event.updatedAt = event.updatedAt?.split('T')[0];
+                ModuleStore.convertDateFromApi(event);
+
                 this.eventRegistry.set(event.id!, event);
             })
         } catch (error) {

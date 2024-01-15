@@ -3,6 +3,7 @@ import agent from "../../api/agent";
 import { Ticket } from "../../models/tables/ticket";
 import { EventTicketsAmountDto } from "../../models/DTOs/eventTicketsAmountDto";
 import { ApplyDiscountDto } from "../../models/DTOs/applyDiscountDto";
+import ModuleStore from "../moduleStore";
 
 class TicketStore {
     ticketRegistry = new Map<string, Ticket>();
@@ -35,6 +36,8 @@ class TicketStore {
         try {
             const result = await agent.Tickets.customersList();
             result.forEach(ticket => {
+                ModuleStore.convertDateFromApi(ticket);
+
                 this.ticketRegistry.set(ticket.id!, ticket);
             })
         } catch (error) {
@@ -50,6 +53,8 @@ class TicketStore {
         try {
             const result = await agent.Tickets.availableTicketList(eventId);
             result.forEach(ticket => {
+                ModuleStore.convertDateFromApi(ticket);
+
                 this.ticketRegistry.set(ticket.id!, ticket);
             })
         } catch (error) {

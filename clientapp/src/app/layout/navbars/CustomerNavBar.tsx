@@ -2,6 +2,7 @@ import { observer } from "mobx-react";
 import { useState } from "react";
 import { Dropdown, DropdownItem, DropdownMenu, Menu, MenuItem, MenuMenu } from "semantic-ui-react";
 import { useStore } from "../../stores/store";
+import { Link } from "react-router-dom";
 
 function CustomerNavBar() {
     const { userStore } = useStore();
@@ -15,11 +16,13 @@ function CustomerNavBar() {
         <>
             <Menu color='blue' inverted style={{ borderRadius: '0' }}>
                 <MenuItem
+                    as={Link} to='home'
                     name='Home'
                     active={activeItem === 'home'}
                     onClick={() => handleItemClick('home')}
                 />
                 <MenuItem
+                    as={Link} to='event/list'
                     name='Events'
                     active={activeItem === 'events'}
                     onClick={() => handleItemClick('events')}
@@ -37,9 +40,11 @@ function CustomerNavBar() {
                     >
                         <DropdownMenu>
                             <DropdownItem
+                                as={Link} to='order/my-orders'
                                 text='My orders'
                             />
                             <DropdownItem
+                                as={Link} to='ticket/my-tickets'
                                 text='My Tickets'
                             />
                             <DropdownItem

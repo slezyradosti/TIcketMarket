@@ -7,7 +7,9 @@ import App from "../layout/App";
 import RequireAuth from "./requireAuth";
 import HomeCustomer from "../../features/customers/HomeCustomer";
 import OwnedEventList from "../../features/sellers/OwnedEventList";
-import OwnedDiscountList from "../../features/sellers/OwnedDiscountList";
+import OwnedDiscountList from "../../features/sellers/discount/OwnedDiscountList";
+import OrderListCustomer from "../../features/customers/order/OrderListCustomer";
+import TicketListCustomer from "../../features/customers/ticket/TicketListCustomer";
 
 
 export const routes: RouteObject[] = [
@@ -28,6 +30,8 @@ export const routes: RouteObject[] = [
 
                     { path: 'event/my-events', element: < OwnedEventList /> },
                     { path: 'TicketDiscount/my-discounts', element: < OwnedDiscountList /> },
+                    { path: 'Order/my-orders', element: < OrderListCustomer /> },
+                    { path: 'Ticket/my-tickets', element: < TicketListCustomer /> },
                 ],
             },
 

@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../../api/agent";
 import { TicketDiscount } from "../../models/tables/ticketDiscount";
+import ModuleStore from "../moduleStore";
 
 class TicketDiscountStore {
     ticketDiscountRegistry = new Map<string, TicketDiscount>();
@@ -32,8 +33,8 @@ class TicketDiscountStore {
         try {
             const result = await agent.TicketDiscounts.getSellersList();
             result.forEach(ticketDiscount => {
-                ticketDiscount.createdAt = new Date(ticketDiscount.createdAt);
-                ticketDiscount.updatedAt = new Date(ticketDiscount.updatedAt);
+                ModuleStore.convertDateFromApi(ticketDiscount);
+
                 this.ticketDiscountRegistry.set(ticketDiscount.id!, ticketDiscount);
             })
         } catch (error) {

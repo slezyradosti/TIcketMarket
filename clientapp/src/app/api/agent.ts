@@ -138,7 +138,7 @@ const TableEvents = {
 }
 
 const Tickets = {
-    customersList: () => requests.get<Ticket[]>('/Ticket/my-ticket'),
+    customersList: () => requests.get<Ticket[]>('/Ticket/my-tickets'),
     availableTicketList: (eventId: string) => requests.get<Ticket[]>(`/Ticket/available-tickets/${eventId}`),
     getCustomersOne: (id: string) => requests.get<Ticket>(`/Ticket/${id}`),
     createOne: (ticket: Ticket) => requests.post<void>('/Ticket', ticket),

@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../../api/agent";
 import { Order } from "../../models/tables/order";
+import ModuleStore from "../moduleStore";
 
 class OrderStore {
     orderRegistry = new Map<string, Order>();
@@ -32,6 +33,8 @@ class OrderStore {
         try {
             const result = await agent.Orders.customersOrderlist();
             result.forEach(order => {
+                ModuleStore.convertDateFromApi(order);
+
                 this.orderRegistry.set(order.id!, order);
             })
         } catch (error) {
