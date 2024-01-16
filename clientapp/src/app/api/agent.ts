@@ -122,7 +122,7 @@ const EventTypes = {
 }
 
 const Orders = {
-    customersOrderlist: () => requests.get<Order[]>('/Order/my-orders'),
+    // customersOrderlist: () => requests.get<Order[]>('/Order/my-orders'),
     getCustomersOne: (id: string) => requests.get<Order>(`/Order/${id}`),
     createOne: (order: Order) => requests.post<void>('/Order', order),
     //editOne: (order: Order) => requests.put<void>(`/Order/${order.id}`, order),
@@ -138,7 +138,7 @@ const TableEvents = {
 }
 
 const Tickets = {
-    customersList: () => requests.get<Ticket[]>('/Ticket/my-tickets'),
+    // customersList: () => requests.get<Ticket[]>('/Ticket/my-tickets'),
     availableTicketList: (eventId: string) => requests.get<Ticket[]>(`/Ticket/available-tickets/${eventId}`),
     getCustomersOne: (id: string) => requests.get<Ticket>(`/Ticket/${id}`),
     createOne: (ticket: Ticket) => requests.post<void>('/Ticket', ticket),
@@ -184,6 +184,11 @@ const Account = {
     getUserRights: () => requests.get<string>('/account/get-user-rights')
 }
 
+const Profile = {
+    customersList: () => requests.get<Ticket[]>('/Profile/my-tickets'),
+    customersOrderlist: () => requests.get<Order[]>('/Profile/my-orders'),
+}
+
 const agent = {
     Events,
     EventCategories,
@@ -196,6 +201,7 @@ const agent = {
     TicketOrders,
     TicketTypes,
     Account,
+    Profile
 }
 
 export default agent;

@@ -30,22 +30,22 @@ class TicketStore {
         this.loadingInitial = state;
     }
 
-    loadCustomersList = async () => {
-        this.clearData();
+    // loadCustomersList = async () => {
+    //     this.clearData();
 
-        try {
-            const result = await agent.Tickets.customersList();
-            result.forEach(ticket => {
-                ModuleStore.convertDateFromApi(ticket);
+    //     try {
+    //         const result = await agent.Tickets.customersList();
+    //         result.forEach(ticket => {
+    //             ModuleStore.convertDateFromApi(ticket);
 
-                this.ticketRegistry.set(ticket.id!, ticket);
-            })
-        } catch (error) {
-            console.log(error);
-        } finally {
-            this.setLoadingInitial(false);
-        }
-    }
+    //             this.ticketRegistry.set(ticket.id!, ticket);
+    //         })
+    //     } catch (error) {
+    //         console.log(error);
+    //     } finally {
+    //         this.setLoadingInitial(false);
+    //     }
+    // }
 
     loadAvailableList = async (eventId: string) => {
         this.clearData();

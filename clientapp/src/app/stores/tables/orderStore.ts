@@ -27,22 +27,22 @@ class OrderStore {
         this.loadingInitial = state;
     }
 
-    loadCustomersList = async () => {
-        this.clearData();
+    // loadCustomersList = async () => {
+    //     this.clearData();
 
-        try {
-            const result = await agent.Orders.customersOrderlist();
-            result.forEach(order => {
-                ModuleStore.convertDateFromApi(order);
+    //     try {
+    //         const result = await agent.Orders.customersOrderlist();
+    //         result.forEach(order => {
+    //             ModuleStore.convertDateFromApi(order);
 
-                this.orderRegistry.set(order.id!, order);
-            })
-        } catch (error) {
-            console.log(error);
-        } finally {
-            this.setLoadingInitial(false);
-        }
-    }
+    //             this.orderRegistry.set(order.id!, order);
+    //         })
+    //     } catch (error) {
+    //         console.log(error);
+    //     } finally {
+    //         this.setLoadingInitial(false);
+    //     }
+    // }
 
     selectOne = (id: string) => {
         this.selectedElement = this.orderRegistry.get(id);
