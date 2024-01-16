@@ -15,12 +15,12 @@ namespace webapi.Controllers
             _orderHandler = orderHandler;
         }
 
-        [HttpGet("my-orders")]
-        [Authorize(Policy = "CustomersOnly")]
-        public async Task<IActionResult> GetCustomersOrderList()//[FromQuery] RequestDto request)
-        {
-            return HandleResult(await _orderHandler.GetCustomersOrderListAsync());
-        }
+        // [HttpGet("my-orders")]
+        // [Authorize(Policy = "CustomersOnly")]
+        // public async Task<IActionResult> GetCustomersOrderList()//[FromQuery] RequestDto request)
+        // {
+        //     return HandleResult(await _orderHandler.GetCustomersOrderListAsync());
+        // }
 
         [HttpGet("{id}")]
         [Authorize(Policy = "CustomersOnly")]
