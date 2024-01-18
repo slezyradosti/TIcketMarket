@@ -59,7 +59,9 @@ class UserStore {
         try {
             const user = await agent.Account.current();
             runInAction(() => {
-                user.dob = ModuleStore.convertDateFromApi(user.dob);
+                if (user != null) {
+                    user.dob = ModuleStore.convertDateFromApi(user.dob);
+                }
                 this.user = user
             });
         } catch (error) {

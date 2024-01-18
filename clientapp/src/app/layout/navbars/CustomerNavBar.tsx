@@ -40,7 +40,7 @@ function CustomerNavBar() {
                     >
                         <DropdownMenu>
                             <DropdownItem
-                                as={Link} to='profile'
+                                as={Link} to='profile/details'
                                 text='Profile'
                             />
                             <DropdownItem
