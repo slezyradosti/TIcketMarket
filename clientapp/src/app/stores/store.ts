@@ -12,6 +12,7 @@ import TicketStore from "./tables/ticketStore";
 import TicketDiscountStore from "./tables/ticketDiscountStore";
 import TableEventStore from "./tables/tableEventStore";
 import UserStore from "./userStore";
+import ProfileStore from "./profileStore";
 
 interface Store {
     commonStore: CommonStore;
@@ -26,7 +27,8 @@ interface Store {
     ticketStore: TicketStore,
     ticketDiscountStore: TicketDiscountStore,
     tableEventStore: TableEventStore,
-    userStore: UserStore
+    userStore: UserStore,
+    profileStore: ProfileStore,
 }
 
 export const store: Store = {
@@ -42,7 +44,8 @@ export const store: Store = {
     ticketStore: new TicketStore(),
     ticketDiscountStore: new TicketDiscountStore(),
     tableEventStore: new TableEventStore(),
-    userStore: new UserStore()
+    userStore: new UserStore(),
+    profileStore: new ProfileStore(),
 
 }
 

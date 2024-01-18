@@ -5,18 +5,18 @@ import { useEffect } from "react";
 import OrderForList from "./OrderForList";
 
 function OrderListCustomer() {
-    const { orderStore } = useStore();
-    const { getArray } = orderStore;
+    const { profileStore } = useStore();
+    const { getOrderArray } = profileStore;
 
     useEffect(() => {
-        orderStore.loadCustomersList();
-    }, [orderStore]);
+        profileStore.loadCustomersOrderList();
+    }, [profileStore]);
 
     return (
         <>
             <Grid columns={2} divided>
 
-                {getArray.map((order) => (
+                {getOrderArray.map((order) => (
                     <>
                         <OrderForList order={order} />
                     </>

@@ -5,18 +5,18 @@ import { useEffect } from "react";
 import TicketForList from "./TicketForList";
 
 function TicketListCustomer() {
-    const { ticketStore } = useStore();
-    const { getArray } = ticketStore;
+    const { profileStore } = useStore();
+    const { getTicketArray } = profileStore;
 
     useEffect(() => {
-        ticketStore.loadCustomersList();
-    }, [ticketStore]);
+        profileStore.loadCustomersTicketList();
+    }, [profileStore]);
 
     return (
         <>
             <Grid columns={2} divided>
 
-                {getArray.map((ticket) => (
+                {getTicketArray.map((ticket) => (
                     <>
                         <TicketForList ticket={ticket} />
                     </>

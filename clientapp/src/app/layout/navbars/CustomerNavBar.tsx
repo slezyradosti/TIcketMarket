@@ -40,12 +40,8 @@ function CustomerNavBar() {
                     >
                         <DropdownMenu>
                             <DropdownItem
-                                as={Link} to='order/my-orders'
-                                text='My orders'
-                            />
-                            <DropdownItem
-                                as={Link} to='ticket/my-tickets'
-                                text='My Tickets'
+                                as={Link} to='profile'
+                                text='Profile'
                             />
                             <DropdownItem
                                 text='Logout'
