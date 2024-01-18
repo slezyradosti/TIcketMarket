@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Domain.Repositories\Domain.Repositories.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handlers\Tables\User\" />
-  </ItemGroup>
-
 </Project>

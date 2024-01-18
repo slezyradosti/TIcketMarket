@@ -17,5 +17,7 @@ namespace Application.DTOs.Users.DTOS
 
         [StringLength(50)]
         public string Phone { get; set; }
+        
+        public string Email { get; set; }
     }
 }
