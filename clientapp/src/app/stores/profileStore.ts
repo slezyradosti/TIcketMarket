@@ -11,7 +11,8 @@ class ProfileStore {
     selectedOrder: Order | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
-    //loadingInitial: boolean = true;
+    loadingTicketsInitial: boolean = true;
+    loadingOrdersInitial: boolean = true;
 
     constructor() {
         makeAutoObservable(this);
@@ -27,16 +28,24 @@ class ProfileStore {
 
     clearTicketData = () => {
         this.ticketRegistry.clear();
-        //this.loadingInitial = true;
+        this.loadingTicketsInitial = true;
     }
 
     clearOrderData = () => {
         this.orderRegistry.clear();
-        //this.loadingInitial = true;
+        this.loadingOrdersInitial = true;
     }
 
-    setLoadingInitial = (state: boolean) => {
-        //this.loadingInitial = state;
+    setLoadingTicketsInitial = (state: boolean) => {
+        this.loadingTicketsInitial = state;
+    }
+
+    setLoadingOrdersInitial = (state: boolean) => {
+        this.loadingOrdersInitial = state;
+    }
+
+    setLoading = (state: boolean) => {
+        this.loading = state;
     }
 
     loadCustomersTicketList = async () => {
@@ -52,7 +61,8 @@ class ProfileStore {
         } catch (error) {
             console.log(error);
         } finally {
-            this.setLoadingInitial(false);
+            this.setLoadingTicketsInitial(false);
+
         }
     }
 
@@ -69,7 +79,7 @@ class ProfileStore {
         } catch (error) {
             console.log(error);
         } finally {
-            this.setLoadingInitial(false);
+            this.setLoadingOrdersInitial(false);
         }
     }
 }

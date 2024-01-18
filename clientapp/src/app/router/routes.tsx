@@ -11,6 +11,7 @@ import OwnedDiscountList from "../../features/sellers/discount/OwnedDiscountList
 import OrderListCustomer from "../../features/customers/order/OrderListCustomer";
 import TicketListCustomer from "../../features/customers/ticket/TicketListCustomer";
 import CustomerProfile from "../../features/profile/CustomerProfile";
+import UserDetails from "../../features/profile/UserDetails";
 
 
 export const routes: RouteObject[] = [
@@ -37,8 +38,9 @@ export const routes: RouteObject[] = [
                         path: 'profile',
                         element: < CustomerProfile />,
                         children: [
-                            { path: 'profile/my-orders', element: < OrderListCustomer /> },
-                            { path: 'profile/my-tickets', element: < TicketListCustomer /> },
+                            { path: 'my-orders', element: < OrderListCustomer /> },
+                            { path: 'my-tickets', element: < TicketListCustomer /> },
+                            { path: 'details', element: < UserDetails /> },
                         ]
                     },
                 ],
