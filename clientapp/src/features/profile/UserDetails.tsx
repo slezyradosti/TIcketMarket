@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { Card, CardContent, CardDescription, CardHeader, CardMeta, Header, Icon, Image } from "semantic-ui-react";
+import { Card, CardContent, CardDescription, CardHeader, CardMeta, Header, Image } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 
 function UserDetails() {
@@ -18,18 +18,21 @@ function UserDetails() {
                             <CardContent>
                                 <CardHeader>{user?.firstname} {user?.lastname}</CardHeader>
                                 <CardMeta>
-                                    <span className='date'>Joined in 2015</span>
+                                    <span className='date'>{user?.dob.toLocaleDateString()}</span>
                                 </CardMeta>
                                 <CardDescription>
-                                    Matthew is a musician living in Nashville.
+                                    Email: {user?.email}
+                                </CardDescription>
+                                <CardDescription>
+                                    Phone: {user?.phone}
                                 </CardDescription>
                             </CardContent>
-                            <CardContent extra>
+                            {/* <CardContent extra>
                                 <a>
                                     <Icon name='user' />
                                     22 Friends
                                 </a>
-                            </CardContent>
+                            </CardContent> */}
                         </Card>
                     </>)}
         </>

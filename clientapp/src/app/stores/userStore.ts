@@ -6,6 +6,7 @@ import { store } from "./store";
 import { router } from "../router/routes";
 import { RegisterDto } from "../models/DTOs/registerDto";
 import { Roles } from "../models/roles";
+import ModuleStore from "./moduleStore";
 
 class UserStore {
     user: User | null = null;
@@ -23,7 +24,10 @@ class UserStore {
         const user = await agent.Account.login(creds);
 
         store.commonStore.setToken(user.token!);
-        runInAction(() => this.user = user);
+        runInAction(() => {
+            user.dob = ModuleStore.convertDateFromApi(user.dob);
+            this.user = user
+        });
 
         await this.getUserRights();
 
@@ -54,7 +58,10 @@ class UserStore {
     getUser = async () => {
         try {
             const user = await agent.Account.current();
-            runInAction(() => this.user = user);
+            runInAction(() => {
+                user.dob = ModuleStore.convertDateFromApi(user.dob);
+                this.user = user
+            });
         } catch (error) {
             console.log(error);
         }

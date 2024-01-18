@@ -2,7 +2,8 @@ export interface User {
     id: string | undefined;
     firstname: string;
     lastname: string;
-    dob: string;
+    dob: Date;
     phone: string;
+    email: string;
     token: string | undefined;
 }

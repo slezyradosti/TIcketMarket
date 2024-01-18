@@ -53,7 +53,7 @@ class TicketStore {
         try {
             const result = await agent.Tickets.availableTicketList(eventId);
             result.forEach(ticket => {
-                ModuleStore.convertDateFromApi(ticket);
+                ModuleStore.convertEntityDateFromApi(ticket);
 
                 this.ticketRegistry.set(ticket.id!, ticket);
             })

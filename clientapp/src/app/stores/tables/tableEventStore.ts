@@ -33,7 +33,7 @@ class TableEventStore {
         try {
             const result = await agent.TableEvents.list(eventId);
             result.forEach(tableEvent => {
-                ModuleStore.convertDateFromApi(tableEvent);
+                ModuleStore.convertEntityDateFromApi(tableEvent);
 
                 this.tableEventRegistry.set(tableEvent.id!, tableEvent);
             })

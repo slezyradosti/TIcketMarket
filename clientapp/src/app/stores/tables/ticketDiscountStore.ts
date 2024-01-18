@@ -33,7 +33,7 @@ class TicketDiscountStore {
         try {
             const result = await agent.TicketDiscounts.getSellersList();
             result.forEach(ticketDiscount => {
-                ModuleStore.convertDateFromApi(ticketDiscount);
+                ModuleStore.convertEntityDateFromApi(ticketDiscount);
 
                 this.ticketDiscountRegistry.set(ticketDiscount.id!, ticketDiscount);
             })

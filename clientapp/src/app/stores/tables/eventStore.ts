@@ -48,7 +48,7 @@ class EventStore {
         try {
             const result = await agent.Events.sellersList();
             result.forEach(event => {
-                ModuleStore.convertDateFromApi(event);
+                ModuleStore.convertEntityDateFromApi(event);
 
                 this.eventRegistry.set(event.id!, event);
             })

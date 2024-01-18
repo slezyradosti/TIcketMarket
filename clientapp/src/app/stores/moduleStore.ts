@@ -4,11 +4,15 @@ import { BaseModel } from "../models/BaseModel";
 // eslint-disable-next-line @typescript-eslint/no-namespace
 module ModuleStore {
 
-    export function convertDateFromApi(entity: BaseModel) {
+    export function convertEntityDateFromApi(entity: BaseModel) {
         runInAction(() => {
             entity.createdAt = new Date(entity.createdAt);
             entity.updatedAt = new Date(entity.updatedAt);
         });
+    }
+
+    export function convertDateFromApi(apiDate: Date) {
+        return new Date(apiDate);
     }
 }
 

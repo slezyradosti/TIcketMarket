@@ -54,7 +54,7 @@ class ProfileStore {
         try {
             const result = await agent.Profile.customersList();
             result.forEach(ticket => {
-                ModuleStore.convertDateFromApi(ticket);
+                ModuleStore.convertEntityDateFromApi(ticket);
 
                 this.ticketRegistry.set(ticket.id!, ticket);
             })
@@ -72,7 +72,7 @@ class ProfileStore {
         try {
             const result = await agent.Profile.customersOrderlist();
             result.forEach(order => {
-                ModuleStore.convertDateFromApi(order);
+                ModuleStore.convertEntityDateFromApi(order);
 
                 this.orderRegistry.set(order.id!, order);
             })
