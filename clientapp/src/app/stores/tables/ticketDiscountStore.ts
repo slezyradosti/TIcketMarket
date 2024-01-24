@@ -6,6 +6,7 @@ import ModuleStore from "../moduleStore";
 class TicketDiscountStore {
     ticketDiscountRegistry = new Map<string, TicketDiscount>();
     selectedElement: TicketDiscount | undefined = undefined;
+    detailsElement: TicketDiscount | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -57,7 +58,7 @@ class TicketDiscountStore {
     }
 
     details = async (id: string) => {
-        return await agent.TicketDiscounts.getSellersOne(id);
+        this.detailsElement = await agent.TicketDiscounts.getSellersOne(id);
     }
 
     createOne = async (ticketDiscount: TicketDiscount) => {

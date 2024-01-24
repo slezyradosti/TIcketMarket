@@ -6,6 +6,7 @@ import ModuleStore from "../moduleStore";
 class OrderStore {
     orderRegistry = new Map<string, Order>();
     selectedElement: Order | undefined = undefined;
+    detailsElement: Order | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -57,7 +58,7 @@ class OrderStore {
     }
 
     details = async (id: string) => {
-        return await agent.Orders.getCustomersOne(id);
+        this.detailsElement = await agent.Orders.getCustomersOne(id);
     }
 
     createOne = async (order: Order) => {

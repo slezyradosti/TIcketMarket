@@ -6,6 +6,7 @@ import ModuleStore from "../moduleStore";
 class TableEventStore {
     tableEventRegistry = new Map<string, TableEvent>();
     selectedElement: TableEvent | undefined = undefined;
+    detailsElement: TableEvent | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -57,7 +58,7 @@ class TableEventStore {
     }
 
     details = async (id: string) => {
-        return await agent.TableEvents.getOne(id);
+        this.detailsElement = await agent.TableEvents.getOne(id);
     }
 
     createOne = async (tableEvent: TableEvent) => {

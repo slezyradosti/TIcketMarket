@@ -6,6 +6,7 @@ import ModuleStore from "../moduleStore";
 class TicketTypeStore {
     ticketTypeRegistry = new Map<string, TicketType>();
     selectedElement: TicketType | undefined = undefined;
+    detailsElement: TicketType | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -57,7 +58,7 @@ class TicketTypeStore {
     }
 
     details = async (id: string) => {
-        return await agent.TicketTypes.getSellersOne(id);
+        this.detailsElement = await agent.TicketTypes.getSellersOne(id);
     }
 
     createOne = async (ticketType: TicketType) => {

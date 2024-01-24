@@ -6,6 +6,7 @@ import ModuleStore from "../moduleStore";
 class EventCategoryStore {
     eventCategoryRegistry = new Map<string, EventCategory>();
     selectedElement: EventCategory | undefined = undefined;
+    detailsElement: EventCategory | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -57,7 +58,7 @@ class EventCategoryStore {
     }
 
     details = async (id: string) => {
-        return await agent.EventCategories.getSellersOne(id);
+        this.detailsElement = await agent.EventCategories.getSellersOne(id);
     }
 
     createOne = async (eventCategory: EventCategory) => {

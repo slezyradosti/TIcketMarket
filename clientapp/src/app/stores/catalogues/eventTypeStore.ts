@@ -6,6 +6,7 @@ import ModuleStore from "../moduleStore";
 class EventTypeStore {
     eventTypeRegistry = new Map<string, EventType>();
     selectedElement: EventType | undefined = undefined;
+    detailsElement: EventType | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -57,7 +58,7 @@ class EventTypeStore {
     }
 
     details = async (id: string) => {
-        return await agent.EventTypes.getOne(id);
+        this.detailsElement = await agent.EventTypes.getOne(id);
     }
 
     createOne = async (eventType: EventType) => {
