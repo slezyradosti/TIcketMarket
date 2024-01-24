@@ -4,6 +4,7 @@ import { Dropdown, DropdownItem, DropdownMenu, Menu, MenuItem, MenuMenu } from "
 import { useStore } from "../../stores/store";
 import LoginForm from "../../../features/user/LoginForm";
 import RegisterForm from "../../../features/user/RegisterForm";
+import { Link } from "react-router-dom";
 
 function AnonymNavBar() {
     const [activeItem, setActiveItem] = useState<string>();
@@ -15,11 +16,13 @@ function AnonymNavBar() {
         <>
             <Menu color='blue' inverted style={{ borderRadius: '0' }}>
                 <MenuItem
+                    as={Link} to='home'
                     name='Home'
                     active={activeItem === 'home'}
                     onClick={() => handleItemClick('home')}
                 />
                 <MenuItem
+                    as={Link} to='home'
                     name='Events'
                     active={activeItem === 'events'}
                     onClick={() => handleItemClick('events')}
