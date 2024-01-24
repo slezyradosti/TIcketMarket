@@ -49,6 +49,17 @@ namespace Application.Handlers.Tables.Event
 
             return Result<EventDto>.Success(eventDto);
         }
+        
+        public async Task<Result<EventDto>> GetAnyEventAsync(Guid eventId)
+        {
+            var evnt = await _eventRepository.GetOneDetailedAsync(eventId);
+
+            EventDto eventDto = new EventDto();
+
+            _mapper.Map(evnt, eventDto);
+
+            return Result<EventDto>.Success(eventDto);
+        }
 
         public async Task<Result<string>> CreateSellersOneAsync(EventDto eventDto)
         {

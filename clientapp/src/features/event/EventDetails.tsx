@@ -6,16 +6,14 @@ import { useEffect } from "react";
 
 function EventDetails() {
     const { eventStore } = useStore();
+    const { detailsElement } = eventStore;
     const { id } = useParams();
 
     useEffect(() => {
         if (id) {
-            eventStore.selectOne(id);
             eventStore.details(id);
         }
     }, [eventStore, id])
-
-    const { detailsElement } = eventStore;
 
     return (
         <>

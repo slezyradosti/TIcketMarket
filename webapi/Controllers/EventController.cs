@@ -28,10 +28,17 @@ namespace webapi.Controllers
             return HandleResult(await _eventHandler.GetAllEventsOrderedAsync());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("my-event/{id}")]
         public async Task<IActionResult> GetSellersOne(Guid id)
         {
             return HandleResult(await _eventHandler.GetSellersEventAsync(id));
+        }
+        
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetOne(Guid id)
+        {
+            return HandleResult(await _eventHandler.GetAnyEventAsync(id));
         }
 
         [HttpPost]
