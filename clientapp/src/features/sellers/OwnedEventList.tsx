@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import { useStore } from "../../app/stores/store";
 import { Grid } from "semantic-ui-react";
 import { useEffect } from "react";
-import EventForList from "../EventForList";
+import EventForList from "../event/EventForList";
 
 function OwnedEventList() {
     const { eventStore } = useStore();

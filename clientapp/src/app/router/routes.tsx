@@ -12,6 +12,7 @@ import OrderListCustomer from "../../features/customers/order/OrderListCustomer"
 import TicketListCustomer from "../../features/customers/ticket/TicketListCustomer";
 import CustomerProfile from "../../features/profile/CustomerProfile";
 import UserDetails from "../../features/profile/UserDetails";
+import EventDetails from "../../features/event/EventDetails";
 
 
 export const routes: RouteObject[] = [
@@ -21,6 +22,7 @@ export const routes: RouteObject[] = [
         children: [
             { path: '', element: <HomeCustomer /> },
             { path: 'home', element: <HomeCustomer /> },
+            { path: 'event/:id', element: <EventDetails /> },
             // { path: 'not-found', element: <NotFound /> },
             // { path: 'server-error', element: <ServerError /> },
             // { path: '*', element: <Navigate replace to='/not-found' /> },
