@@ -27,7 +27,7 @@ function EventDetails() {
                         <ItemDescription>
                             <Image src='/images/wireframe/short-paragraph.png' />
                         </ItemDescription>
-                        <ItemExtra>{detailsElement?.date.toLocaleDateString()}</ItemExtra>
+                        <ItemExtra>{detailsElement?.date?.toLocaleDateString()}</ItemExtra>
                     </ItemContent>
                 </Item>
             </ItemGroup>

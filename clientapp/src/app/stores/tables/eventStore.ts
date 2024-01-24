@@ -52,6 +52,7 @@ class EventStore {
             const result = await agent.Events.sellersList();
             result.forEach(event => {
                 ModuleStore.convertEntityDateFromApi(event);
+                event.date = ModuleStore.convertDateFromApi(event.date);
 
                 this.eventRegistry.set(event.id!, event);
             })
@@ -75,11 +76,19 @@ class EventStore {
     }
 
     details = async (id: string) => {
-        this.detailsElement = await agent.Events.getOne(id);
+        let event = await agent.Events.getOne(id);
+        ModuleStore.convertEntityDateFromApi(event);
+        event.date = ModuleStore.convertDateFromApi(event.date);
+
+        this.detailsElement = event;
     }
 
     detailsSellers = async (id: string) => {
-        this.detailsElement = await agent.Events.getSellersOne(id);
+        let event = await agent.Events.getSellersOne(id);
+        ModuleStore.convertEntityDateFromApi(event);
+        event.date = ModuleStore.convertDateFromApi(event.date);
+
+        this.detailsElement = event;
     }
 
     createOne = async (event: Event) => {
