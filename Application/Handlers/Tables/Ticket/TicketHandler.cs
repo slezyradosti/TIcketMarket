@@ -181,6 +181,8 @@ namespace Application.Handlers.Tables.Ticket
         {
             var eventTicketsAmount = await _ticketRepository.GetEventsTicketAmountAsync(eventId);
 
+            if (eventTicketsAmount == null) eventTicketsAmount = new EventTicketsAmountDto();
+
             return Result<EventTicketsAmountDto>.Success(eventTicketsAmount);
         }
 
