@@ -2,6 +2,7 @@
 using Application.DTOs.Tables;
 using Application.DTOs.Users.HTTP;
 using AutoMapper;
+using Domain.Repositories.DTOs;
 using Domain.Repositories.Repos.Interfaces.Tables;
 
 namespace Application.Handlers.Tables.Event
@@ -128,6 +129,17 @@ namespace Application.Handlers.Tables.Event
             _mapper.Map(events, eventDtos);
 
             return Result<List<EventDto>>.Success(eventDtos);
+        }
+        
+        public async Task<Result<List<EventExtendedDto>>> GetAllEventsExtendedOrderedAsync()
+        {
+            var events = await _eventRepository.GetAllExtendedEventsOrderedAsync();
+
+            List<EventExtendedDto> eventDtos = new List<EventExtendedDto>();
+
+            _mapper.Map(events, eventDtos);
+
+            return Result<List<EventExtendedDto>>.Success(eventDtos);
         }
     }
 }

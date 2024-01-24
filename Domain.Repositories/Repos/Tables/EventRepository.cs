@@ -1,4 +1,5 @@
 ﻿using Domain.Models.Tables;
+using Domain.Repositories.DTOs;
 using Domain.Repositories.Repos.Interfaces.Tables;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,6 +45,34 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
         => await Context.Event
             .Include(e => e.Type)
             .Include(e => e.Category)
+            .OrderBy(e => e.CreatedAt)
+            .ToListAsync();
+    
+    public async Task<List<EventExtendedDto>> GetAllExtendedEventsOrderedAsync()
+        => await Context.Event
+            .Include(e => e.Type)
+            .Include(e => e.Category)
+            .Select(e => new EventExtendedDto()
+            {
+                Id = e.Id,
+                Category = e.Category,
+                TotalPlaces = e.TotalPlaces,
+                Date = e.Date,
+                Description = e.Description,
+                Moderator = e.Moderator,
+                Place = e.Place,
+                Title = e.Title,
+                Type = e.Type,
+                User = e.User,
+                UserId = e.UserId,
+                CategoryId = e.CategoryId,
+                TypeId = e.TypeId,
+                CreatedAt = e.CreatedAt,
+                UpdatedAt = e.UpdatedAt,
+                TotalTickets = e.Tickets.Count(),
+                AvailableTickets = e.Tickets.Count(t => !t.isPurchased),
+                PurchasedTickets = e.Tickets.Count(t => t.isPurchased),
+            })
             .OrderBy(e => e.CreatedAt)
             .ToListAsync();
 }

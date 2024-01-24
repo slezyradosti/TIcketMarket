@@ -25,7 +25,7 @@ namespace webapi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetEventList()
         {
-            return HandleResult(await _eventHandler.GetAllEventsOrderedAsync());
+            return HandleResult(await _eventHandler.GetAllEventsExtendedOrderedAsync());
         }
 
         [HttpGet("my-event/{id}")]
