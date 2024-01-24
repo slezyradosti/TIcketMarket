@@ -5,7 +5,7 @@ import EventCategoryStore from "./catalogues/eventCategoryStore";
 import EventTableStore from "./catalogues/eventTableStore";
 import EventTypeStore from "./catalogues/eventTypeStore";
 import TicketTypeStore from "./catalogues/ticketTypeStore";
-import EventStore from "./tables/eventStore";
+import EventStore from "./tables/customer/eventStore";
 import OrderStore from "./tables/orderStore";
 import TicketOrderStore from "./tables/ticketOrderStore";
 import TicketStore from "./tables/ticketStore";

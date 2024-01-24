@@ -1,14 +1,11 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import agent from "../../api/agent";
-import { Event } from "../../models/tables/event";
-import ModuleStore from "../moduleStore";
-import { EventExtendedDto } from "../../models/DTOs/eventExtendedDto";
+import agent from "../../../api/agent";
+import ModuleStore from "../../moduleStore";
+import { Event } from "../../../models/tables/event";
 
-class EventStore {
-    eventRegistry = new Map<string, EventExtendedDto | Event>();
-    //TODO change to EventExtended
+class EventSellersStore {
+    eventRegistry = new Map<string, Event>();
     selectedElement: Event | undefined = undefined;
-    //TODO change to EventExtended
     detailsElement: Event | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
@@ -32,23 +29,6 @@ class EventStore {
     }
 
     loadList = async () => {
-        this.clearData();
-
-        try {
-            const result = await agent.Events.list();
-            result.forEach(event => {
-                ModuleStore.convertEntityDateFromApi(event);
-
-                this.eventRegistry.set(event.id!, event);
-            })
-        } catch (error) {
-            console.log(error);
-        } finally {
-            this.setLoadingInitial(false);
-        }
-    }
-
-    loadSellersList = async () => {
         this.clearData();
 
         try {
@@ -76,14 +56,6 @@ class EventStore {
 
     getOne = (id: string) => {
         return this.eventRegistry.get(id)!;
-    }
-
-    details = async (id: string) => {
-        let event = await agent.Events.getOne(id);
-        ModuleStore.convertEntityDateFromApi(event);
-        event.date = ModuleStore.convertDateFromApi(event.date);
-
-        this.detailsElement = event;
     }
 
     detailsSellers = async (id: string) => {
@@ -152,4 +124,4 @@ class EventStore {
     }
 }
 
-export default EventStore
+export default EventSellersStore
