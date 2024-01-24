@@ -75,4 +75,32 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
             })
             .OrderBy(e => e.CreatedAt)
             .ToListAsync();
+    
+    public async Task<EventExtendedDto> GetOneExtendedAsync(Guid eventId)
+        => await Context.Event
+            .Where(e => e.Id == eventId)
+            .Include(e => e.Type)
+            .Include(e => e.Category)
+            .Select(e => new EventExtendedDto()
+            {
+                Id = e.Id,
+                Category = e.Category,
+                TotalPlaces = e.TotalPlaces,
+                Date = e.Date,
+                Description = e.Description,
+                Moderator = e.Moderator,
+                Place = e.Place,
+                Title = e.Title,
+                Type = e.Type,
+                User = e.User,
+                UserId = e.UserId,
+                CategoryId = e.CategoryId,
+                TypeId = e.TypeId,
+                CreatedAt = e.CreatedAt,
+                UpdatedAt = e.UpdatedAt,
+                TotalTickets = e.Tickets.Count(),
+                AvailableTickets = e.Tickets.Count(t => !t.isPurchased),
+                PurchasedTickets = e.Tickets.Count(t => t.isPurchased),
+            })
+            .FirstOrDefaultAsync();
 }

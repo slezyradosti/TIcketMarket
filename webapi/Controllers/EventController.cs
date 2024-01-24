@@ -38,7 +38,7 @@ namespace webapi.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetOne(Guid id)
         {
-            return HandleResult(await _eventHandler.GetAnyEventAsync(id));
+            return HandleResult(await _eventHandler.GetAnyEventExtendedAsync(id));
         }
 
         [HttpPost]

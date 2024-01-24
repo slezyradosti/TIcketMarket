@@ -14,5 +14,6 @@ namespace Application.Handlers.Tables.Event
         public Task<Result<List<EventDto>>> GetAllEventsOrderedAsync();
         public Task<Result<EventDto>> GetAnyEventAsync(Guid eventId);
         public Task<Result<List<EventExtendedDto>>> GetAllEventsExtendedOrderedAsync();
+        public Task<Result<EventExtendedDto>> GetAnyEventExtendedAsync(Guid eventId);
     }
 }

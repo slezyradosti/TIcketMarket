@@ -12,4 +12,5 @@ public interface IEventRepository : IRepository<Event>
     public Task<int> GetEventsTotalPlacesAsync(Guid eventId);
     public Task<List<Event>> GetAllEventsOrderedAsync();
     public Task<List<EventExtendedDto>> GetAllExtendedEventsOrderedAsync();
+    public Task<EventExtendedDto> GetOneExtendedAsync(Guid eventId);
 }
