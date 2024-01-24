@@ -2,10 +2,13 @@ import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../../api/agent";
 import { Event } from "../../models/tables/event";
 import ModuleStore from "../moduleStore";
+import { EventExtendedDto } from "../../models/DTOs/eventExtendedDto";
 
 class EventStore {
-    eventRegistry = new Map<string, Event>();
+    eventRegistry = new Map<string, EventExtendedDto | Event>();
+    //TODO change to EventExtended
     selectedElement: Event | undefined = undefined;
+    //TODO change to EventExtended
     detailsElement: Event | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;

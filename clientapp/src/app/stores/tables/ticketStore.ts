@@ -77,7 +77,7 @@ class TicketStore {
         return this.ticketRegistry.get(id)!;
     }
 
-    details = async (id: string) => {
+    detailsCustomers = async (id: string) => {
         this.detailsElement = await agent.Tickets.getCustomersOne(id);
     }
 
@@ -141,7 +141,8 @@ class TicketStore {
         this.loading = true;
 
         try {
-            this.eventTicketAmount = await agent.Tickets.getEventTicketAmount(eventId);
+            const evTicketAmount = await agent.Tickets.getEventTicketAmount(eventId);
+            runInAction(() => this.eventTicketAmount = evTicketAmount);
         } catch (error) {
             console.log(error);
         } finally {

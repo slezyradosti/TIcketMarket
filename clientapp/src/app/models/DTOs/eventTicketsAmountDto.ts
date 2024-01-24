@@ -1,5 +1,5 @@
 export interface EventTicketsAmountDto {
-    Total: number;
-    Purchased: number;
-    Available: number;
+    total: number;
+    purchased: number;
+    available: number;
 }

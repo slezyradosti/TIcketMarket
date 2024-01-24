@@ -17,6 +17,7 @@ import { TicketType } from '../models/catalogues/ticketType';
 import { User } from '../models/tables/user';
 import { LoginDto } from '../models/DTOs/loginDto';
 import { RegisterDto } from '../models/DTOs/registerDto';
+import { EventExtendedDto } from '../models/DTOs/eventExtendedDto';
 
 axios.defaults.baseURL = 'https://localhost:7177';
 
@@ -90,7 +91,7 @@ const requests = {
 
 const Events = {
     sellersList: () => requests.get<Event[]>('/event/my-events'),
-    list: () => requests.get<Event[]>('/event/list'),
+    list: () => requests.get<EventExtendedDto[]>('/event/list'),
     getSellersOne: (id: string) => requests.get<Event>(`/event/my-event/${id}`),
     getOne: (id: string) => requests.get<Event>(`/event/${id}`),
     createOne: (event: Event) => requests.post<void>('/event', event),
