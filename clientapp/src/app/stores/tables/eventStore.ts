@@ -75,6 +75,10 @@ class EventStore {
     }
 
     details = async (id: string) => {
+        this.detailsElement = await agent.Events.getOne(id);
+    }
+
+    detailsSellers = async (id: string) => {
         this.detailsElement = await agent.Events.getSellersOne(id);
     }
 
