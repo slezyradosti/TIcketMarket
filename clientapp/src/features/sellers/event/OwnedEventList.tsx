@@ -1,16 +1,16 @@
 import { observer } from "mobx-react";
-import { useStore } from "../../app/stores/store";
+import { useStore } from "../../../app/stores/store";
 import { Grid } from "semantic-ui-react";
 import { useEffect } from "react";
-import EventForList from "../event/EventForList";
+import EventForSellersList from "./EventForSellersList";
 
 function OwnedEventList() {
-    const { eventStore } = useStore();
-    const { getArray } = eventStore;
+    const { eventSellersStore } = useStore();
+    const { getArray } = eventSellersStore;
 
     useEffect(() => {
-        eventStore.loadSellersList();
-    }, [eventStore]);
+        eventSellersStore.loadList();
+    }, [eventSellersStore]);
 
     return (
         <>
@@ -18,7 +18,7 @@ function OwnedEventList() {
 
                 {getArray.map((event) => (
                     <>
-                        <EventForList event={event} />
+                        <EventForSellersList event={event} />
                     </>
                 ))}
             </Grid>

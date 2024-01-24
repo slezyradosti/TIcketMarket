@@ -5,15 +5,15 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 
 function EventDetails() {
-    const { eventStore } = useStore();
-    const { detailsElement } = eventStore;
+    const { eventCustomersStore } = useStore();
+    const { detailsElement } = eventCustomersStore;
     const { id } = useParams();
 
     useEffect(() => {
         if (id) {
-            eventStore.details(id);
+            eventCustomersStore.details(id);
         }
-    }, [eventStore, id])
+    }, [eventCustomersStore, id])
 
     return (
         <>

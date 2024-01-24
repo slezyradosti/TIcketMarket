@@ -8,8 +8,7 @@ interface Props {
     event: EventExtendedDto;
 }
 
-function EventForList({ event }: Props) {
-    //const { ticketStore } = useStore();
+function EventForCustomersList({ event }: Props) {
 
     return (
         <>
@@ -31,4 +30,4 @@ function EventForList({ event }: Props) {
     );
 }
 
-export default observer(EventForList);
+export default observer(EventForCustomersList);

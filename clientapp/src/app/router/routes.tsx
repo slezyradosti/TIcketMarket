@@ -6,7 +6,7 @@ import {
 import App from "../layout/App";
 import RequireAuth from "./requireAuth";
 import HomeCustomer from "../../features/customers/HomeCustomer";
-import OwnedEventList from "../../features/sellers/OwnedEventList";
+import OwnedEventList from "../../features/sellers/event/OwnedEventList";
 import OwnedDiscountList from "../../features/sellers/discount/OwnedDiscountList";
 import OrderListCustomer from "../../features/customers/order/OrderListCustomer";
 import TicketListCustomer from "../../features/customers/ticket/TicketListCustomer";

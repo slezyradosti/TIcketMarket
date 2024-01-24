@@ -2,15 +2,15 @@ import { observer } from "mobx-react";
 import { useStore } from "../../app/stores/store";
 import { Grid } from "semantic-ui-react";
 import { useEffect } from "react";
-import EventForList from "../event/EventForList";
+import EventForCustomersList from "../event/EventForCustomersList";
 
 function HomeCustomer() {
-    const { eventStore } = useStore();
-    const { getArray } = eventStore;
+    const { eventCustomersStore } = useStore();
+    const { getArray } = eventCustomersStore;
 
     useEffect(() => {
-        eventStore.loadList();
-    }, [eventStore]);
+        eventCustomersStore.loadList();
+    }, [eventCustomersStore]);
 
     return (
         <>
@@ -18,7 +18,7 @@ function HomeCustomer() {
 
                 {getArray.map((event) => (
                     <>
-                        <EventForList event={event} />
+                        <EventForCustomersList event={event} />
                     </>
                 ))}
             </Grid>
