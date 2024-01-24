@@ -71,6 +71,7 @@ namespace webapi.Controllers
 
         [HttpGet("event-ticket-amount/{eventId}")]
         //[Authorize(Policy = "CustomersOnly")] // ?? anonymous
+        [AllowAnonymous]
         public async Task<IActionResult> GetEventTicketAmount(Guid eventId)
         {
             return HandleResult(await _ticketHandler.GetEventTicketsAmountAsync(eventId));
