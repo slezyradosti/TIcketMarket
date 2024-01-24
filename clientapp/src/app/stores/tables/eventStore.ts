@@ -6,6 +6,7 @@ import ModuleStore from "../moduleStore";
 class EventStore {
     eventRegistry = new Map<string, Event>();
     selectedElement: Event | undefined = undefined;
+    detailsElement: Event | undefined = undefined;
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
@@ -33,6 +34,8 @@ class EventStore {
         try {
             const result = await agent.Events.list();
             result.forEach(event => {
+                ModuleStore.convertEntityDateFromApi(event);
+
                 this.eventRegistry.set(event.id!, event);
             })
         } catch (error) {
@@ -72,7 +75,7 @@ class EventStore {
     }
 
     details = async (id: string) => {
-        return await agent.Events.getSellersOne(id);
+        this.detailsElement = await agent.Events.getSellersOne(id);
     }
 
     createOne = async (event: Event) => {
