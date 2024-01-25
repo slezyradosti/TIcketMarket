@@ -17,6 +17,7 @@ function EventDetails() {
 
     return (
         <>
+
             <ItemGroup>
                 <Item>
                     <ItemImage size='large' src='/images/wireframe/image.png' />

@@ -29,7 +29,7 @@ function App() {
                 (
                     <>
                         <NavBar />
-                        <Container fluid>
+                        <Container>
                             <Outlet />
                         </Container>
                     </>

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { GridColumn, ItemExtra, ItemHeader, ItemMeta } from "semantic-ui-react";
+import { Button, TableCell, TableRow } from "semantic-ui-react";
 import { TicketDiscount } from "../../../app/models/tables/ticketDiscount";
 
 interface Props {
@@ -9,14 +9,13 @@ interface Props {
 function TicketDiscountForList({ ticketDiscount }: Props) {
     return (
         <>
-            {/* <GridRow key={ticketDiscount.id}> */}
-
-            <GridColumn width={5} key={ticketDiscount.id}>
-                <ItemHeader>Percentage: {ticketDiscount.discountPercentage} %</ItemHeader>
-                <ItemMeta>Created at: {ticketDiscount.createdAt.toLocaleDateString()}</ItemMeta>
-                <ItemExtra>{ticketDiscount.isActivated ? 'Activated' : 'Not activated'} </ItemExtra>
-            </GridColumn>
-            {/* </GridRow> */}
+            <TableRow>
+                <TableCell>Percentage: {ticketDiscount.discountPercentage} %</TableCell>
+                <TableCell>Created at: {ticketDiscount.createdAt.toLocaleDateString()}</TableCell>
+                <TableCell>{ticketDiscount.isActivated ? 'Activated' : 'Not activated'} </TableCell>
+                <TableCell><Button>Edit</Button></TableCell>
+                <TableCell><Button>Delete</Button></TableCell>
+            </TableRow>
         </>
     );
 }
