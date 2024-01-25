@@ -28,12 +28,12 @@ namespace webapi.Controllers
             return HandleResult(await _eventHandler.GetAllEventsExtendedOrderedAsync());
         }
 
-        [HttpGet("my-event/{id}")]
+        [HttpGet("my-events/{id}")]
         public async Task<IActionResult> GetSellersOne(Guid id)
         {
             return HandleResult(await _eventHandler.GetSellersEventAsync(id));
         }
-        
+
         [HttpGet("{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetOne(Guid id)

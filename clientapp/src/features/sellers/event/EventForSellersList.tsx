@@ -13,7 +13,7 @@ function EventForSellersList({ event }: Props) {
         <>
             <GridRow key={event.id}>
                 <GridColumn width={4}>
-                    <ItemHeader as={Link} to={`/event/${event.id}`}> {event.title} </ItemHeader>
+                    <ItemHeader as={Link} to={`/event/my-events/${event.id}`}> {event.title} </ItemHeader>
                 </GridColumn>
                 <GridColumn width={9}>
                     <ItemDescription>Description: {event.description}</ItemDescription>

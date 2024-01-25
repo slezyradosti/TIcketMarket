@@ -1,6 +1,5 @@
 import {
     createBrowserRouter,
-    Navigate,
     RouteObject,
 } from "react-router-dom";
 import App from "../layout/App";
@@ -13,6 +12,7 @@ import TicketListCustomer from "../../features/customers/ticket/TicketListCustom
 import CustomerProfile from "../../features/profile/CustomerProfile";
 import UserDetails from "../../features/profile/UserDetails";
 import EventDetails from "../../features/event/EventDetails";
+import EventSellersDetails from "../../features/sellers/event/EventSellersDetails";
 
 
 export const routes: RouteObject[] = [
@@ -33,6 +33,7 @@ export const routes: RouteObject[] = [
                 children: [
 
                     { path: 'event/my-events', element: < OwnedEventList /> },
+                    { path: 'event/my-events/:id', element: < EventSellersDetails /> },
                     { path: 'TicketDiscount/my-discounts', element: < OwnedDiscountList /> },
                     { path: 'Order/my-orders', element: < OrderListCustomer /> },
                     { path: 'Ticket/my-tickets', element: < TicketListCustomer /> },
