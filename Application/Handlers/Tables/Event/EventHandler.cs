@@ -135,22 +135,14 @@ namespace Application.Handlers.Tables.Event
         {
             var events = await _eventRepository.GetAllExtendedEventsOrderedAsync();
 
-            List<EventExtendedDto> eventDtos = new List<EventExtendedDto>();
-
-            _mapper.Map(events, eventDtos);
-
-            return Result<List<EventExtendedDto>>.Success(eventDtos);
+            return Result<List<EventExtendedDto>>.Success(events);
         }
         
         public async Task<Result<EventExtendedDto>> GetAnyEventExtendedAsync(Guid eventId)
         {
             var evnt = await _eventRepository.GetOneExtendedAsync(eventId);
 
-            EventExtendedDto eventDto = new EventExtendedDto();
-
-            _mapper.Map(evnt, eventDto);
-
-            return Result<EventExtendedDto>.Success(eventDto);
+            return Result<EventExtendedDto>.Success(evnt);
         }
     }
 }

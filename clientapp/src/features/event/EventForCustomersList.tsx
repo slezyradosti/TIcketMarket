@@ -1,6 +1,5 @@
 import { observer } from "mobx-react";
-import { GridColumn, GridRow, ItemDescription, ItemExtra, ItemHeader } from "semantic-ui-react";
-import { Event } from "../../app/models/tables/event";
+import { GridColumn, GridRow, ItemDescription, ItemHeader, Statistic, StatisticGroup, StatisticLabel, StatisticValue } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { EventExtendedDto } from "../../app/models/DTOs/eventExtendedDto";
 
@@ -18,12 +17,20 @@ function EventForCustomersList({ event }: Props) {
                 </GridColumn>
                 <GridColumn width={9}>
                     <ItemDescription>Description: {event.description}</ItemDescription>
-                    <ItemExtra>
-                        Tickets
-                        <p>Total: {event.totalTickets}</p>
-                        <p>Available: {event.availableTickets}</p>
-                        <p>Purchased: {event.purchasedTickets}</p>
-                    </ItemExtra>
+                    <StatisticGroup size='mini'>
+                        <Statistic>
+                            <StatisticValue>{event.totalPlaces}</StatisticValue>
+                            <StatisticLabel>Total places:</StatisticLabel>
+                        </Statistic>
+                        <Statistic>
+                            <StatisticValue>{event.availableTickets}</StatisticValue>
+                            <StatisticLabel>Tickets available</StatisticLabel>
+                        </Statistic>
+                        <Statistic>
+                            <StatisticValue>{event.purchasedTickets}</StatisticValue>
+                            <StatisticLabel>TIckets purchased</StatisticLabel>
+                        </Statistic>
+                    </StatisticGroup>
                 </GridColumn>
             </GridRow>
         </>
