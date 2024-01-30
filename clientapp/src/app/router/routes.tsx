@@ -1,5 +1,6 @@
 import {
     createBrowserRouter,
+    Navigate,
     RouteObject,
 } from "react-router-dom";
 import App from "../layout/App";
@@ -13,6 +14,8 @@ import CustomerProfile from "../../features/profile/CustomerProfile";
 import UserDetails from "../../features/profile/UserDetails";
 import EventDetails from "../../features/event/EventDetails";
 import EventSellersDetails from "../../features/sellers/event/EventSellersDetails";
+import NotFound from "../../features/errors/NotFound";
+import ServerError from "../../features/errors/ServerError";
 
 
 export const routes: RouteObject[] = [
@@ -23,9 +26,9 @@ export const routes: RouteObject[] = [
             { path: '', element: <HomeCustomer /> },
             { path: 'home', element: <HomeCustomer /> },
             { path: 'event/:id', element: <EventDetails /> },
-            // { path: 'not-found', element: <NotFound /> },
-            // { path: 'server-error', element: <ServerError /> },
-            // { path: '*', element: <Navigate replace to='/not-found' /> },
+            { path: 'not-found', element: <NotFound /> },
+            { path: 'server-error', element: <ServerError /> },
+            { path: '*', element: <Navigate replace to='/not-found' /> },
 
             { path: 'event/list', element: < HomeCustomer /> },
             {
