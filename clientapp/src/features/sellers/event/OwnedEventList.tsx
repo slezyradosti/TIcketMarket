@@ -1,11 +1,12 @@
 import { observer } from "mobx-react";
 import { useStore } from "../../../app/stores/store";
-import { Button, Grid, Icon, Table, TableBody, TableFooter, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
+import { Button, Table, TableBody, TableFooter, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
 import { useEffect } from "react";
 import EventForSellersList from "./EventForSellersList";
+import EventSellersForm from "./EventSellersForm";
 
 function OwnedEventList() {
-    const { eventSellersStore } = useStore();
+    const { eventSellersStore, modalStore } = useStore();
     const { getArray } = eventSellersStore;
 
     useEffect(() => {
@@ -44,8 +45,9 @@ function OwnedEventList() {
                                 labelPosition='left'
                                 primary
                                 size='small'
+                                onClick={() => modalStore.openModal(<EventSellersForm />)}
                             >
-                                <Icon name='user' /> Add User
+                                Add new
                             </Button>
                             <Button size='small'>Approve</Button>
                             <Button disabled size='small'>

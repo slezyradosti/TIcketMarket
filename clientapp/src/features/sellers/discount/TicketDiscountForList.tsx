@@ -11,7 +11,7 @@ function TicketDiscountForList({ ticketDiscount }: Props) {
         <>
             <TableRow>
                 <TableCell>Percentage: {ticketDiscount.discountPercentage} %</TableCell>
-                <TableCell>Created at: {ticketDiscount.createdAt.toLocaleDateString()}</TableCell>
+                <TableCell>Created at: {ticketDiscount.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>{ticketDiscount.isActivated ? 'Activated' : 'Not activated'} </TableCell>
                 <TableCell><Button>Edit</Button></TableCell>
                 <TableCell><Button>Delete</Button></TableCell>

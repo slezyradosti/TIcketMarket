@@ -10,6 +10,8 @@ class EventCategoryStore {
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
+    categoryOptions: { key: string; text: string; value: string; }[] = [];
+    categoryOptionsLoading: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -17,6 +19,20 @@ class EventCategoryStore {
 
     get getArray() {
         return Array.from(this.eventCategoryRegistry.values());
+    }
+
+    loadOptions = () => {
+        this.categoryOptionsLoading = true;
+        this.categoryOptions = [];
+
+        if (this.getArray.length > 0) {
+            this.getArray.forEach(category => {
+                const opt = { key: category.id, text: category.category, value: category.category }
+                this.categoryOptions?.push(opt);
+            })
+        }
+
+        this.categoryOptionsLoading = false;
     }
 
     clearData = () => {
@@ -38,6 +54,8 @@ class EventCategoryStore {
 
                 this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
             })
+            this.loadOptions();
+
         } catch (error) {
             console.log(error);
         } finally {

@@ -10,6 +10,8 @@ class EventTypeStore {
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
+    typeOptions: { key: string; text: string; value: string; }[] = [];
+    typeOptionsLoading: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -17,6 +19,20 @@ class EventTypeStore {
 
     get getArray() {
         return Array.from(this.eventTypeRegistry.values());
+    }
+
+    loadOptions = () => {
+        this.typeOptionsLoading = true;
+        this.typeOptions = [];
+
+        if (this.getArray.length > 0) {
+            this.getArray.forEach(type => {
+                const opt = { key: type.id, text: type.type, value: type.type }
+                this.typeOptions?.push(opt);
+            })
+        }
+
+        this.typeOptionsLoading = false;
     }
 
     clearData = () => {
@@ -38,6 +54,8 @@ class EventTypeStore {
 
                 this.eventTypeRegistry.set(eventType.id!, eventType);
             })
+            this.loadOptions();
+
         } catch (error) {
             console.log(error);
         } finally {
