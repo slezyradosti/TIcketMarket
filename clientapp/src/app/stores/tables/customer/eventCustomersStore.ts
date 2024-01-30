@@ -60,7 +60,7 @@ class EventCustomersStore {
     details = async (id: string) => {
         let event = await agent.Events.getOne(id);
         ModuleStore.convertEntityDateFromApi(event);
-        event.date = ModuleStore.convertDateFromApi(event.date);
+        event.date = ModuleStore.convertDateFromApi(event.date!);
 
         this.detailsElement = event;
     }

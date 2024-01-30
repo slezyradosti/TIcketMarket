@@ -9,7 +9,7 @@ export interface Event extends BaseModel {
     categoryId: string;
     description: string;
     place: string;
-    date: Date;
+    date: Date | undefined;
     user: User | null;
     userId: string;
     type: EventType | null;
