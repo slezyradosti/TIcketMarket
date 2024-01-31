@@ -3,9 +3,10 @@ import { useStore } from "../../../app/stores/store";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Event } from "../../../app/models/tables/event";
 import { Button, Form, FormField, Header, Input, Select } from "semantic-ui-react";
-import { Formik } from "formik";
+import { Formik, useField } from "formik";
 import * as Yup from 'yup';
 import LoadingComponent from "../../../app/layout/LoadingComponent";
+import { EventFormValues } from "../../../app/models/forms/EventFormValues";
 
 function EventSellersForm() {
     const { eventSellersStore, eventCategoryStore, eventTypeStore } = useStore();
@@ -17,48 +18,56 @@ function EventSellersForm() {
 
     }, [eventCategoryStore, eventTypeStore])
 
-    const initialState: Event = {
-        title: "",
-        category: null,
-        categoryId: "",
-        description: "",
-        place: "",
-        date: undefined,
-        user: null,
-        userId: "",
-        type: null,
-        typeId: "",
-        moderator: "",
-        totalPlaces: 0,
-        id: selectedElement?.id || '',
-        createdAt: null,
-        updatedAt: null
-    };
+    const [initialState, setInitialState] = useState<EventFormValues>(new EventFormValues());
 
     const validationSchema = Yup.object({
-        title: Yup.string().required('This field is required'),
-        category: Yup.object().required().nonNullable(),
-        description: Yup.string().required('This field is required'),
-        place: Yup.string().required('This field is required'),
-        date: Yup.date().required(),
-        type: Yup.object().required().nonNullable(),
-        moderator: Yup.string().required('This field is required'),
-        totalPlaces: Yup.number().required('This field is required. Minimum values is 0').min(0)
+        // title: Yup.string().required('This field is required'),
+        // category: Yup.object().required().nonNullable(),
+        // description: Yup.string().required('This field is required'),
+        // place: Yup.string().required('This field is required'),
+        // date: Yup.date().required(),
+        // type: Yup.object().required().nonNullable(),
+        // moderator: Yup.string().required('This field is required'),
+        // totalPlaces: Yup.number().required('This field is required. Minimum values is 0').min(0)
     })
-
-    const [eventDto, setEventDto] = useState(initialState);
-
-    function handleSubmit() {
-        createOne(eventDto);
-    }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const { name, value } = event.target;
-        setEventDto({ ...eventDto, [name]: value });
+        setInitialState({ ...initialState, [name]: value });
+    }
+
+    function handleSelectInputChange(event, data) {
+        const { value, name } = data;
+
+        switch (name) {
+            case 'category':
+                setInitialState({ ...initialState, categoryId: value });
+                break;
+            case 'type':
+                setInitialState({ ...initialState, typeId: value });
+                break;
+            default:
+                break;
+        }
     }
 
     if (eventCategoryStore.loadingInitial || eventTypeStore.loadingInitial || eventSellersStore.loadingInitial) {
         return <LoadingComponent content='Loading app...' />
+    }
+
+    function handleFormSubmit() {
+        if (!initialState.id) {
+            console.log(initialState);
+            // let newEvent = {
+            //     ...initialState,
+            //     typeId: initialState.type!.id,
+            //     categoryId: initialState.category!.id
+            // }
+
+            eventSellersStore.createOne(initialState);
+        } else {
+            eventSellersStore.editOne(initialState);
+        }
     }
 
     return (
@@ -66,9 +75,11 @@ function EventSellersForm() {
             <Header>Create Event</Header>
 
             <Formik
+                enablereinitialize={true}
                 initialValues={initialState}
                 validationSchema={validationSchema}
-                onSubmit={(values, { setErrors }) => eventSellersStore.createOne(values)}
+                onSubmit={() => handleFormSubmit()}
+
             >
                 {({ handleSubmit, isValid, isSubmitting, dirty, handleChange }) => (
                     <Form onSubmit={handleSubmit} autoComplete='off'>
@@ -76,9 +87,10 @@ function EventSellersForm() {
                             required={true}
                             autoFocus
                             placeholder='Title'
-                            value={eventDto.title}
+                            value={initialState.title}
                             name='title'
-                            onChange={handleInputChange}
+                            id='title'
+                            onChange={e => handleInputChange(e)}
                             fluid
                             label='Title'
                             control={Input}
@@ -91,14 +103,15 @@ function EventSellersForm() {
                             label='Category'
                             control={Select}
                             options={eventCategoryStore.categoryOptions}
-                            onChange={handleChange('category')}
+                            // onChange={(e) => setFieldValue("category", e.target.value)}
+                            onChange={handleSelectInputChange}
                         />
                         <FormField
                             required={true}
                             placeholder='Description'
-                            value={eventDto.description}
+                            value={initialState.description}
                             name='description'
-                            onChange={handleInputChange}
+                            onChange={e => handleInputChange(e)}
                             fluid
                             label='Description'
                             control={Input}
@@ -106,9 +119,9 @@ function EventSellersForm() {
                         <FormField
                             required={true}
                             placeholder='Place'
-                            value={eventDto.place}
+                            value={initialState.place}
                             name='place'
-                            onChange={handleInputChange}
+                            onChange={e => handleInputChange(e)}
                             fluid
                             label='Place'
                             control={Input}
@@ -116,9 +129,9 @@ function EventSellersForm() {
                         <FormField
                             required={true}
                             placeholder='Date'
-                            value={eventDto.date}
+                            value={initialState.date}
                             name='date'
-                            onChange={handleInputChange}
+                            onChange={e => handleInputChange(e)}
                             fluid
                             label='Date'
                             type='date'
@@ -129,7 +142,7 @@ function EventSellersForm() {
                             placeholder='Type'
                             value={eventSellersStore.selectedElement?.type?.type}
                             name='type'
-                            onChange={handleInputChange}
+                            onChange={handleSelectInputChange}
                             fluid
                             label='Type'
                             control={Select}
@@ -138,9 +151,9 @@ function EventSellersForm() {
                         <FormField
                             required={true}
                             placeholder='Moderator'
-                            value={eventDto.moderator}
+                            value={initialState.moderator}
                             name='moderator'
-                            onChange={handleInputChange}
+                            onChange={e => handleInputChange(e)}
                             fluid
                             label='Moderator'
                             control={Input}
@@ -148,10 +161,11 @@ function EventSellersForm() {
                         <FormField
                             required={true}
                             placeholder='Total Places'
-                            value={eventDto.totalPlaces}
+                            value={initialState.totalPlaces}
                             name='totalPlaces'
-                            onChange={handleInputChange}
+                            onChange={e => handleInputChange(e)}
                             fluid
+                            type="number"
                             label='Total Places'
                             control={Input}
                         />

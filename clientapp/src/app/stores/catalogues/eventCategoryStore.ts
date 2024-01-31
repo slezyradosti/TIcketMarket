@@ -27,7 +27,7 @@ class EventCategoryStore {
 
         if (this.getArray.length > 0) {
             this.getArray.forEach(category => {
-                const opt = { key: category.id, text: category.category, value: category.category }
+                const opt = { key: category.id, text: category.category, value: category.id }
                 this.categoryOptions?.push(opt);
             })
         }
@@ -53,8 +53,10 @@ class EventCategoryStore {
                 ModuleStore.convertEntityDateFromApi(eventCategory);
 
                 this.eventCategoryRegistry.set(eventCategory.id!, eventCategory);
+
+                this.categoryOptions?.push({ key: eventCategory.id, text: eventCategory.category, value: eventCategory.id })
             })
-            this.loadOptions();
+            //this.loadOptions();
 
         } catch (error) {
             console.log(error);

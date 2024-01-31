@@ -5,12 +5,10 @@ import { BaseModel } from "../models/BaseModel";
 module ModuleStore {
 
     export function convertEntityDateFromApi(entity: BaseModel) {
-        if (entity.createdAt != null && entity.updatedAt != null) {
-            runInAction(() => {
-                entity.createdAt = new Date(entity.createdAt!);
-                entity.updatedAt = new Date(entity.updatedAt!);
-            });
-        }
+        runInAction(() => {
+            entity.createdAt = entity.createdAt != null ? new Date(entity.createdAt!) : entity.createdAt;
+            entity.updatedAt = entity.updatedAt != null ? new Date(entity.updatedAt!) : entity.updatedAt;
+        });
     }
 
     export function convertDateFromApi(apiDate: Date) {

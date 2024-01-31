@@ -27,7 +27,7 @@ class EventTypeStore {
 
         if (this.getArray.length > 0) {
             this.getArray.forEach(type => {
-                const opt = { key: type.id, text: type.type, value: type.type }
+                const opt = { key: type.id, text: type.type, value: type.id }
                 this.typeOptions?.push(opt);
             })
         }
@@ -53,8 +53,10 @@ class EventTypeStore {
                 ModuleStore.convertEntityDateFromApi(eventType);
 
                 this.eventTypeRegistry.set(eventType.id!, eventType);
+
+                this.typeOptions?.push({ key: eventType.id, text: eventType.type, value: eventType.id });
             })
-            this.loadOptions();
+            //this.loadOptions();
 
         } catch (error) {
             console.log(error);
