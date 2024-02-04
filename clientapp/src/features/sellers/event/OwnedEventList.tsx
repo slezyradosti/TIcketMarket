@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import { useStore } from "../../../app/stores/store";
-import { Button, Table, TableBody, TableFooter, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
+import { Button, Icon, Table, TableBody, TableFooter, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
 import { useEffect } from "react";
 import EventForSellersList from "./EventForSellersList";
-import EventSellersForm from "./EventSellersForm";
+import { Link } from "react-router-dom";
 
 function OwnedEventList() {
-    const { eventSellersStore, modalStore } = useStore();
+    const { eventSellersStore } = useStore();
     const { getArray } = eventSellersStore;
 
     useEffect(() => {
@@ -22,7 +22,7 @@ function OwnedEventList() {
                         <TableHeaderCell>Date</TableHeaderCell>
                         <TableHeaderCell>Created at</TableHeaderCell>
                         <TableHeaderCell>Place</TableHeaderCell>
-                        <TableHeaderCell>Type</TableHeaderCell>
+                        <TableHeaderCell>Moderator</TableHeaderCell>
                         <TableHeaderCell>Edit</TableHeaderCell>
                         <TableHeaderCell>Delete</TableHeaderCell>
                     </TableRow>
@@ -41,13 +41,14 @@ function OwnedEventList() {
                         <TableHeaderCell colSpan='7'>
                             <Button
                                 floated='right'
-                                icon
+                                icon='add'
                                 labelPosition='left'
                                 primary
                                 size='small'
-                                onClick={() => modalStore.openModal(<EventSellersForm />)}
+                                // onClick={() => modalStore.openModal(<EventSellersForm closeModal={modalStore.closeModal} />)}
+                                as={Link} to='manage'
                             >
-                                Add new
+                                <Icon name='add' /> Add new
                             </Button>
                             <Button size='small'>Approve</Button>
                             <Button disabled size='small'>

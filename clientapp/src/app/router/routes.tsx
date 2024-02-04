@@ -16,6 +16,7 @@ import EventDetails from "../../features/event/EventDetails";
 import EventSellersDetails from "../../features/sellers/event/EventSellersDetails";
 import NotFound from "../../features/errors/NotFound";
 import ServerError from "../../features/errors/ServerError";
+import EventSellersForm from "../../features/sellers/event/EventSellersForm";
 
 
 export const routes: RouteObject[] = [
@@ -37,6 +38,7 @@ export const routes: RouteObject[] = [
 
                     { path: 'event/my-events', element: < OwnedEventList /> },
                     { path: 'event/my-events/:id', element: < EventSellersDetails /> },
+                    { path: 'event/my-events/manage/:id?', element: < EventSellersForm /> },
                     { path: 'TicketDiscount/my-discounts', element: < OwnedDiscountList /> },
                     { path: 'Order/my-orders', element: < OrderListCustomer /> },
                     { path: 'Ticket/my-tickets', element: < TicketListCustomer /> },

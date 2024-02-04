@@ -1,16 +1,13 @@
-import { EventCategory } from "../catalogues/eventCategory";
-import { EventType } from "../catalogues/eventType";
-import { User } from "../tables/user";
-
 export class EventFormValues {
     title: string = '';
     categoryId: string = '';
     description: string = '';
     place: string = '';
-    date: Date | null = new Date((new Date()).getTime());
+    date: Date = new Date((new Date()).getTime());
     typeId: string = '';
     moderator: string = '';
     totalPlaces: number = 0;
+    id: string | null = null;
 
     constructor(event?: EventFormValues) {
         if (event) {
@@ -22,6 +19,7 @@ export class EventFormValues {
             this.typeId = event.typeId
             this.moderator = event.moderator
             this.totalPlaces = event.totalPlaces
+            this.id = event.id
         }
     }
 

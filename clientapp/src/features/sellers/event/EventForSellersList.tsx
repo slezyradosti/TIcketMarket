@@ -2,6 +2,7 @@ import { observer } from "mobx-react";
 import { TableRow, TableCell, Button, Icon } from "semantic-ui-react";
 import { Event } from "../../../app/models/tables/event";
 import { useStore } from "../../../app/stores/store";
+import { Link } from "react-router-dom";
 
 interface Props {
     event: Event;
@@ -22,8 +23,14 @@ function EventForSellersList({ event }: Props) {
                 <TableCell>{event.date?.toLocaleDateString()}</TableCell>
                 <TableCell>{event.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>{event.place}</TableCell>
-                <TableCell>{event.type?.type} a</TableCell>
-                <TableCell><Button>Edit</Button></TableCell>
+                <TableCell>{event.moderator} a</TableCell>
+                <TableCell>
+                    <Button
+                        as={Link} to={`manage/${event.id}`}
+                    >
+                        Edit
+                    </Button>
+                </TableCell>
                 <TableCell>
                     <Button
                         icon

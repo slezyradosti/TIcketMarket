@@ -64,6 +64,8 @@ class EventSellersStore {
         event.date = ModuleStore.convertDateFromApi(event.date!);
 
         this.detailsElement = event;
+
+        return event;
     }
 
     createOne = async (event: Event) => {

@@ -44,7 +44,7 @@ function OwnedDiscountList() {
                                 primary
                                 size='small'
                             >
-                                <Icon name='user' /> Add User
+                                <Icon name='add' /> Add new
                             </Button>
                             <Button size='small'>Approve</Button>
                             <Button disabled size='small'>
