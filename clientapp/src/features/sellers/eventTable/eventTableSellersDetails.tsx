@@ -2,6 +2,7 @@ import { observer } from "mobx-react";
 import { Item, ItemContent, ItemHeader, ItemDescription } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import { useEffect } from "react";
+import LoadingComponent from "../../../app/layout/LoadingComponent";
 
 interface Props {
     tableId: string;
@@ -13,7 +14,11 @@ function EventTableSellersDetails({ tableId }: Props) {
 
     useEffect(() => {
         details(tableId);
-    })
+    }, [eventTableStore, tableId])
+
+    if (eventTableStore.loading) {
+        return <LoadingComponent content='Loading app...' />
+    }
 
     return (
         <>

@@ -76,7 +76,15 @@ class EventTableStore {
     }
 
     details = async (id: string) => {
-        this.detailsElement = await agent.EventTables.getOne(id);
+        this.loading = true;
+
+        const details = await agent.EventTables.getOne(id);
+        ModuleStore.convertEntityDateFromApi(details);
+
+        this.detailsElement = details
+
+        this.loading = false;
+        return details
     }
 
     createOne = async (eventTable: EventTable) => {

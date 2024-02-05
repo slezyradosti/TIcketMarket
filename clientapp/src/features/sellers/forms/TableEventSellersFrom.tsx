@@ -27,8 +27,8 @@ function TableEventSellersForm() {
     }, [eventSellersStore, eventTableStore, id])
 
     const validationSchema: TableEventFormValues = Yup.object({
-        eventId: Yup.string().required('Title is required'),
-        tableId: Yup.string().required('Category is required'),
+        eventId: Yup.string().required('Event is required'),
+        tableId: Yup.string().required('Table is required'),
     }).required()
 
     function handleFormSubmit(tableEvent: TableEventFormValues) {
@@ -60,12 +60,11 @@ function TableEventSellersForm() {
                             <SelectInputFormik placeholder='Event' name='eventId' options={eventSellersStore.eventOptions} label="Event" />
                             <SelectInputFormik placeholder='Table' name='tableId' options={eventTableStore.eventTableOptions} label="Table number" />
 
-                            {initialState.tableId != '' ?
+                            {values.tableId != '' ? (
                                 <>
-                                    {console.log('IF initialState.tableId')}
-                                    <EventTableSellersDetails tableId={initialState.tableId} />
-                                </>
-                                : null
+                                    <EventTableSellersDetails tableId={values.tableId} />
+                                </>)
+                                : (null)
                             }
 
                             <Button
