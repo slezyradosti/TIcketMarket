@@ -10,9 +10,27 @@ class EventTableStore {
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
+    eventTableOptions: { key: string; text: string; value: string; }[] = [];
+    eventTableOptionsLoading: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    loadOptions = async () => {
+        this.eventTableOptionsLoading = true;
+        this.eventTableOptions = [];
+
+        if (this.getArray.length <= 0) {
+            await this.loadList();
+        }
+
+        this.getArray.forEach(eventTable => {
+            const opt = { key: eventTable.id, text: eventTable.number, value: eventTable.id }
+            this.eventTableOptions?.push(opt);
+        })
+
+        this.eventTableOptionsLoading = false;
     }
 
     clearData = () => {

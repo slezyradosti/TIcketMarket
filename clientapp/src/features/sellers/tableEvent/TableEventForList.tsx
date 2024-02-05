@@ -8,25 +8,24 @@ interface Props {
     tableEvent: TableEvent;
 }
 
-function TableEventForList({ event }: Props) {
+function TableEventForList({ tableEvent }: Props) {
     const { tableEventStore } = useStore();
     const { loading, deleteOne } = tableEventStore
 
-    const handleDelete = (eventId: string) => {
-        deleteOne(eventId);
+    const handleDelete = (tEventId: string) => {
+        deleteOne(tEventId);
     }
 
     return (
         <>
             <TableRow>
-                <TableCell> <a href={`/event/my-events/${event.id}`}>{event.title}</a> </TableCell>
-                <TableCell>{event.date?.toLocaleDateString()}</TableCell>
-                <TableCell>{event.createdAt?.toLocaleDateString()}</TableCell>
-                <TableCell>{event.place}</TableCell>
-                <TableCell>{event.moderator} a</TableCell>
+                <TableCell> <a href={`/tableevent/my-list/${tableEvent?.id}`}>{tableEvent?.table?.number}</a> </TableCell>
+                <TableCell>{tableEvent?.table?.price}</TableCell>
+                <TableCell>{tableEvent?.table?.peopleQuantity}</TableCell>
+                <TableCell>{tableEvent?.table?.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>
                     <Button
-                        as={Link} to={`manage/${event.id}`}
+                        as={Link} to={`manage/${tableEvent?.id}`}
                     >
                         Edit
                     </Button>
@@ -34,7 +33,7 @@ function TableEventForList({ event }: Props) {
                 <TableCell>
                     <Button
                         icon
-                        onClick={() => handleDelete(event.id)}
+                        onClick={() => handleDelete(tableEvent!.id)}
                         loading={loading}
                     >
                         <Icon name="trash alternate outline" />

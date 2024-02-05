@@ -3,12 +3,10 @@ import { useStore } from "../../../app/stores/store";
 import { Button, Dropdown, Icon, Table, TableBody, TableFooter, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { TableEvent } from "../../../app/models/tables/tableEvent";
 import TableEventForList from "./TableEventForList";
 
 function OwnedTableEventList() {
     const { eventSellersStore, tableEventStore } = useStore();
-
     const [chosenEvent, setChosenEvent] = useState<string | null>(null);
 
     useEffect(() => {
@@ -40,7 +38,9 @@ function OwnedTableEventList() {
             <Table compact celled>
                 <TableHeader>
                     <TableRow>
-                        <TableHeaderCell>Table</TableHeaderCell>
+                        <TableHeaderCell>Table number</TableHeaderCell>
+                        <TableHeaderCell>Table price</TableHeaderCell>
+                        <TableHeaderCell>Table People Quantity</TableHeaderCell>
                         <TableHeaderCell>Created at</TableHeaderCell>
                         <TableHeaderCell>Edit</TableHeaderCell>
                         <TableHeaderCell>Delete</TableHeaderCell>
@@ -57,7 +57,7 @@ function OwnedTableEventList() {
 
                 <TableFooter fullWidth>
                     <TableRow>
-                        <TableHeaderCell colSpan='4'>
+                        <TableHeaderCell colSpan='6'>
                             <Button
                                 floated='right'
                                 icon='add'

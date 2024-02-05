@@ -19,6 +19,7 @@ import ServerError from "../../features/errors/ServerError";
 import EventSellersForm from "../../features/sellers/forms/EventSellersForm";
 import TicketDiscountSellersForm from "../../features/sellers/forms/TicketDiscountSellersForm";
 import OwnedTableEventList from "../../features/sellers/tableEvent/OwnedTableEventList";
+import TableEventSellersFrom from "../../features/sellers/forms/TableEventSellersFrom";
 
 
 export const routes: RouteObject[] = [
@@ -44,6 +45,7 @@ export const routes: RouteObject[] = [
                     { path: 'TicketDiscount/my-discounts', element: < OwnedDiscountList /> },
                     { path: 'TicketDiscount/my-discounts/manage/:id?', element: < TicketDiscountSellersForm /> },
                     { path: 'TableEvent/my-list', element: < OwnedTableEventList /> },
+                    { path: 'TableEvent/my-list/manage/:id?', element: < TableEventSellersFrom /> },
                     { path: 'Order/my-orders', element: < OrderListCustomer /> },
                     { path: 'Ticket/my-tickets', element: < TicketListCustomer /> },
                     {

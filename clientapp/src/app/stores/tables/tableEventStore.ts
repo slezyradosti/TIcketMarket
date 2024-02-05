@@ -35,6 +35,9 @@ class TableEventStore {
             const result = await agent.TableEvents.list(eventId);
             result.forEach(tableEvent => {
                 ModuleStore.convertEntityDateFromApi(tableEvent);
+                if (tableEvent.table) {
+                    ModuleStore.convertEntityDateFromApi(tableEvent.table);
+                }
 
                 this.tableEventRegistry.set(tableEvent.id!, tableEvent);
             })
@@ -58,7 +61,9 @@ class TableEventStore {
     }
 
     details = async (id: string) => {
-        this.detailsElement = await agent.TableEvents.getOne(id);
+        const tableEvent = await agent.TableEvents.getOne(id);
+        this.detailsElement = tableEvent;
+        return tableEvent;
     }
 
     createOne = async (tableEvent: TableEvent) => {
