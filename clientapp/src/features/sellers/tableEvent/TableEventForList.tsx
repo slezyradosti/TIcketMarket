@@ -1,16 +1,16 @@
 import { observer } from "mobx-react";
 import { TableRow, TableCell, Button, Icon } from "semantic-ui-react";
-import { Event } from "../../../app/models/tables/event";
 import { useStore } from "../../../app/stores/store";
 import { Link } from "react-router-dom";
+import { TableEvent } from "../../../app/models/tables/tableEvent";
 
 interface Props {
-    event: Event;
+    tableEvent: TableEvent;
 }
 
-function EventForSellersList({ event }: Props) {
-    const { eventSellersStore } = useStore();
-    const { loading, deleteOne } = eventSellersStore
+function TableEventForList({ event }: Props) {
+    const { tableEventStore } = useStore();
+    const { loading, deleteOne } = tableEventStore
 
     const handleDelete = (eventId: string) => {
         deleteOne(eventId);
@@ -19,7 +19,7 @@ function EventForSellersList({ event }: Props) {
     return (
         <>
             <TableRow>
-                <TableCell> <a href={`/event/${event.id}`}>{event.title}</a> </TableCell>
+                <TableCell> <a href={`/event/my-events/${event.id}`}>{event.title}</a> </TableCell>
                 <TableCell>{event.date?.toLocaleDateString()}</TableCell>
                 <TableCell>{event.createdAt?.toLocaleDateString()}</TableCell>
                 <TableCell>{event.place}</TableCell>
@@ -45,4 +45,4 @@ function EventForSellersList({ event }: Props) {
     );
 }
 
-export default observer(EventForSellersList);
+export default observer(TableEventForList);

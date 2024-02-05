@@ -10,6 +10,8 @@ class EventSellersStore {
     editMode: boolean = false;
     loading: boolean = false;
     loadingInitial: boolean = true;
+    eventOptions: { key: string; text: string; value: string; }[] = [];
+    eventOptionsLoading: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -17,6 +19,22 @@ class EventSellersStore {
 
     get getArray() {
         return Array.from(this.eventRegistry.values());
+    }
+
+    loadOptions = async () => {
+        this.eventOptionsLoading = true;
+        this.eventOptions = [];
+
+        if (this.getArray.length <= 0) {
+            await this.loadList();
+        }
+
+        this.getArray.forEach(event => {
+            const opt = { key: event.id, text: event.title, value: event.id }
+            this.eventOptions?.push(opt);
+        })
+
+        this.eventOptionsLoading = false;
     }
 
     clearData = () => {

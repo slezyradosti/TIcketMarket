@@ -28,12 +28,10 @@ function TicketDiscountSellersForm() {
     }).required()
 
     function handleFormSubmit(tDiscount: TicketDiscountFormValues) {
-        console.log('handleFormSubmit: ' + tDiscount)
         if (!tDiscount.id) {
             ticketDiscountStore.createOne(tDiscount).then(() => navigate(`/TicketDiscount/my-discounts`));
         } else {
             ticketDiscountStore.editOne(tDiscount).then(() => navigate(`/TicketDiscount/my-discounts`));
-            //updateActivity(activity).then(() => navigate(`/activities/${activity.id}`))
         }
     }
 

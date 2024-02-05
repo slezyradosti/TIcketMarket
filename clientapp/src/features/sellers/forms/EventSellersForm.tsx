@@ -43,7 +43,6 @@ function EventSellersForm() {
             eventSellersStore.createOne(event).then(() => navigate(`/event/my-events`));
         } else {
             eventSellersStore.editOne(event).then(() => navigate(`/event/my-events`));
-            //updateActivity(activity).then(() => navigate(`/activities/${activity.id}`))
         }
     }
 

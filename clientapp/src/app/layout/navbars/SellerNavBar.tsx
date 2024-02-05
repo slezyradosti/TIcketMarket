@@ -27,6 +27,12 @@ function SellerNavBar() {
                     active={activeItem === 'my_discounts'}
                     onClick={() => handleItemClick('my_discounts')}
                 />
+                <MenuItem
+                    as={Link} to='TableEvent/my-list'
+                    name='My Table-Events'
+                    active={activeItem === 'my_list'}
+                    onClick={() => handleItemClick('my_list')}
+                />
 
                 <MenuMenu position='right'>
                     <Dropdown
