@@ -30,15 +30,15 @@ namespace Application.Handlers.Tables.TableEvent
             return Result<List<TableEventDto>>.Success(tableEventDtos);
         }
 
-        public async Task<Result<TableEventDto>> GetEventsTableDetailedAsync(Guid eventId)
+        public async Task<Result<TableEventDto>> GetEventsTableDetailedAsync(Guid id)
         {
-            if (!await _tableEventRepository.HasUserAccessToTheEventTableAsync(eventId,
+            if (!await _tableEventRepository.HasUserAccessToTheEventTableAsync(id,
                     _userAccessor.GetUserId()))
             {
                 return Result<TableEventDto>.Failure("You have no access to this data");
             }
 
-            var tableEvents = await _tableEventRepository.GetEventsTableDetailedAsync(eventId);
+            var tableEvents = await _tableEventRepository.GetEventsTableDetailedAsync(id);
 
             TableEventDto tableEventDtos = new TableEventDto();
 

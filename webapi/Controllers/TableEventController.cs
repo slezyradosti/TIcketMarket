@@ -22,10 +22,10 @@ namespace webapi.Controllers
             return HandleResult(await _tableEventHandler.GetEventsTabletListAsync(eventId));
         }
 
-        [HttpGet("{eventId}")]
-        public async Task<IActionResult> GetEventsTableDetailed(Guid eventId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetEventsTableDetailed(Guid id)
         {
-            return HandleResult(await _tableEventHandler.GetEventsTableDetailedAsync(eventId));
+            return HandleResult(await _tableEventHandler.GetEventsTableDetailedAsync(id));
         }
 
         [HttpPost]
