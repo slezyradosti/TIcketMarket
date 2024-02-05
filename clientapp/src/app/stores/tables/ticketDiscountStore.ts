@@ -58,7 +58,9 @@ class TicketDiscountStore {
     }
 
     details = async (id: string) => {
-        this.detailsElement = await agent.TicketDiscounts.getSellersOne(id);
+        const tDiscount = await agent.TicketDiscounts.getSellersOne(id);
+        this.detailsElement = tDiscount;
+        return tDiscount;
     }
 
     createOne = async (ticketDiscount: TicketDiscount) => {

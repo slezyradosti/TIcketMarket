@@ -3,6 +3,7 @@ import { useStore } from "../../../app/stores/store";
 import { useEffect } from "react";
 import { Button, Icon, Table, TableBody, TableFooter, TableHeader, TableHeaderCell, TableRow } from "semantic-ui-react";
 import TicketDiscountForList from "./TicketDiscountForList";
+import { Link } from "react-router-dom";
 
 
 function OwnedDiscountList() {
@@ -43,6 +44,7 @@ function OwnedDiscountList() {
                                 labelPosition='left'
                                 primary
                                 size='small'
+                                as={Link} to='manage'
                             >
                                 <Icon name='add' /> Add new
                             </Button>

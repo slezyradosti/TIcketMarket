@@ -5,12 +5,12 @@ import { Button, Header, Label, Segment } from "semantic-ui-react";
 import { Formik, Form } from "formik";
 import * as Yup from 'yup';
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import { EventFormValues } from "../../../app/models/forms/EventFormValues";
 import TextInputFormik from "../../../app/common/forms/TextInputFormik";
 import SelectInputFormik from "../../../app/common/forms/SelectInputFormik";
 import DateInputFormik from "../../../app/common/forms/DateInputFormik";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { EventFormValues } from "../../../app/models/forms/eventFormValues";
 
 function EventSellersForm() {
     const { eventSellersStore, eventCategoryStore, eventTypeStore } = useStore();
@@ -35,11 +35,10 @@ function EventSellersForm() {
         date: Yup.date().required('Date is required'),
         typeId: Yup.string().required('Type is required').nonNullable(),
         moderator: Yup.string().required('Moderator is required'),
-        totalPlaces: Yup.number().required('Total places number is required. Minimum values is 0').min(0).max(10000000)
+        totalPlaces: Yup.number().integer().required('Total places number is required. Minimum values is 0').min(0).max(10000000)
     }).required()
 
     function handleFormSubmit(event: EventFormValues) {
-        console.log('handleFormSubmit: ' + event)
         if (!event.id) {
             eventSellersStore.createOne(event).then(() => navigate(`/event/my-events`));
         } else {
