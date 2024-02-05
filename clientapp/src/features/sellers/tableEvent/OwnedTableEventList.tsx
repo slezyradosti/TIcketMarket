@@ -10,7 +10,9 @@ function OwnedTableEventList() {
     const [chosenEvent, setChosenEvent] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!chosenEvent) {
+        console.log('useeffect:' + chosenEvent)
+        if (chosenEvent == null) {
+            tableEventStore.clearData();
             eventSellersStore.loadOptions();
         }
         else if (chosenEvent) {
