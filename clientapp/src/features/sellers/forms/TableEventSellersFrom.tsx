@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { TableEventFormValues } from "../../../app/models/forms/tableEventFormValues";
 import SelectInputFormik from "../../../app/common/forms/SelectInputFormik";
 import EventTableSellersDetails from "../eventTable/eventTableSellersDetails";
+import EventInlineDetails from "../event/EventInlineDetails";
 
 function TableEventSellersForm() {
     const { tableEventStore, eventSellersStore, eventTableStore } = useStore();
@@ -58,6 +59,14 @@ function TableEventSellersForm() {
                     {({ handleSubmit, isSubmitting, dirty, isValid, values }) => (
                         <Form onSubmit={handleSubmit} className="ui form" autoComplete='off'>
                             <SelectInputFormik placeholder='Event' name='eventId' options={eventSellersStore.eventOptions} label="Event" />
+
+                            {values.eventId != '' ? (
+                                <>
+                                    <EventInlineDetails eventId={values.eventId} />
+                                </>)
+                                : (null)
+                            }
+                            <br />
                             <SelectInputFormik placeholder='Table' name='tableId' options={eventTableStore.eventTableOptions} label="Table number" />
 
                             {values.tableId != '' ? (
@@ -79,7 +88,7 @@ function TableEventSellersForm() {
                         </Form>
                     )}
                 </Formik >
-            </Segment>
+            </Segment >
         </>
     );
 }
