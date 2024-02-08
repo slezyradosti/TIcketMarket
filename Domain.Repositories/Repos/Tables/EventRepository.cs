@@ -33,6 +33,8 @@ public class EventRepository : BaseRepository<Event>, IEventRepository
     public async Task<Event> GetOneDetailedAsync(Guid eventId)
         => await Context.Event
             .Where(e => e.Id == eventId)
+            .Include(e => e.Type)
+            .Include(e => e.Category)
             .FirstOrDefaultAsync();
     
     public async Task<int> GetEventsTotalPlacesAsync(Guid eventId)
