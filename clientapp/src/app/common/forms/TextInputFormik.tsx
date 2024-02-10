@@ -5,6 +5,7 @@ interface Props {
     placeholders: string;
     name: string;
     label?: string;
+    type?: string;
 }
 
 function TextInputFormik(props: Props) {

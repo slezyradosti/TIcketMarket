@@ -3,6 +3,7 @@ import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
+import TextInputFormik from "../../app/common/forms/TextInputFormik";
 
 function LoginForm() {
     const { userStore } = useStore();
@@ -22,41 +23,29 @@ function LoginForm() {
                 )
                 }
             >
-                {({ handleSubmit, handleChange, isSubmitting, errors }) => (
+                {({ handleSubmit, isSubmitting, errors }) => (
                     <Form
                         className='ui form'
                         onSubmit={handleSubmit}
                         autoComplete='off'
                     >
                         <Header as='h2' content='Login' color="grey" textAlign="center" />
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Email'
-                                name='email'
-                                type='email'
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Password'
-                                name='password'
-                                type='password'
-                                onChange={handleChange}
-                            />
-                        </div>
+
+                        <TextInputFormik placeholders='Email' name='email' label='Email' type="email" />
+                        <TextInputFormik placeholders='Password' name='password' label='Password' type="password" />
+
                         <ErrorMessage name='error' render={() =>
                             <Label style={{ marginBottom: 10 }} basic color='red' content={errors.error}
                             />}
                         />
+
                         <Button
                             loading={isSubmitting}
                             content='Login'
                             type='submit'
                             fluid
-                            className="submitBtnColor Border" />
+                            className="submitBtnColor Border"
+                            positive />
                     </Form>
                 )}
 

@@ -1,8 +1,11 @@
-import { Button, Container, Header, Label } from "semantic-ui-react";
+import { Button, Container, FormField, FormGroup, Header, Label, Radio } from "semantic-ui-react";
 import { useStore } from "../../app/stores/store";
 import { observer } from "mobx-react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from 'yup';
+import TextInputFormik from "../../app/common/forms/TextInputFormik";
+import DateInputFormik from "../../app/common/forms/DateInputFormik";
+import RadioButtonInputFormik from "../../app/common/forms/RadioButtonInputFormik";
 
 function LoginForm() {
     const { userStore } = useStore();
@@ -31,91 +34,77 @@ function LoginForm() {
             <Formik
                 validationSchema={validationSchema}
                 initialValues={initialValues}
-                onSubmit={(values, { setErrors }) => userStore.register(values).catch((error) => {
-                    console.log('catched error: ' + error);
-                    setErrors({ error })
-                }
-                )}
+                // onSubmit={(values, { setErrors }) => userStore.register(values).catch((error) => {
+                //     console.log('catched error: ' + error);
+                //     setErrors({ error })
+                // }
+                // )}
+                onSubmit={(values, { setErrors }) => console.log(values)}
             >
-                {({ handleSubmit, isSubmitting, errors }) => (
+                {({ handleSubmit, isSubmitting, errors, values, handleChange }) => (
                     <Form
                         className='ui form'
                         onSubmit={handleSubmit}
                         autoComplete='off'
                     >
                         <Header as='h2' content='Register' color="grey" textAlign="center" />
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Username'
-                                name='username'
-                            />
-                        </div>
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Firstname'
-                                name='firstname'
-                            />
-                        </div>
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Lastname'
-                                name='lastname'
-                            />
-                        </div>
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Date of birth'
-                                name='DOB'
-                            />
-                        </div>
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Phone'
-                                name='phone'
-                            />
-                        </div>
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Email'
-                                name='email'
-                            />
-                        </div>
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Rights (seller or customers)'
-                                name='isCustomer'
-                            />
-                        </div>
-                        <div className="ui form field">
-                            <Field
-                                required={true}
-                                placeholder='Password'
-                                name='password'
-                                type='password'
-                            />
-                        </div>
+
+                        <TextInputFormik placeholders='Username' name='username' label='Username' />
+                        <TextInputFormik placeholders='Firstname' name='firstname' label='Firstname' />
+                        <TextInputFormik placeholders='Lastname' name='lastname' label='Lastname' />
+                        <Label>Date of birth</Label>
+                        <DateInputFormik placeholderText='Date of birth' name='DOB' dateFormat={'MMMM d, yyyy'} />
+                        <TextInputFormik placeholders='Phone' name='phone' label='Phone' />
+                        <TextInputFormik placeholders='Email' name='email' label='Email' type="email" />
+
+                        <FormField>
+                            <FormGroup inline>
+                                <div className="field">
+                                    <div className="ui radio checkbox">
+                                        <Field
+                                            type="radio"
+                                            name="isCustomer"
+                                            value="true"
+                                        />
+                                        <label>Customer</label>
+                                    </div>
+                                </div>
+
+                                <div className="field">
+                                    <div className="ui radio checkbox">
+                                        <Field
+                                            className='ui radio checkbox'
+                                            type="radio"
+                                            name="isCustomer"
+                                            value="false"
+                                        />
+                                        <label>Seller</label>
+                                    </div>
+                                </div>
+
+                            </FormGroup>
+                        </FormField>
+
+
+                        <TextInputFormik placeholders='Password' name='password' label='Password' type="password" />
+
                         <ErrorMessage name='error' render={() =>
                             <Label style={{ marginBottom: 10 }} basic color='red' content={errors.error}
                             />}
                         />
+
                         <Button
                             loading={isSubmitting}
                             content='Register'
                             type='submit'
                             fluid
-                            className="submitBtnColor Border" />
+                            className="submitBtnColor Border"
+                            positive />
                     </Form>
                 )}
 
             </Formik>
-        </Container>
+        </Container >
     );
 }
 

@@ -29,6 +29,7 @@ function EventInlineDetails({ eventId }: Props) {
                     <ItemDescription>Place: {detailsElement?.place}</ItemDescription>
                     <ItemDescription>Total Places: {detailsElement?.totalPlaces}</ItemDescription>
                     <ItemDescription>Type: {detailsElement?.type?.type}</ItemDescription>
+                    <ItemDescription>Category: {detailsElement?.category?.category}</ItemDescription>
                 </ItemContent>
             </Item>
         </>

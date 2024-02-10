@@ -74,7 +74,7 @@ function EventSellersForm() {
 
                             <SelectInputFormik placeholder='Type' name='typeId' options={eventTypeStore.typeOptions} label="Type" />
                             <TextInputFormik placeholders='moderator' name='moderator' label='Moderator' />
-                            <TextInputFormik placeholders='totalPlaces' name='totalPlaces' label='Total Places' />
+                            <TextInputFormik placeholders='totalPlaces' name='totalPlaces' label='Total Places' type="number" />
 
                             <Button
                                 loading={isSubmitting}
