@@ -59,29 +59,8 @@ function LoginForm() {
 
                         <FormField>
                             <FormGroup inline>
-                                <div className="field">
-                                    <div className="ui radio checkbox">
-                                        <Field
-                                            type="radio"
-                                            name="isCustomer"
-                                            value="true"
-                                        />
-                                        <label>Customer</label>
-                                    </div>
-                                </div>
-
-                                <div className="field">
-                                    <div className="ui radio checkbox">
-                                        <Field
-                                            className='ui radio checkbox'
-                                            type="radio"
-                                            name="isCustomer"
-                                            value="false"
-                                        />
-                                        <label>Seller</label>
-                                    </div>
-                                </div>
-
+                                <RadioButtonInputFormik name={"isCustomer"} value={"true"} label={"Customer"} />
+                                <RadioButtonInputFormik name={"isCustomer"} value={"false"} label={"Seller"} />
                             </FormGroup>
                         </FormField>
 
