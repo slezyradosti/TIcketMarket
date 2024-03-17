@@ -25,8 +25,14 @@ function LoginForm() {
     }
 
     const validationSchema = Yup.object({
-        email: Yup.string().email(),
-        phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid')
+        email: Yup.string().email().required('Email is required'),
+        phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
+        password: Yup.string().required('Password is required'),
+        username: Yup.string().required('Username is required'),
+        firstname: Yup.string().required('Firstname is required'),
+        lastname: Yup.string().required('Lastname is required'),
+        DOB: Yup.date().required('Date is required'),
+        isCustomer: Yup.bool().required('Role is required')
     });
 
     return (
@@ -58,6 +64,7 @@ function LoginForm() {
                         <TextInputFormik placeholders='Email' name='email' label='Email' type="email" />
 
                         <FormField>
+                            <Label>Role</Label>
                             <FormGroup inline>
                                 <RadioButtonInputFormik name={"isCustomer"} value={"true"} label={"Customer"} />
                                 <RadioButtonInputFormik name={"isCustomer"} value={"false"} label={"Seller"} />
