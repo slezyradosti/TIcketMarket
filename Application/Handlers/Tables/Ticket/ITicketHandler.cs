@@ -10,6 +10,7 @@ namespace Application.Handlers.Tables.Ticket
         //public Task<Result<List<TicketOrderDto>>> GetCustomersTicketListAsync();
         public Task<Result<Domain.Models.Tables.Ticket>> GetCustomersTicketAsync(Guid ticketId);
         public Task<Result<List<Domain.Models.Tables.Ticket>>> GetAvailableTicketListAsync(Guid eventId);
+        public Task<Result<List<Domain.Models.Tables.Ticket>>> GetSellersDetailedTicketListAsync(Guid eventId);
         public Task<Result<string>> CreateCustomersOneAsync(TicketDto ticketDto);
         public Task<Result<string>> EditCustomersOneAsync(TicketDto ticketDto);
         public Task<Result<string>> DeleteCustomersOneAsync(Guid ticketId);

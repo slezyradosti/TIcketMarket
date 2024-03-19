@@ -7,13 +7,9 @@ using Application.Handlers.Catalogues.TicketDiscount;
 using Application.Handlers.Tables.Order;
 using Application.Handlers.Tables.TicketOrder;
 using AutoMapper;
-using Domain.Models.Catalogues;
 using Domain.Repositories.DTOs;
-using Domain.Repositories.Repos.Catalogues;
 using Domain.Repositories.Repos.Interfaces.Catalogues;
-using Domain.Repositories.Repos.Tables;
 using Domain.Repositories.Repos.Interfaces.Tables;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Application.Handlers.Tables.Ticket
 {
@@ -57,16 +53,25 @@ namespace Application.Handlers.Tables.Ticket
 
             var ticket = await _ticketRepository.GetOneDetailedAsync(ticketId);
 
-            // TicketDto ticketDto = new TicketDto();
-            //
-            // _mapper.Map(ticket, ticketDto);
-
             return Result<Domain.Models.Tables.Ticket>.Success(ticket);
         }
 
         public async Task<Result<List<Domain.Models.Tables.Ticket>>> GetAvailableTicketListAsync(Guid eventId)
         {
             var tickets = await _ticketRepository.GetAvailableTicketListAsync(eventId);
+
+            return Result<List<Domain.Models.Tables.Ticket>>.Success(tickets);
+        }
+
+        public async Task<Result<List<Domain.Models.Tables.Ticket>>> GetSellersDetailedTicketListAsync(Guid eventId)
+        {
+            if (!await _eventRepository.HasUserAccessToTheEventAsync(eventId,
+                    _userAccessor.GetUserId()))
+            {
+                return Result<List<Domain.Models.Tables.Ticket>>.Failure("You have no access to this action");
+            }
+
+            var tickets = await _ticketRepository.GetDetailedListAsync(eventId);
 
             return Result<List<Domain.Models.Tables.Ticket>>.Success(tickets);
         }
