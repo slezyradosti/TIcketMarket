@@ -33,6 +33,13 @@ namespace webapi.Controllers
             return HandleResult(await _ticketHandler.GetAvailableTicketListAsync(eventId));
         }
 
+        [HttpGet("events-tickets/{eventId}")]
+        [Authorize(Policy = "SellersOnly ")]
+        public async Task<IActionResult> GetDetailedTicketList(Guid eventId)
+        {
+            return HandleResult(await _ticketHandler.GetSellersDetailedTicketListAsync(eventId));
+        }
+
         [HttpGet("{id}")]
         [Authorize(Policy = "CustomersOnly")]
         public async Task<IActionResult> GetCustomersOne(Guid id)
