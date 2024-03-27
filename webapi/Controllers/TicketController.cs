@@ -34,7 +34,7 @@ namespace webapi.Controllers
         }
 
         [HttpGet("events-tickets/{eventId}")]
-        [Authorize(Policy = "SellersOnly ")]
+        [Authorize(Policy = "SellersOnly")]
         public async Task<IActionResult> GetDetailedTicketList(Guid eventId)
         {
             return HandleResult(await _ticketHandler.GetSellersDetailedTicketListAsync(eventId));
