@@ -1,8 +1,4 @@
-import {
-    createBrowserRouter,
-    Navigate,
-    RouteObject,
-} from "react-router-dom";
+import { createBrowserRouter, Navigate, RouteObject } from "react-router-dom";
 import App from "../layout/App";
 import RequireAuth from "./requireAuth";
 import HomeCustomer from "../../features/customers/HomeCustomer";
@@ -20,48 +16,60 @@ import EventSellersForm from "../../features/sellers/forms/EventSellersForm";
 import TicketDiscountSellersForm from "../../features/sellers/forms/TicketDiscountSellersForm";
 import OwnedTableEventList from "../../features/sellers/tableEvent/OwnedTableEventList";
 import TableEventSellersFrom from "../../features/sellers/forms/TableEventSellersFrom";
-
+import OwnedTicketList from "../../features/sellers/tickets/OwnedTicketList";
 
 export const routes: RouteObject[] = [
-    {
-        path: '/',
-        element: <App />,
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { path: "", element: <HomeCustomer /> },
+      { path: "home", element: <HomeCustomer /> },
+      { path: "event/:id", element: <EventDetails /> },
+      { path: "not-found", element: <NotFound /> },
+      { path: "server-error", element: <ServerError /> },
+      { path: "*", element: <Navigate replace to="/not-found" /> },
+
+      { path: "event/list", element: <HomeCustomer /> },
+      {
+        element: <RequireAuth />,
         children: [
-            { path: '', element: <HomeCustomer /> },
-            { path: 'home', element: <HomeCustomer /> },
-            { path: 'event/:id', element: <EventDetails /> },
-            { path: 'not-found', element: <NotFound /> },
-            { path: 'server-error', element: <ServerError /> },
-            { path: '*', element: <Navigate replace to='/not-found' /> },
+          { path: "event/my-events", element: <OwnedEventList /> },
+          { path: "event/my-events/:id", element: <EventSellersDetails /> },
+          {
+            path: "event/my-events/manage/:id?",
+            element: <EventSellersForm />,
+          },
+          {
+            path: "TicketDiscount/my-discounts",
+            element: <OwnedDiscountList />,
+          },
+          {
+            path: "TicketDiscount/my-discounts/manage/:id?",
+            element: <TicketDiscountSellersForm />,
+          },
+          { path: "TableEvent/my-list", element: <OwnedTableEventList /> },
+          {
+            path: "TableEvent/my-list/manage/:id?",
+            element: <TableEventSellersFrom />,
+          },
+          { path: "Order/my-orders", element: <OrderListCustomer /> },
+          { path: "Ticket/my-tickets", element: <TicketListCustomer /> },
+          { path: "Ticket/events-tickets", element: <OwnedTicketList /> },
 
-            { path: 'event/list', element: < HomeCustomer /> },
-            {
-                element: <RequireAuth />,
-                children: [
+          {
+            path: "profile",
+            element: <CustomerProfile />,
+            children: [
+              { path: "my-orders", element: <OrderListCustomer /> },
+              { path: "my-tickets", element: <TicketListCustomer /> },
+              { path: "details", element: <UserDetails /> },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
 
-                    { path: 'event/my-events', element: < OwnedEventList /> },
-                    { path: 'event/my-events/:id', element: < EventSellersDetails /> },
-                    { path: 'event/my-events/manage/:id?', element: < EventSellersForm /> },
-                    { path: 'TicketDiscount/my-discounts', element: < OwnedDiscountList /> },
-                    { path: 'TicketDiscount/my-discounts/manage/:id?', element: < TicketDiscountSellersForm /> },
-                    { path: 'TableEvent/my-list', element: < OwnedTableEventList /> },
-                    { path: 'TableEvent/my-list/manage/:id?', element: < TableEventSellersFrom /> },
-                    { path: 'Order/my-orders', element: < OrderListCustomer /> },
-                    { path: 'Ticket/my-tickets', element: < TicketListCustomer /> },
-                    {
-                        path: 'profile',
-                        element: < CustomerProfile />,
-                        children: [
-                            { path: 'my-orders', element: < OrderListCustomer /> },
-                            { path: 'my-tickets', element: < TicketListCustomer /> },
-                            { path: 'details', element: < UserDetails /> },
-                        ]
-                    },
-                ],
-            },
-
-        ]
-    },
-]
-
-export const router = createBrowserRouter(routes)
+export const router = createBrowserRouter(routes);
